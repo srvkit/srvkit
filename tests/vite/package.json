@@ -1,0 +1,9 @@
+{
+    "private": true,
+    "dependencies": {
+        "vitest": "^4.1.8"
+    },
+    "devDependencies": {
+        "vite-tsconfig-paths": "^6.1.1"
+    }
+}

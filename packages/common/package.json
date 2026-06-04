@@ -1,0 +1,39 @@
+{
+    "name": "@srvkit/common",
+    "version": "0.1.0",
+    "description": "A toolkit for building JavaScript server applications",
+    "keywords": [
+        "srvkit",
+        "srvx",
+        "ts",
+        "typescript",
+        "js",
+        "javascript"
+    ],
+    "homepage": "https://github.com/srvkit/srvkit",
+    "bugs": "https://github.com/srvkit/srvkit/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/srvkit/srvkit.git",
+        "directory": "packages/common"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Alpheus",
+        "email": "contact@alphe.us"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ]
+}

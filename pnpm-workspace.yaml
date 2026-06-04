@@ -1,0 +1,16 @@
+packages:
+    - ./packages/*
+    - ./tests/*
+
+autoInstallPeers: false
+strictPeerDependencies: false
+
+allowBuilds:
+    esbuild: true
+
+catalogs:
+
+minimumReleaseAge: 1440
+
+minimumReleaseAgeExclude:
+    - "@apst/*"
