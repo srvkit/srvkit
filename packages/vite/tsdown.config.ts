@@ -7,7 +7,7 @@ export default defineConfig(
             // public
             index: "./src/index.ts",
             node: "./src/node.ts",
-            vite: "./src/vite.ts",
+            plugin: "./src/plugin.ts",
             // internal
             runtime: "./src/runtime.ts",
         },

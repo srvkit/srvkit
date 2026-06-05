@@ -33,7 +33,7 @@ Add the plugin into the Rsbuild config:
 // ./rsbuild.config.ts
 
 import { defineConfig } from "@rsbuild/core";
-import { pluginSrvkit } from "@srvkit/rsbuild";
+import { pluginSrvkit } from "@srvkit/rsbuild/plugin";
 
 export default defineConfig({
     plugins: [

@@ -29,6 +29,21 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.js"
         },
+        "./node": {
+            "types": "./dist/node.d.ts",
+            "import": "./dist/node.mjs",
+            "require": "./dist/node.js"
+        },
+        "./plugin": {
+            "types": "./dist/plugin.d.ts",
+            "import": "./dist/plugin.mjs",
+            "require": "./dist/plugin.js"
+        },
+        "./runtime": {
+            "types": "./dist/runtime.d.ts",
+            "import": "./dist/runtime.mjs",
+            "require": "./dist/runtime.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./dist/index.js",

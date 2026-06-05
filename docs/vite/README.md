@@ -33,7 +33,7 @@ Add the plugin into the Vite config:
 // ./vite.config.ts
 
 import { defineConfig } from "vite";
-import { srvkit } from "@srvkit/vite";
+import { srvkit } from "@srvkit/vite/plugin";
 
 export default defineConfig({
     plugins: [
