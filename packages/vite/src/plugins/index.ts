@@ -7,7 +7,7 @@ import { buildPlugin } from "#/plugins/build";
 import { copyPlugin } from "#/plugins/copy";
 import { devPlugin } from "#/plugins/dev";
 
-const plugin = (options: Options): Plugin[] => {
+const plugin = (options?: Options): Plugin[] => {
     const opts: ResolvedOptions = createOptions(options);
 
     return [
