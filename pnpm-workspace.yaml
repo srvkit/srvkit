@@ -9,6 +9,12 @@ allowBuilds:
     esbuild: true
 
 catalogs:
+    dev:
+        "@rsbuild/core": 2.0.0
+        vite: 8.0.12
+    peer:
+        "@rsbuild/core": ^2.0.0
+        vite: ^8.0.12
 
 minimumReleaseAge: 1440
 

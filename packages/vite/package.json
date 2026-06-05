@@ -59,10 +59,18 @@
     },
     "devDependencies": {
         "rolldown": "1.0.0",
-        "vite": "8.0.12"
+        "vite": "catalog:dev"
     },
     "peerDependencies": {
         "rolldown": "^1.0.0",
-        "vite": "^8.0.12"
+        "vite": "catalog:peer"
+    },
+    "peerDependenciesMeta": {
+        "rolldown": {
+            "optional": true
+        },
+        "vite": {
+            "optional": true
+        }
     }
 }

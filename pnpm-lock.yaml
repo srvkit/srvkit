@@ -4,6 +4,15 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+catalogs:
+  dev:
+    '@rsbuild/core':
+      specifier: 2.0.0
+      version: 2.0.0
+    vite:
+      specifier: 8.0.12
+      version: 8.0.12
+
 importers:
 
   .:
@@ -52,7 +61,7 @@ importers:
         version: link:../common
     devDependencies:
       '@rsbuild/core':
-        specifier: 2.0.0
+        specifier: catalog:dev
         version: 2.0.0
 
   packages/vite:
@@ -71,7 +80,7 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       vite:
-        specifier: 8.0.12
+        specifier: catalog:dev
         version: 8.0.12(@types/node@25.9.1)
 
   tests/rsbuild:

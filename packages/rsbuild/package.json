@@ -56,9 +56,14 @@
         "@srvkit/common": "workspace:~"
     },
     "devDependencies": {
-        "@rsbuild/core": "2.0.0"
+        "@rsbuild/core": "catalog:dev"
     },
     "peerDependencies": {
-        "@rsbuild/core": "^2.0.0"
+        "@rsbuild/core": "catalog:peer"
+    },
+    "peerDependenciesMeta": {
+        "@rsbuild/core": {
+            "optional": true
+        }
     }
 }
