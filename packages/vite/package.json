@@ -36,5 +36,14 @@
     "types": "./dist/index.d.ts",
     "files": [
         "dist"
-    ]
+    ],
+    "dependencies": {
+        "@srvkit/common": "workspace:~"
+    },
+    "devDependencies": {
+        "vite": "8.0.0"
+    },
+    "peerDependencies": {
+        "vite": "^8.0.0"
+    }
 }
