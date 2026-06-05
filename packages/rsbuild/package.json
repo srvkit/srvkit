@@ -36,5 +36,14 @@
     "types": "./dist/index.d.ts",
     "files": [
         "dist"
-    ]
+    ],
+    "dependencies": {
+        "@srvkit/common": "workspace:~"
+    },
+    "devDependencies": {
+        "@rsbuild/core": "2.0.0"
+    },
+    "peerDependencies": {
+        "@rsbuild/core": "^2.0.0"
+    }
 }
