@@ -14,7 +14,7 @@ import { toMerged } from "es-toolkit";
 import { getSsrTarget } from "#/functions/ssr";
 import { name } from "#/root/package.json";
 
-const VIRTUAL_ENTRY = "virtual:vitend-entry" as const;
+const VIRTUAL_ENTRY = "virtual:srvkit" as const;
 
 const VIRTUAL_ENTRY_RESOLVED = `\0${VIRTUAL_ENTRY}` as const;
 
@@ -104,7 +104,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
             let code: string = "";
 
             code += `import options from "${toPosix(opts.entry)}";`;
-            code += `import { serve } from "vitend/runtime";`;
+            code += `import { serve } from "@srvkit/vite/runtime";`;
 
             // handler export
 
