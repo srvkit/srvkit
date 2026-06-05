@@ -1,13 +1,26 @@
-import type { Options } from "@srvkit/common";
+import type { Options, ResolvedOptions } from "@srvkit/common";
 import type { Plugin } from "vite";
 
-import { name, version } from "#/root/package.json";
+import { createOptions } from "@srvkit/common";
 
-const plugin = (_: Options): Plugin => {
-    return {
-        name,
-        version,
-    };
+import { buildPlugin } from "#/plugins/build";
+import { copyPlugin } from "#/plugins/copy";
+import { devPlugin } from "#/plugins/dev";
+
+const plugin = (options: Options): Plugin[] => {
+    const opts: ResolvedOptions = createOptions(options);
+
+    return [
+        devPlugin({
+            ...opts,
+        }),
+        buildPlugin({
+            ...opts,
+        }),
+        ...copyPlugin({
+            ...opts,
+        }),
+    ];
 };
 
 export { plugin };

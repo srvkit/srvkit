@@ -32,7 +32,7 @@ type ServerMiddleware = _ServerMiddleware;
 /**
  * Server type.
  */
-type Server = _Server;
+type Server<T extends ServerHandler = ServerHandler> = _Server<T>;
 
 /**
  * Server plugin for extending the server.

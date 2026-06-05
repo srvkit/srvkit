@@ -58,3 +58,20 @@ export { toFetchHandler } from "srvx/node";
 // runtime
 
 export { serve } from "srvx";
+
+// internal (configs)
+
+export type { ConsolaInstance } from "consola";
+
+export { log } from "#/configs/log";
+
+// internal (functions)
+
+export type {
+    CompletePackageJson,
+    PackageJson,
+} from "#/functions/package-json";
+
+export { createOptions } from "#/functions/options";
+export { getPackageJson } from "#/functions/package-json";
+export { toPosix } from "#/functions/posix";
