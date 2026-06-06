@@ -26,7 +26,7 @@ type ResolvedDevOptions = Format<
 >;
 
 /**
- * Resolved default build server options.
+ * Resolved build server options.
  */
 type ResolvedBuildServerOptions = Format<
     Omit<CompleteBuildServerOptions, "https"> & {
@@ -38,10 +38,13 @@ type ResolvedBuildServerOptions = Format<
 >;
 
 /**
- * Resolved vercel build server options.
+ * Resolved build handler options.
  */
 type ResolvedBuildHandlerOptions = Format<CompleteBuildHandlerOptions>;
 
+/**
+ * Resolved build options.
+ */
 type ResolvedBuildOptions =
     | ResolvedBuildServerOptions
     | ResolvedBuildHandlerOptions;
