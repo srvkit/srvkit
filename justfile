@@ -77,9 +77,9 @@ test:
 
 # Check code
 check:
+    just build
     just fmt
     just lint
-    just build
     just test
 
 # Publish package with dev tag as dry-run
