@@ -93,15 +93,16 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                         external: true,
                         noExternal: void 0,
                     },
-                });
+                } satisfies UserConfig);
             }
 
             if (build.bundle === "standalone") {
                 baseConfig = toMerged(baseConfig, {
                     ssr: {
+                        external: void 0,
                         noExternal: true,
                     },
-                });
+                } satisfies UserConfig);
             }
 
             result = toMerged(baseConfig, config);
