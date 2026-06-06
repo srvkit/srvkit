@@ -27,11 +27,14 @@ This repository is a pnpm workspace.
 
 ### Core
 
-- `package` - The library itself
+- `packages/common` - The shared code.
+- `packages/rsbuild` - The Rsbuild plugin.
+- `packages/vite` - The Vite plugin.
 
 ### Tests
 
-- `test` - The test
+- `tests/rsbuild` - The Rsbuild tests.
+- `tests/vite` - The Vite tests.
 
 ## Code Standards
 
