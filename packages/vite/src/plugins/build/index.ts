@@ -88,21 +88,25 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
             };
 
             if (build.bundle === "external") {
-                baseConfig = toMerged(baseConfig, {
+                baseConfig = {
+                    ...baseConfig,
                     ssr: {
+                        ...baseConfig,
                         external: true,
                         noExternal: void 0,
                     },
-                } satisfies UserConfig);
+                };
             }
 
             if (build.bundle === "standalone") {
-                baseConfig = toMerged(baseConfig, {
+                baseConfig = {
+                    ...baseConfig,
                     ssr: {
+                        ...baseConfig,
                         external: void 0,
                         noExternal: true,
                     },
-                } satisfies UserConfig);
+                };
             }
 
             result = toMerged(baseConfig, config);
@@ -130,9 +134,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 },
             };
 
-            result = toMerged(result, overrideConfig);
-
-            return result;
+            return toMerged(result, overrideConfig);
         },
         resolveId: (id: string): ResolveIdResult => {
             if (id !== VIRTUAL_ENTRY) return void 0;
