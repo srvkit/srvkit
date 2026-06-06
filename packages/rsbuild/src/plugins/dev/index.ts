@@ -109,13 +109,17 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
     const build: ResolvedBuildOptions = opts.build;
 
+    const isHttps: boolean = https.cert !== void 0 && https.key !== void 0;
+
     const packageJson: PackageJson = getPackageJson(opts.cwd);
 
     return {
         name: "srvkit:dev",
         apply: "serve",
         async setup(api: RsbuildPluginAPI): Promise<void> {
-            let srv: Server<ServerHandler> | undefined;
+            let middleware: Middleware | undefined;
+
+            let port: number;
 
             const ssrTarget: Rspack.Target = getSsrTarget(opts.runtime);
 
@@ -243,14 +247,18 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
                 const outputUrl: string = `${toPosix(distPath).replace(/\/$/, "")}/index.js`;
 
-                srv = (await import(outputUrl)).default;
+                const server: Server<ServerHandler> = (await import(outputUrl))
+                    .default;
+
+                middleware = createMiddleware({
+                    server,
+                    isHttps,
+                    port,
+                });
             });
 
             api.onBeforeStartDevServer(({ server }): void => {
-                const isHttps: boolean =
-                    https.cert !== void 0 && https.key !== void 0;
-
-                const port: number = server.port;
+                port = server.port;
 
                 server.middlewares.use(
                     async (
@@ -258,17 +266,11 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         res: HTTP.ServerResponse,
                         next: () => void,
                     ): Promise<void> => {
-                        if (srv === void 0) {
+                        if (middleware === void 0) {
                             next();
 
                             return void 0;
                         }
-
-                        const middleware: Middleware = createMiddleware({
-                            server: srv,
-                            isHttps,
-                            port,
-                        });
 
                         return middleware(req, res);
                     },
