@@ -30,16 +30,27 @@ type DevOptions = Format<
 /**
  * Build server options.
  */
-type BuildOptions = Format<
-    | (Partial<Omit<CompleteBuildServerOptions, "https">> & {
-          /**
-           * HTTPS server options.
-           */
-          https?: HttpsOptions;
-      })
-    | (Pick<CompleteBuildHandlerOptions, "target"> &
-          Partial<Omit<CompleteBuildHandlerOptions, "target">>)
+type BuildServerOptions = Format<
+    Partial<Omit<CompleteBuildServerOptions, "https">> & {
+        /**
+         * HTTPS server options.
+         */
+        https?: HttpsOptions;
+    }
 >;
+
+/**
+ * Build handler options.
+ */
+type BuildHandlerOptions = Format<
+    Pick<CompleteBuildHandlerOptions, "target"> &
+        Partial<Omit<CompleteBuildHandlerOptions, "target">>
+>;
+
+/**
+ * Build options.
+ */
+type BuildOptions = BuildServerOptions | BuildHandlerOptions;
 
 /**
  * Options for the plugin.
@@ -57,4 +68,11 @@ type Options = Format<
     }
 >;
 
-export type { BuildOptions, DevOptions, HttpsOptions, Options };
+export type {
+    BuildHandlerOptions,
+    BuildOptions,
+    BuildServerOptions,
+    DevOptions,
+    HttpsOptions,
+    Options,
+};
