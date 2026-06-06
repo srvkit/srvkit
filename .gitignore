@@ -2,6 +2,9 @@
 __MACOSX/
 .DS_Store
 
+# Temp
+__temp__/
+
 # Builds
 dist/
 

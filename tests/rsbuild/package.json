@@ -1,6 +1,8 @@
 {
     "private": true,
     "dependencies": {
+        "@rsbuild/core": "catalog:dev",
+        "@srvkit/rsbuild": "workspace:*",
         "vitest": "^4.1.8"
     },
     "devDependencies": {

@@ -1,8 +1,7 @@
 {
     "private": true,
     "dependencies": {
-        "@srvkit/vite": "workspace:*",
-        "vite": "catalog:dev",
+        "@srvkit/common": "workspace:*",
         "vitest": "^4.1.8"
     },
     "devDependencies": {

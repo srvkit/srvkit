@@ -90,8 +90,27 @@ importers:
         specifier: catalog:dev
         version: 8.0.12(@types/node@25.9.1)
 
+  tests/common:
+    dependencies:
+      '@srvkit/common':
+        specifier: workspace:*
+        version: link:../../packages/common
+      vitest:
+        specifier: ^4.1.8
+        version: 4.1.8(@types/node@25.9.1)
+    devDependencies:
+      vite-tsconfig-paths:
+        specifier: ^6.1.1
+        version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.1))
+
   tests/rsbuild:
     dependencies:
+      '@rsbuild/core':
+        specifier: catalog:dev
+        version: 2.0.0
+      '@srvkit/rsbuild':
+        specifier: workspace:*
+        version: link:../../packages/rsbuild
       vitest:
         specifier: ^4.1.8
         version: 4.1.8(@types/node@25.9.1)
@@ -102,13 +121,19 @@ importers:
 
   tests/vite:
     dependencies:
+      '@srvkit/vite':
+        specifier: workspace:*
+        version: link:../../packages/vite
+      vite:
+        specifier: catalog:dev
+        version: 8.0.12(@types/node@25.9.1)
       vitest:
         specifier: ^4.1.8
         version: 4.1.8(@types/node@25.9.1)
     devDependencies:
       vite-tsconfig-paths:
         specifier: ^6.1.1
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.1))
+        version: 6.1.1(typescript@6.0.3)(vite@8.0.12(@types/node@25.9.1))
 
 packages:
 
@@ -1693,6 +1718,16 @@ snapshots:
       quansync: 1.0.0
 
   undici-types@7.24.6: {}
+
+  vite-tsconfig-paths@6.1.1(typescript@6.0.3)(vite@8.0.12(@types/node@25.9.1)):
+    dependencies:
+      debug: 4.4.3
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@6.0.3)
+      vite: 8.0.12(@types/node@25.9.1)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   vite-tsconfig-paths@6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.1)):
     dependencies:

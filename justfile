@@ -17,6 +17,7 @@ common := "packages/common"
 vite := "packages/vite"
 rsbuild := "packages/rsbuild"
 
+common_test := "tests/common"
 vite_test := "tests/vite"
 rsbuild_test := "tests/rsbuild"
 
@@ -70,6 +71,7 @@ build:
 
 # Test package
 test:
+    cd ./{{common_test}} && {{vitest}} run
     cd ./{{vite_test}} && {{vitest}} run
     cd ./{{rsbuild_test}} && {{vitest}} run
 
