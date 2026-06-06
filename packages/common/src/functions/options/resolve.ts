@@ -73,7 +73,7 @@ const getEntry = (cwd: string, entry?: string): string => {
     return Path.resolve(cwd, entry);
 };
 
-const createOptions = (options?: Options): ResolvedOptions => {
+const resolveOptions = (options?: Options): ResolvedOptions => {
     const isHandler: boolean = options?.build?.target === "handler";
 
     const merged = toMerged(getDefaultOptions(isHandler), options ?? {});
@@ -84,4 +84,4 @@ const createOptions = (options?: Options): ResolvedOptions => {
     };
 };
 
-export { createOptions };
+export { resolveOptions };

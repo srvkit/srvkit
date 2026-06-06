@@ -10,7 +10,7 @@ import type {
 } from "@srvkit/common";
 import type { Connect, Plugin, UserConfig, ViteDevServer } from "vite";
 
-import { serve } from "@srvkit/common";
+import { serve, toHeaders, writeHttpResponse } from "@srvkit/common";
 import { toMerged } from "es-toolkit";
 
 import { getSsrTarget } from "#/functions/ssr";
@@ -21,52 +21,10 @@ type CreateMiddlewareOptions = {
     server: Server;
 };
 
-const createRequestHeaders = (headers: HTTP.IncomingHttpHeaders): Headers => {
-    const result: Headers = new Headers();
-
-    const entries: [
-        string,
-        string | string[] | undefined,
-    ][] = Object.entries(headers);
-
-    for (let i: number = 0; i < entries.length; i++) {
-        const entry:
-            | [
-                  string,
-                  string | string[] | undefined,
-              ]
-            | undefined = entries[i];
-
-        if (entry === void 0) continue;
-
-        const [key, value] = entry;
-
-        // ignore HTTP/2 pseudo-headers
-        if (key.startsWith(":")) continue;
-
-        if (value === void 0) continue;
-
-        if (Array.isArray(value)) {
-            for (let j: number = 0; j < value.length; j++) {
-                const vl: string | undefined = value[j];
-
-                if (vl === void 0) continue;
-
-                result.append(key, vl);
-            }
-        } else {
-            result.set(key, value);
-        }
-    }
-
-    return result;
-};
-
 const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
     return async (
         req: Connect.IncomingMessage,
         res: HTTP.ServerResponse,
-        _next: Connect.NextFunction,
     ): Promise<void> => {
         const isHttps: boolean =
             vite.config.server.https?.cert !== void 0 &&
@@ -87,44 +45,18 @@ const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
 
         const request: Request = new Request(url, {
             method: req.method,
-            headers: createRequestHeaders(req.headers),
+            headers: toHeaders(req.headers),
+            // @ts-expect-error
             body,
             duplex: "half",
-        } as RequestInit);
+        });
 
         const response: Response = await server.fetch(request);
 
-        res.statusCode = response.status;
-
-        response.headers.forEach((value: string, key: string): void => {
-            res.setHeader(key, value);
+        await writeHttpResponse({
+            response,
+            httpResponse: res,
         });
-
-        if (!response.body) {
-            res.end();
-            return void 0;
-        }
-
-        const reader: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>> =
-            response.body.getReader();
-
-        const stream = async (): Promise<void> => {
-            try {
-                while (true) {
-                    const { done, value } = await reader.read();
-
-                    if (done) break;
-
-                    res.write(value);
-                }
-
-                res.end();
-            } catch {
-                res.end();
-            }
-        };
-
-        await stream();
     };
 };
 

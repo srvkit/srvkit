@@ -1,14 +1,14 @@
 import type { Options, ResolvedOptions } from "@srvkit/common";
 import type { Plugin } from "vite";
 
-import { createOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common";
 
 import { buildPlugin } from "#/plugins/build";
 import { copyPlugin } from "#/plugins/copy";
 import { devPlugin } from "#/plugins/dev";
 
 const plugin = (options?: Options): Plugin[] => {
-    const opts: ResolvedOptions = createOptions(options);
+    const opts: ResolvedOptions = resolveOptions(options);
 
     return [
         devPlugin({

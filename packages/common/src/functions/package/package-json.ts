@@ -8,6 +8,7 @@ type CompletePackageJson = {
     dependencies: Record<string, string>;
     devDependencies: Record<string, string>;
     peerDependencies: Record<string, string>;
+    optionalDependencies: Record<string, string>;
 };
 
 type PackageJson = Format<Partial<CompletePackageJson>>;

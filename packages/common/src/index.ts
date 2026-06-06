@@ -43,7 +43,7 @@ export type {
     ServerRequest,
 } from "#/@types/server";
 
-export { defineServer } from "#/functions/define";
+export { defineServer } from "#/functions/server/define";
 
 // define (node)
 
@@ -65,13 +65,32 @@ export type { ConsolaInstance } from "consola";
 
 export { log } from "#/configs/log";
 
-// internal (functions)
+// internal (functions/build)
+
+export type { VirtualEntryOptions } from "#/functions/build/virtual-entry";
+
+export { createVirtualEntryCode } from "#/functions/build/virtual-entry";
+
+// internal (functions/http)
+
+export type { WriteHttpResponseOptions } from "#/functions/http/response/write";
+
+export { toHeaders } from "#/functions/http/request/header";
+export { writeHttpResponse } from "#/functions/http/response/write";
+
+// internal (functions/options)
+
+export { resolveOptions } from "#/functions/options/resolve";
+
+// internal (functions/package)
 
 export type {
     CompletePackageJson,
     PackageJson,
-} from "#/functions/package-json";
+} from "#/functions/package/package-json";
 
-export { createOptions } from "#/functions/options";
-export { getPackageJson } from "#/functions/package-json";
-export { toPosix } from "#/functions/posix";
+export { getPackageJson } from "#/functions/package/package-json";
+
+// internal (functions/path)
+
+export { toPosix } from "#/functions/path/posix";
