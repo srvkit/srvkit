@@ -1,13 +1,26 @@
 import type { RsbuildPlugin } from "@rsbuild/core";
-import type { Options } from "@srvkit/common";
+import type { Options, ResolvedOptions } from "@srvkit/common";
 
-import { name } from "#/root/package.json";
+import { resolveOptions } from "@srvkit/common";
 
-const plugin = (_: Options): RsbuildPlugin => {
-    return {
-        name,
-        async setup(): Promise<void> {},
-    };
+import { buildPlugin } from "#/plugins/build";
+import { copyPlugin } from "#/plugins/copy";
+import { devPlugin } from "#/plugins/dev";
+
+const plugin = (options?: Options): RsbuildPlugin[] => {
+    const opts: ResolvedOptions = resolveOptions(options);
+
+    return [
+        devPlugin({
+            ...opts,
+        }),
+        buildPlugin({
+            ...opts,
+        }),
+        ...copyPlugin({
+            ...opts,
+        }),
+    ];
 };
 
 export { plugin };
