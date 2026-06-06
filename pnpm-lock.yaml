@@ -16,6 +16,13 @@ catalogs:
     vite:
       specifier: 8.0.12
       version: 8.0.12
+  test:
+    vite-tsconfig-paths:
+      specifier: ^6.1.1
+      version: 6.1.1
+    vitest:
+      specifier: ^4.1.8
+      version: 4.1.8
 
 importers:
 
@@ -96,11 +103,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/common
       vitest:
-        specifier: ^4.1.8
+        specifier: catalog:test
         version: 4.1.8(@types/node@25.9.1)
     devDependencies:
       vite-tsconfig-paths:
-        specifier: ^6.1.1
+        specifier: catalog:test
         version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.1))
 
   tests/rsbuild:
@@ -112,11 +119,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/rsbuild
       vitest:
-        specifier: ^4.1.8
+        specifier: catalog:test
         version: 4.1.8(@types/node@25.9.1)
     devDependencies:
       vite-tsconfig-paths:
-        specifier: ^6.1.1
+        specifier: catalog:test
         version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.1))
 
   tests/vite:
@@ -128,11 +135,11 @@ importers:
         specifier: catalog:dev
         version: 8.0.12(@types/node@25.9.1)
       vitest:
-        specifier: ^4.1.8
+        specifier: catalog:test
         version: 4.1.8(@types/node@25.9.1)
     devDependencies:
       vite-tsconfig-paths:
-        specifier: ^6.1.1
+        specifier: catalog:test
         version: 6.1.1(typescript@6.0.3)(vite@8.0.12(@types/node@25.9.1))
 
 packages:

@@ -2,9 +2,9 @@
     "private": true,
     "dependencies": {
         "@srvkit/common": "workspace:*",
-        "vitest": "^4.1.8"
+        "vitest": "catalog:test"
     },
     "devDependencies": {
-        "vite-tsconfig-paths": "^6.1.1"
+        "vite-tsconfig-paths": "catalog:test"
     }
 }
