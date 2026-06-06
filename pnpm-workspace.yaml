@@ -9,6 +9,8 @@ allowBuilds:
     esbuild: true
 
 catalogs:
+    dep:
+        es-toolkit: ^1.40.0
     dev:
         "@rsbuild/core": 2.0.0
         vite: 8.0.12
