@@ -47,6 +47,21 @@
             "import": "./dist/runtime.mjs",
             "require": "./dist/runtime.js"
         },
+        "./plugins/dev": {
+            "types": "./dist/plugins/dev/index.d.ts",
+            "import": "./dist/plugins/dev/index.mjs",
+            "require": "./dist/plugins/dev/index.js"
+        },
+        "./plugins/build": {
+            "types": "./dist/plugins/build/index.d.ts",
+            "import": "./dist/plugins/build/index.mjs",
+            "require": "./dist/plugins/build/index.js"
+        },
+        "./plugins/copy": {
+            "types": "./dist/plugins/copy/index.d.ts",
+            "import": "./dist/plugins/copy/index.mjs",
+            "require": "./dist/plugins/copy/index.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./dist/index.js",

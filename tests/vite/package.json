@@ -1,6 +1,7 @@
 {
     "private": true,
     "dependencies": {
+        "@srvkit/common": "workspace:*",
         "@srvkit/vite": "workspace:*",
         "vite": "catalog:dev",
         "vitest": "catalog:test"

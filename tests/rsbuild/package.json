@@ -2,6 +2,7 @@
     "private": true,
     "dependencies": {
         "@rsbuild/core": "catalog:dev",
+        "@srvkit/common": "workspace:*",
         "@srvkit/rsbuild": "workspace:*",
         "vitest": "catalog:test"
     },

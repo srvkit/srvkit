@@ -115,6 +115,9 @@ importers:
       '@rsbuild/core':
         specifier: catalog:dev
         version: 2.0.0
+      '@srvkit/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@srvkit/rsbuild':
         specifier: workspace:*
         version: link:../../packages/rsbuild
@@ -128,6 +131,9 @@ importers:
 
   tests/vite:
     dependencies:
+      '@srvkit/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@srvkit/vite':
         specifier: workspace:*
         version: link:../../packages/vite

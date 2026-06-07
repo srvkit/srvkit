@@ -10,6 +10,9 @@ export default defineConfig(
             plugin: "./src/plugin.ts",
             // internal
             runtime: "./src/runtime.ts",
+            "plugins/dev/index": "./src/plugins/dev/index.ts",
+            "plugins/build/index": "./src/plugins/build/index.ts",
+            "plugins/copy/index": "./src/plugins/copy/index.ts",
         },
         platform: "node",
     },

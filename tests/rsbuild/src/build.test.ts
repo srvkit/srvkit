@@ -1,111 +1,203 @@
+import type { RsbuildInstance } from "@rsbuild/core";
+import type { ResolvedOptions } from "@srvkit/common";
+
 import * as Fs from "node:fs";
+import { builtinModules } from "node:module";
 import * as Path from "node:path";
 
 import { createRsbuild } from "@rsbuild/core";
-import { pluginSrvkit } from "@srvkit/rsbuild/plugin";
+import { resolveOptions } from "@srvkit/common";
+import { buildPlugin } from "@srvkit/rsbuild/plugins/build";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-const TEMP_DIR: string = Path.resolve(__dirname, "__temp__");
+import { cleanupFixture, createFixture, getDistDir } from "./helpers/fixture";
 
-const SRC_DIR: string = Path.resolve(TEMP_DIR, "src");
+const BASE_DIR: string = process.cwd();
 
-const DIST_DIR: string = Path.resolve(TEMP_DIR, "dist");
-
-const setupTempDir = (): void => {
-    Fs.rmSync(TEMP_DIR, {
-        recursive: true,
-        force: true,
-    });
-
-    Fs.mkdirSync(SRC_DIR, {
-        recursive: true,
-    });
-
-    Fs.writeFileSync(
-        Path.resolve(SRC_DIR, "index.ts"),
-        [
-            "export default {",
-            "    fetch: (_req: Request): Response => {",
-            '        return new Response("Hello, World!");',
-            "    },",
-            "};",
-        ].join("\n"),
-    );
-
-    Fs.writeFileSync(
-        Path.resolve(TEMP_DIR, "package.json"),
-        JSON.stringify({
-            name: "test-app",
-            type: "module",
-            dependencies: {},
-        }),
-    );
+const hasExportDefault = (content: string): boolean => {
+    return /export\s+default\s|export\s*\{[^}]*as\s+default\s*\}/.test(content);
 };
 
-const cleanupTempDir = (): void => {
-    Fs.rmSync(TEMP_DIR, {
-        recursive: true,
-        force: true,
-    });
+const assertNoThirdPartyRequires = (content: string): void => {
+    const matches: IterableIterator<RegExpMatchArray> = content.matchAll(
+        /require\(["']([^"']+)["']\)/g,
+    );
+
+    for (const match of matches) {
+        const moduleId: string | undefined = match[1];
+
+        if (moduleId === void 0) continue;
+
+        const isBuiltin: boolean =
+            builtinModules.includes(moduleId) ||
+            moduleId.startsWith("node:") ||
+            moduleId.startsWith("./") ||
+            moduleId.startsWith("../");
+
+        expect(isBuiltin).toBe(true);
+    }
 };
 
-describe("rsbuild build", (): void => {
-    beforeAll((): void => {
-        setupTempDir();
-    });
+describe("rsbuild build plugin", (): void => {
+    describe("target: server", (): void => {
+        let tempDir: string;
 
-    afterAll((): void => {
-        cleanupTempDir();
-    });
-
-    it("produces output file for server target with external bundle", async (): Promise<void> => {
-        const rsbuild = await createRsbuild({
-            cwd: TEMP_DIR,
-            rsbuildConfig: {
-                plugins: [
-                    pluginSrvkit({
-                        cwd: TEMP_DIR,
-                        entry: "./src/index.ts",
-                    }),
-                ],
-            },
+        beforeAll((): void => {
+            tempDir = createFixture(BASE_DIR, "build-server");
         });
 
-        await rsbuild.build();
-
-        const outputFile: string = Path.resolve(DIST_DIR, "index.js");
-
-        expect(Fs.existsSync(outputFile)).toBe(true);
-
-        const content: string = Fs.readFileSync(outputFile, "utf-8");
-
-        expect(content.length).toBeGreaterThan(0);
-    }, 60000);
-
-    it("produces output file with export default for handler target", async (): Promise<void> => {
-        const rsbuild = await createRsbuild({
-            cwd: TEMP_DIR,
-            rsbuildConfig: {
-                plugins: [
-                    pluginSrvkit({
-                        cwd: TEMP_DIR,
-                        entry: "./src/index.ts",
-                        build: {
-                            target: "handler",
-                        },
-                    }),
-                ],
-            },
+        afterAll((): void => {
+            cleanupFixture(BASE_DIR, "build-server");
         });
 
-        await rsbuild.build();
+        it("bundle: external — produces self-starting server output", async (): Promise<void> => {
+            const opts: ResolvedOptions = resolveOptions({
+                cwd: tempDir,
+                entry: "./src/index.ts",
+                build: {
+                    target: "server",
+                    bundle: "external",
+                },
+            });
 
-        const outputFile: string = Path.resolve(DIST_DIR, "index.js");
+            const rsbuild: RsbuildInstance = await createRsbuild({
+                cwd: tempDir,
+                rsbuildConfig: {
+                    plugins: [
+                        buildPlugin(opts),
+                    ],
+                },
+            });
 
-        expect(Fs.existsSync(outputFile)).toBe(true);
+            await rsbuild.build();
 
-        const content: string = Fs.readFileSync(outputFile, "utf-8");
+            const outputFile: string = Path.resolve(
+                getDistDir(BASE_DIR, "build-server"),
+                "index.js",
+            );
 
-        expect(content.length).toBeGreaterThan(0);
-    }, 60000);
+            expect(Fs.existsSync(outputFile)).toBe(true);
+
+            const content: string = Fs.readFileSync(outputFile, "utf-8");
+
+            expect(content.length).toBeGreaterThan(0);
+        }, 60000);
+
+        it("bundle: standalone — produces output with all deps inlined", async (): Promise<void> => {
+            const opts: ResolvedOptions = resolveOptions({
+                cwd: tempDir,
+                entry: "./src/index.ts",
+                build: {
+                    target: "server",
+                    bundle: "standalone",
+                },
+            });
+
+            const rsbuild: RsbuildInstance = await createRsbuild({
+                cwd: tempDir,
+                rsbuildConfig: {
+                    plugins: [
+                        buildPlugin(opts),
+                    ],
+                },
+            });
+
+            await rsbuild.build();
+
+            const outputFile: string = Path.resolve(
+                getDistDir(BASE_DIR, "build-server"),
+                "index.js",
+            );
+
+            expect(Fs.existsSync(outputFile)).toBe(true);
+
+            const content: string = Fs.readFileSync(outputFile, "utf-8");
+
+            expect(content.length).toBeGreaterThan(0);
+
+            assertNoThirdPartyRequires(content);
+        }, 60000);
+    });
+
+    describe("target: handler", (): void => {
+        let tempDir: string;
+
+        beforeAll((): void => {
+            tempDir = createFixture(BASE_DIR, "build-handler");
+        });
+
+        afterAll((): void => {
+            cleanupFixture(BASE_DIR, "build-handler");
+        });
+
+        it("bundle: external — produces handler with export default", async (): Promise<void> => {
+            const opts: ResolvedOptions = resolveOptions({
+                cwd: tempDir,
+                entry: "./src/index.ts",
+                build: {
+                    target: "handler",
+                    bundle: "external",
+                },
+            });
+
+            const rsbuild: RsbuildInstance = await createRsbuild({
+                cwd: tempDir,
+                rsbuildConfig: {
+                    plugins: [
+                        buildPlugin(opts),
+                    ],
+                },
+            });
+
+            await rsbuild.build();
+
+            const outputFile: string = Path.resolve(
+                getDistDir(BASE_DIR, "build-handler"),
+                "index.js",
+            );
+
+            expect(Fs.existsSync(outputFile)).toBe(true);
+
+            const content: string = Fs.readFileSync(outputFile, "utf-8");
+
+            expect(content.length).toBeGreaterThan(0);
+            expect(hasExportDefault(content)).toBe(true);
+        }, 60000);
+
+        it("bundle: standalone — produces handler with export default and all deps inlined", async (): Promise<void> => {
+            const opts: ResolvedOptions = resolveOptions({
+                cwd: tempDir,
+                entry: "./src/index.ts",
+                build: {
+                    target: "handler",
+                    bundle: "standalone",
+                },
+            });
+
+            const rsbuild: RsbuildInstance = await createRsbuild({
+                cwd: tempDir,
+                rsbuildConfig: {
+                    plugins: [
+                        buildPlugin(opts),
+                    ],
+                },
+            });
+
+            await rsbuild.build();
+
+            const outputFile: string = Path.resolve(
+                getDistDir(BASE_DIR, "build-handler"),
+                "index.js",
+            );
+
+            expect(Fs.existsSync(outputFile)).toBe(true);
+
+            const content: string = Fs.readFileSync(outputFile, "utf-8");
+
+            expect(content.length).toBeGreaterThan(0);
+            expect(hasExportDefault(content)).toBe(true);
+
+            assertNoThirdPartyRequires(content);
+        }, 60000);
+    });
 });

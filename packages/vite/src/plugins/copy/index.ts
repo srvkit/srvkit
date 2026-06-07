@@ -15,6 +15,7 @@ const copyPlugin = (opts: ResolvedOptions): Plugin[] => {
     }
 
     const copyOptions: Copyoptions = {
+        cwd: opts.cwd,
         targets: [
             {
                 src: Path.posix.join(build.publicDir, "**", "*"),
