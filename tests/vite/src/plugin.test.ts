@@ -24,13 +24,13 @@ describe("vite plugin", (): void => {
     it("produces output file for server target with external bundle", async (): Promise<void> => {
         await build({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 srvkit({
                     cwd: tempDir,
                     entry: "./src/index.ts",
                 }),
             ],
+            logLevel: "silent",
         });
 
         const outputFile: string = Path.resolve(
@@ -48,7 +48,6 @@ describe("vite plugin", (): void => {
     it("produces output file with export default for handler target", async (): Promise<void> => {
         await build({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 srvkit({
                     cwd: tempDir,
@@ -58,6 +57,7 @@ describe("vite plugin", (): void => {
                     },
                 }),
             ],
+            logLevel: "silent",
         });
 
         const outputFile: string = Path.resolve(

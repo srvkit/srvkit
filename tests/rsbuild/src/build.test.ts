@@ -65,6 +65,7 @@ describe("rsbuild build plugin", (): void => {
                     plugins: [
                         buildPlugin(opts),
                     ],
+                    logLevel: "silent",
                 },
             });
 
@@ -98,6 +99,7 @@ describe("rsbuild build plugin", (): void => {
                     plugins: [
                         buildPlugin(opts),
                     ],
+                    logLevel: "silent",
                 },
             });
 
@@ -145,6 +147,7 @@ describe("rsbuild build plugin", (): void => {
                     plugins: [
                         buildPlugin(opts),
                     ],
+                    logLevel: "silent",
                 },
             });
 
@@ -179,6 +182,7 @@ describe("rsbuild build plugin", (): void => {
                     plugins: [
                         buildPlugin(opts),
                     ],
+                    logLevel: "silent",
                 },
             });
 

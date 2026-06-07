@@ -33,6 +33,7 @@ describe("rsbuild plugin", (): void => {
                         entry: "./src/index.ts",
                     }),
                 ],
+                logLevel: "silent",
             },
         });
 
@@ -63,6 +64,7 @@ describe("rsbuild plugin", (): void => {
                         },
                     }),
                 ],
+                logLevel: "silent",
             },
         });
 

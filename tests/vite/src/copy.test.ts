@@ -42,11 +42,11 @@ describe("vite copy plugin", (): void => {
 
         await build({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 buildPlugin(opts),
                 ...copyPlugin(opts),
             ],
+            logLevel: "silent",
         });
 
         expect(Fs.existsSync(distDir)).toBe(true);
@@ -76,11 +76,11 @@ describe("vite copy plugin", (): void => {
 
         await build({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 buildPlugin(opts),
                 ...copyPlugin(opts),
             ],
+            logLevel: "silent",
         });
 
         const publicDir: string = Path.resolve(
@@ -104,11 +104,11 @@ describe("vite copy plugin", (): void => {
 
         await build({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 buildPlugin(opts),
                 ...copyPlugin(opts),
             ],
+            logLevel: "silent",
         });
 
         const publicDir: string = Path.resolve(

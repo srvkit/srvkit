@@ -46,10 +46,10 @@ describe("vite dev plugin", (): void => {
 
         server = await createServer({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 devPlugin(opts),
             ],
+            logLevel: "silent",
         });
 
         await server.listen();
@@ -84,10 +84,10 @@ describe("vite dev plugin", (): void => {
 
         server = await createServer({
             root: tempDir,
-            logLevel: "silent",
             plugins: [
                 devPlugin(opts),
             ],
+            logLevel: "silent",
         });
 
         await server.listen();

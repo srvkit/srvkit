@@ -60,10 +60,10 @@ describe("vite build plugin", (): void => {
 
             await build({
                 root: tempDir,
-                logLevel: "silent",
                 plugins: [
                     buildPlugin(opts),
                 ],
+                logLevel: "silent",
             });
 
             const outputFile: string = Path.resolve(
@@ -90,10 +90,10 @@ describe("vite build plugin", (): void => {
 
             await build({
                 root: tempDir,
-                logLevel: "silent",
                 plugins: [
                     buildPlugin(opts),
                 ],
+                logLevel: "silent",
             });
 
             const outputFile: string = Path.resolve(
@@ -134,10 +134,10 @@ describe("vite build plugin", (): void => {
 
             await build({
                 root: tempDir,
-                logLevel: "silent",
                 plugins: [
                     buildPlugin(opts),
                 ],
+                logLevel: "silent",
             });
 
             const outputFile: string = Path.resolve(
@@ -166,10 +166,10 @@ describe("vite build plugin", (): void => {
 
             await build({
                 root: tempDir,
-                logLevel: "silent",
                 plugins: [
                     buildPlugin(opts),
                 ],
+                logLevel: "silent",
             });
 
             const outputFile: string = Path.resolve(

@@ -45,6 +45,7 @@ describe("rsbuild copy plugin", (): void => {
                     buildPlugin(opts),
                     ...copyPlugin(opts),
                 ],
+                logLevel: "silent",
             },
         });
 
@@ -80,6 +81,7 @@ describe("rsbuild copy plugin", (): void => {
                     buildPlugin(opts),
                     ...copyPlugin(opts),
                 ],
+                logLevel: "silent",
             },
         });
 
@@ -111,6 +113,7 @@ describe("rsbuild copy plugin", (): void => {
                     buildPlugin(opts),
                     ...copyPlugin(opts),
                 ],
+                logLevel: "silent",
             },
         });
 
