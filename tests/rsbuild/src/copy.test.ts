@@ -10,9 +10,8 @@ import { buildPlugin } from "@srvkit/rsbuild/plugins/build";
 import { copyPlugin } from "@srvkit/rsbuild/plugins/copy";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { cleanupFixture, createFixture, getDistDir } from "./helpers/fixture";
-
-const BASE_DIR: string = process.cwd();
+import { BASE_DIR } from "#/constants/path";
+import { cleanupFixture, createFixture, getDistDir } from "#/helpers/fixture";
 
 describe("rsbuild copy plugin", (): void => {
     let tempDir: string;

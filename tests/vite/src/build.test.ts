@@ -9,9 +9,8 @@ import { buildPlugin } from "@srvkit/vite/plugins/build";
 import { build } from "vite";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { cleanupFixture, createFixture, getDistDir } from "./helpers/fixture";
-
-const BASE_DIR: string = process.cwd();
+import { BASE_DIR } from "#/constants/path";
+import { cleanupFixture, createFixture, getDistDir } from "#/helpers/fixture";
 
 const hasExportDefault = (content: string): boolean => {
     return /export\s+default\s|export\s*\{[^}]*as\s+default\s*\}/.test(content);

@@ -5,18 +5,17 @@ import type {
 } from "@rsbuild/core";
 import type { ResolvedOptions } from "@srvkit/common";
 
-import type { FetchLocalResult } from "./helpers/http";
+import type { FetchLocalResult } from "#/helpers/http";
 
 import { createRsbuild } from "@rsbuild/core";
 import { resolveOptions } from "@srvkit/common";
 import { devPlugin } from "@srvkit/rsbuild/plugins/dev";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
 
-import { cleanupFixture, createFixture } from "./helpers/fixture";
-import { fetchLocal } from "./helpers/http";
-import { waitFor } from "./helpers/wait";
-
-const BASE_DIR: string = process.cwd();
+import { BASE_DIR } from "#/constants/path";
+import { cleanupFixture, createFixture } from "#/helpers/fixture";
+import { fetchLocal } from "#/helpers/http";
+import { waitFor } from "#/helpers/wait";
 
 const PORT: number = 3081;
 

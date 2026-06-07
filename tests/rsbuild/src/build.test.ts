@@ -10,9 +10,8 @@ import { resolveOptions } from "@srvkit/common";
 import { buildPlugin } from "@srvkit/rsbuild/plugins/build";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { cleanupFixture, createFixture, getDistDir } from "./helpers/fixture";
-
-const BASE_DIR: string = process.cwd();
+import { BASE_DIR } from "#/constants/path";
+import { cleanupFixture, createFixture, getDistDir } from "#/helpers/fixture";
 
 const hasExportDefault = (content: string): boolean => {
     return /export\s+default\s|export\s*\{[^}]*as\s+default\s*\}/.test(content);

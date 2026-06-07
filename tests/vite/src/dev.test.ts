@@ -6,10 +6,9 @@ import { devPlugin } from "@srvkit/vite/plugins/dev";
 import { createServer } from "vite";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
 
-import { cleanupFixture, createFixture } from "./helpers/fixture";
-import { fetchLocal } from "./helpers/http";
-
-const BASE_DIR: string = process.cwd();
+import { BASE_DIR } from "#/constants/path";
+import { cleanupFixture, createFixture } from "#/helpers/fixture";
+import { fetchLocal } from "#/helpers/http";
 
 const PORT: number = 3091;
 
