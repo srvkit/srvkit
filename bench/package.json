@@ -1,7 +1,10 @@
 {
     "private": true,
+    "type": "module",
     "dependencies": {
+        "@rsbuild/core": "catalog:dev",
         "@srvkit/common": "workspace:*",
+        "@srvkit/rsbuild": "workspace:*",
         "@srvkit/vite": "workspace:*",
         "hono": "catalog:example",
         "vite": "catalog:dev",

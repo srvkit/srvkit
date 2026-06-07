@@ -21,9 +21,7 @@ common_test := "tests/common"
 vite_test := "tests/vite"
 rsbuild_test := "tests/rsbuild"
 
-bench_app := "benches/app"
-vite_bench := "benches/vite"
-rsbuild_bench := "benches/rsbuild"
+bench := "bench"
 
 # Default action
 _:
@@ -79,10 +77,9 @@ test:
     cd ./{{vite_test}} && {{vitest}} run
     cd ./{{rsbuild_test}} && {{vitest}} run
 
-# Run benchmarks
+# Run benchmark
 bench:
-    cd ./{{vite_bench}} && {{vitest}} bench --run
-    cd ./{{rsbuild_bench}} && {{vitest}} bench --run
+    cd ./{{bench}} && {{vitest}} bench --run
 
 # Check code
 check:
@@ -117,7 +114,7 @@ publish:
 
 # Clean builds (Linux)
 clean-linux:
-    rm -rf ./{{bench_app}}/dist
+    rm -rf ./{{bench}}/dist
 
     rm -rf ./{{rsbuild_test}}/__temp__
     rm -rf ./{{vite_test}}/__temp__
@@ -132,7 +129,7 @@ clean-macos:
 
 # Clean builds (Windows)
 clean-windows:
-    if (Test-Path "./{{bench_app}}/dist") { Remove-Item -Recurse -Force "./{{bench_app}}/dist" }
+    if (Test-Path "./{{bench}}/dist") { Remove-Item -Recurse -Force "./{{bench}}/dist" }
 
     if (Test-Path "./{{rsbuild_test}}/__temp__") { Remove-Item -Recurse -Force "./{{rsbuild_test}}/__temp__" }
     if (Test-Path "./{{vite_test}}/__temp__") { Remove-Item -Recurse -Force "./{{vite_test}}/__temp__" }
@@ -149,8 +146,7 @@ clean:
 clean-all-linux:
     just clean
 
-    rm -rf ./{{rsbuild_bench}}/node_modules
-    rm -rf ./{{vite_bench}}/node_modules
+    rm -rf ./{{bench}}/node_modules
 
     rm -rf ./{{rsbuild_test}}/node_modules
     rm -rf ./{{vite_test}}/node_modules
@@ -170,8 +166,7 @@ clean-all-macos:
 clean-all-windows:
     just clean
 
-    if (Test-Path "./{{rsbuild_bench}}/node_modules") { Remove-Item -Recurse -Force "./{{rsbuild_bench}}/node_modules" }
-    if (Test-Path "./{{vite_bench}}/node_modules") { Remove-Item -Recurse -Force "./{{vite_bench}}/node_modules" }
+    if (Test-Path "./{{bench}}/node_modules") { Remove-Item -Recurse -Force "./{{bench}}/node_modules" }
 
     if (Test-Path "./{{rsbuild_test}}/node_modules") { Remove-Item -Recurse -Force "./{{rsbuild_test}}/node_modules" }
     if (Test-Path "./{{vite_test}}/node_modules") { Remove-Item -Recurse -Force "./{{vite_test}}/node_modules" }
