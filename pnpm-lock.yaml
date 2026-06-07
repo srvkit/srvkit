@@ -16,6 +16,10 @@ catalogs:
     vite:
       specifier: 8.0.12
       version: 8.0.12
+  example:
+    hono:
+      specifier: ^4.12.23
+      version: 4.12.23
   test:
     vite-tsconfig-paths:
       specifier: ^6.1.1
@@ -49,6 +53,32 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+
+  examples/rsbuild:
+    dependencies:
+      '@srvkit/rsbuild':
+        specifier: workspace:*
+        version: link:../../packages/rsbuild
+      hono:
+        specifier: catalog:example
+        version: 4.12.23
+    devDependencies:
+      '@rsbuild/core':
+        specifier: catalog:dev
+        version: 2.0.0
+
+  examples/vite:
+    dependencies:
+      '@srvkit/vite':
+        specifier: workspace:*
+        version: link:../../packages/vite
+      hono:
+        specifier: catalog:example
+        version: 4.12.23
+    devDependencies:
+      vite:
+        specifier: catalog:dev
+        version: 8.0.12(@types/node@25.9.2)
 
   packages/common:
     dependencies:
@@ -806,6 +836,10 @@ packages:
 
   globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+
+  hono@4.12.23:
+    resolution: {integrity: sha512-eIaZ9qDgu7XV0pxOCrg7/WhnQ6Ivm22UcxhXx/A3dcbqbbYgBEkc6e/J/s7j2tS96zoB0S9VBdLwQNCWwUo4LA==}
+    engines: {node: '>=16.9.0'}
 
   hookable@6.1.1:
     resolution: {integrity: sha512-U9LYDy1CwhMCnprUfeAZWZGByVbhd54hwepegYTK7Pi5NvqEj63ifz5z+xukznehT7i6NIZRu89Ay1AZmRsLEQ==}
@@ -1667,6 +1701,8 @@ snapshots:
       resolve-pkg-maps: 1.0.0
 
   globrex@0.1.2: {}
+
+  hono@4.12.23: {}
 
   hookable@6.1.1: {}
 
