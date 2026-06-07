@@ -1,0 +1,13 @@
+{
+    "private": true,
+    "dependencies": {
+        "@srvkit/common": "workspace:*",
+        "@srvkit/vite": "workspace:*",
+        "hono": "catalog:example",
+        "vite": "catalog:dev",
+        "vitest": "catalog:test"
+    },
+    "devDependencies": {
+        "vite-tsconfig-paths": "catalog:test"
+    }
+}

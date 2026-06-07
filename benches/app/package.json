@@ -1,0 +1,8 @@
+{
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "@srvkit/rsbuild": "workspace:*",
+        "hono": "catalog:example"
+    }
+}
