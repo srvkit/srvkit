@@ -1,14 +1,20 @@
 import type { ResolvedOptions } from "@srvkit/common";
 import type { ViteDevServer } from "vite";
 
+import type { FetchLocalResult } from "#/helpers/http";
+
+import * as Fs from "node:fs";
+import * as Path from "node:path";
+
 import { resolveOptions } from "@srvkit/common";
 import { devPlugin } from "@srvkit/vite/plugins/dev";
 import { createServer } from "vite";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
 
 import { BASE_DIR } from "#/constants/path";
-import { cleanupFixture, createFixture } from "#/helpers/fixture";
+import { cleanupFixture, createFixture, getSrcDir } from "#/helpers/fixture";
 import { fetchLocal } from "#/helpers/http";
+import { waitFor } from "#/helpers/wait";
 
 const PORT: number = 3091;
 
@@ -101,10 +107,72 @@ describe("vite dev plugin", (): void => {
         expect(result.body).toContain("Custom port!");
     }, 60000);
 
-    // TODO: Add HMR test once the dev plugin supports live reloading of the server.
+    it("reloads handler on file change", async (): Promise<void> => {
+        const tempDir: string = createFixture(BASE_DIR, "dev-hmr", {
+            entryContent: [
+                "export default {",
+                "    fetch: (_req: Request): Response => {",
+                '        return new Response("Hello from dev!");',
+                "    },",
+                "};",
+            ].join("\n"),
+        });
+
+        const opts: ResolvedOptions = resolveOptions({
+            cwd: tempDir,
+            entry: "./src/index.ts",
+            dev: {
+                port: 3093,
+            },
+        });
+
+        server = await createServer({
+            root: tempDir,
+            plugins: [
+                devPlugin(opts),
+            ],
+            logLevel: "silent",
+        });
+
+        await server.listen();
+
+        const result1 = await fetchLocal({
+            port: 3093,
+        });
+
+        expect(result1.status).toBe(200);
+        expect(result1.body).toContain("Hello from dev!");
+
+        Fs.writeFileSync(
+            Path.resolve(getSrcDir(BASE_DIR, "dev-hmr"), "index.ts"),
+            [
+                "export default {",
+                "    fetch: (_req: Request): Response => {",
+                '        return new Response("Updated response!");',
+                "    },",
+                "};",
+            ].join("\n"),
+        );
+
+        const result2 = await waitFor(
+            (): Promise<FetchLocalResult> =>
+                fetchLocal({
+                    port: 3093,
+                }),
+            (res): boolean => res.body.includes("Updated response!"),
+            {
+                timeout: 10000,
+                interval: 500,
+            },
+        );
+
+        expect(result2.status).toBe(200);
+        expect(result2.body).toContain("Updated response!");
+    }, 60000);
 
     afterAll((): void => {
         cleanupFixture(BASE_DIR, "dev-basic");
         cleanupFixture(BASE_DIR, "dev-port");
+        cleanupFixture(BASE_DIR, "dev-hmr");
     });
 });

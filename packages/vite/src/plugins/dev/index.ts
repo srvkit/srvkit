@@ -5,12 +5,11 @@ import type {
     ResolvedHttpsOptions,
     ResolvedOptions,
     Server,
-    ServerHandler,
     ServerOptions,
 } from "@srvkit/common";
 import type { Connect, Plugin, UserConfig, ViteDevServer } from "vite";
 
-import { serve, toHeaders, writeHttpResponse } from "@srvkit/common";
+import { createLiveServer, toHeaders, writeHttpResponse } from "@srvkit/common";
 import { toMerged } from "es-toolkit";
 
 import { getSsrTarget } from "#/functions/ssr";
@@ -112,7 +111,7 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
                 await vite.ssrLoadModule(opts.entry)
             ).default;
 
-            const server: Server<ServerHandler> = serve({
+            const { server, update } = createLiveServer({
                 // base
                 gracefulShutdown: false,
                 // user
@@ -134,6 +133,26 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
             });
 
             vite.middlewares.use(middleware);
+
+            // Live update
+
+            let reloadTimer: ReturnType<typeof setTimeout> | undefined = void 0;
+
+            vite.watcher.on("change", (): void => {
+                clearTimeout(reloadTimer);
+
+                reloadTimer = setTimeout(async (): Promise<void> => {
+                    try {
+                        const newServerOptions: ServerOptions = (
+                            await vite.ssrLoadModule(opts.entry)
+                        ).default;
+
+                        update(newServerOptions);
+                    } catch {
+                        // Keep old handler running on error
+                    }
+                }, 100);
+            });
         },
     };
 };

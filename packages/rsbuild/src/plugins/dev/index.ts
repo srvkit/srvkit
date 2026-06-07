@@ -15,12 +15,14 @@ import type {
     ResolvedHttpsOptions,
     ResolvedOptions,
     Server,
-    ServerHandler,
+    ServerOptions,
 } from "@srvkit/common";
 
+import * as Fs from "node:fs";
 import { builtinModules } from "node:module";
 
 import {
+    createLiveServer,
     getPackageJson,
     toHeaders,
     toPosix,
@@ -77,29 +79,10 @@ const createMiddleware = ({
 type Middleware = ReturnType<typeof createMiddleware>;
 
 const createDevVirtualEntryCode = (opts: ResolvedOptions): string => {
-    const dev: ResolvedDevOptions = opts.dev;
-    const https: ResolvedHttpsOptions = dev.https ?? {};
-
     let code: string = "";
 
     code += `import options from "${toPosix(opts.entry)}";`;
-    code += `import { serve } from "@srvkit/rsbuild/runtime";`;
-
-    code += `const server = serve({`;
-    code += `...options,`;
-    code += `manual: true,`;
-    code += `hostname: "${dev.host}",`;
-    code += `port: ${dev.port},`;
-
-    if (https.cert !== void 0)
-        code += `tls: { cert: "${toPosix(https.cert)}" },`;
-    if (https.key !== void 0) code += `tls: { key: "${toPosix(https.key)}" },`;
-    if (https.passphrase !== void 0)
-        code += `tls: { passphrase: "${toPosix(https.passphrase)}" },`;
-
-    code += `});`;
-
-    code += `export default server;`;
+    code += `export default options;`;
 
     return code;
 };
@@ -119,7 +102,11 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
         async setup(api: RsbuildPluginAPI): Promise<void> {
             let middleware: Middleware | undefined;
 
+            let liveUpdate: ((options: ServerOptions) => void) | undefined;
+
             let port: number;
+
+            let compileCount: number = 0;
 
             const ssrTarget: Rspack.Target = getSsrTarget(opts.runtime);
 
@@ -241,20 +228,66 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
             );
 
             api.onAfterDevCompile(async ({ isFirstCompile }): Promise<void> => {
-                if (!isFirstCompile) return void 0;
-
                 const distPath: string = api.context.distPath;
 
                 const outputUrl: string = `${toPosix(distPath).replace(/\/$/, "")}/index.js`;
 
-                const server: Server<ServerHandler> = (await import(outputUrl))
-                    .default;
+                compileCount++;
 
-                middleware = createMiddleware({
-                    server,
-                    isHttps,
-                    port,
-                });
+                // Initial compile
+
+                if (isFirstCompile) {
+                    const serverOptions: ServerOptions = (
+                        await import(outputUrl)
+                    ).default;
+
+                    const { server, update } = createLiveServer({
+                        gracefulShutdown: false,
+                        ...serverOptions,
+                        manual: true,
+                        hostname: dev.host,
+                        port: dev.port,
+                        tls: {
+                            cert: https.cert,
+                            key: https.key,
+                            passphrase: https.passphrase,
+                        },
+                    });
+
+                    liveUpdate = update;
+
+                    middleware = createMiddleware({
+                        server,
+                        isHttps,
+                        port,
+                    });
+
+                    return void 0;
+                }
+
+                // Live update
+
+                try {
+                    const importUrl: string = `${toPosix(distPath).replace(/\/$/, "")}/index-${compileCount}.js`;
+
+                    Fs.copyFileSync(outputUrl, importUrl);
+
+                    const newServerOptions: ServerOptions = (
+                        await import(importUrl)
+                    ).default;
+
+                    Fs.unlinkSync(importUrl);
+
+                    liveUpdate?.(newServerOptions);
+                } catch {
+                    // Keep old handler running on error
+
+                    try {
+                        Fs.unlinkSync(
+                            `${toPosix(distPath).replace(/\/$/, "")}/index-${compileCount}.js`,
+                        );
+                    } catch {}
+                }
             });
 
             api.onBeforeStartDevServer(({ server }): void => {

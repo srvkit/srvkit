@@ -96,3 +96,12 @@ export { getPackageJson } from "#/functions/package/package-json";
 // internal (functions/path)
 
 export { toPosix } from "#/functions/path/posix";
+
+// internal (functions/server/live)
+
+export type {
+    CreateLiveServerOptions,
+    LiveServer,
+} from "#/functions/server/live";
+
+export { createLiveServer } from "#/functions/server/live";
