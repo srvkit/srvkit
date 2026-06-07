@@ -1,0 +1,38 @@
+version: 2
+updates:
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+          interval: "daily"
+          time: "00:00"
+          timezone: "Etc/UTC"
+      cooldown:
+          default-days: 1
+          include:
+              - "*"
+      commit-message:
+          prefix: "chore"
+    - package-ecosystem: "npm"
+      directory: "/"
+      schedule:
+          interval: "daily"
+          time: "00:00"
+          timezone: "Etc/UTC"
+      cooldown:
+          default-days: 1
+          include:
+              - "*"
+      commit-message:
+          prefix: "chore"
+      ignore:
+          # common
+          - dependency-name: "consola"
+          - dependency-name: "es-toolkit"
+          - dependency-name: "srvx"
+          - dependency-name: "ts-vista"
+          # rsbuild
+          - dependency-name: "@rsbuild/core"
+          # vite
+          - dependency-name: "rolldown-plugin-copy"
+          - dependency-name: "rolldown"
+          - dependency-name: "vite"
