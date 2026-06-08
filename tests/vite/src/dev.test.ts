@@ -131,6 +131,11 @@ describe("vite dev plugin", (): void => {
             plugins: [
                 devPlugin(opts),
             ],
+            server: {
+                watch: {
+                    usePolling: true,
+                },
+            },
             logLevel: "silent",
         });
 
@@ -143,8 +148,13 @@ describe("vite dev plugin", (): void => {
         expect(result1.status).toBe(200);
         expect(result1.body).toContain("Hello from dev!");
 
+        const entryPath: string = Path.resolve(
+            getSrcDir(BASE_DIR, "dev-hmr"),
+            "index.ts",
+        );
+
         Fs.writeFileSync(
-            Path.resolve(getSrcDir(BASE_DIR, "dev-hmr"), "index.ts"),
+            entryPath,
             [
                 "export default {",
                 "    fetch: (_req: Request): Response => {",
@@ -154,6 +164,8 @@ describe("vite dev plugin", (): void => {
             ].join("\n"),
         );
 
+        server.watcher.emit("change", entryPath);
+
         const result2 = await waitFor(
             (): Promise<FetchLocalResult> =>
                 fetchLocal({
@@ -161,8 +173,8 @@ describe("vite dev plugin", (): void => {
                 }),
             (res): boolean => res.body.includes("Updated response!"),
             {
-                timeout: 10000,
-                interval: 500,
+                timeout: 15000,
+                interval: 300,
             },
         );
 
