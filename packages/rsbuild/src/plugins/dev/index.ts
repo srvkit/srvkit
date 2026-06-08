@@ -18,7 +18,7 @@ import type {
     ServerOptions,
 } from "@srvkit/common";
 
-import * as Fs from "node:fs";
+import * as Fsp from "node:fs/promises";
 import { builtinModules } from "node:module";
 
 import {
@@ -270,20 +270,20 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                 try {
                     const importUrl: string = `${toPosix(distPath).replace(/\/$/, "")}/index-${compileCount}.js`;
 
-                    Fs.copyFileSync(outputUrl, importUrl);
+                    await Fsp.copyFile(outputUrl, importUrl);
 
                     const newServerOptions: ServerOptions = (
                         await import(importUrl)
                     ).default;
 
-                    Fs.unlinkSync(importUrl);
+                    await Fsp.unlink(importUrl);
 
                     liveUpdate?.(newServerOptions);
                 } catch {
                     // Keep old handler running on error
 
                     try {
-                        Fs.unlinkSync(
+                        await Fsp.unlink(
                             `${toPosix(distPath).replace(/\/$/, "")}/index-${compileCount}.js`,
                         );
                     } catch {}
