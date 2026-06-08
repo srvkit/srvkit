@@ -7,7 +7,14 @@ import type {
     Server,
     ServerOptions,
 } from "@srvkit/common";
-import type { Connect, Plugin, UserConfig, ViteDevServer } from "vite";
+import type {
+    Connect,
+    DevEnvironment,
+    EnvironmentModuleNode,
+    Plugin,
+    UserConfig,
+    ViteDevServer,
+} from "vite";
 
 import { createLiveServer, toHeaders, writeHttpResponse } from "@srvkit/common";
 import { toMerged } from "es-toolkit";
@@ -140,6 +147,13 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
 
             const reload = async (attempt: number): Promise<void> => {
                 try {
+                    const ssrEnv: DevEnvironment = vite.environments.ssr;
+
+                    const mod: EnvironmentModuleNode =
+                        await ssrEnv.moduleGraph.ensureEntryFromUrl(opts.entry);
+
+                    ssrEnv.moduleGraph.invalidateModule(mod);
+
                     const newServerOptions: ServerOptions = (
                         await vite.ssrLoadModule(opts.entry)
                     ).default;

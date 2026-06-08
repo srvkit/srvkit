@@ -131,12 +131,6 @@ describe("vite dev plugin", (): void => {
             plugins: [
                 devPlugin(opts),
             ],
-            server: {
-                watch: {
-                    usePolling: true,
-                    interval: 100,
-                },
-            },
             logLevel: "silent",
         });
 
