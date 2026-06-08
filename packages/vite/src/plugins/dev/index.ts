@@ -138,19 +138,30 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
 
             let reloadTimer: ReturnType<typeof setTimeout> | undefined = void 0;
 
+            const reload = async (attempt: number): Promise<void> => {
+                try {
+                    const newServerOptions: ServerOptions = (
+                        await vite.ssrLoadModule(opts.entry)
+                    ).default;
+
+                    update(newServerOptions);
+                } catch {
+                    if (attempt < 3) {
+                        setTimeout(
+                            (): void => {
+                                reload(attempt + 1);
+                            },
+                            (attempt + 1) * 100,
+                        );
+                    }
+                }
+            };
+
             vite.watcher.on("change", (): void => {
                 clearTimeout(reloadTimer);
 
-                reloadTimer = setTimeout(async (): Promise<void> => {
-                    try {
-                        const newServerOptions: ServerOptions = (
-                            await vite.ssrLoadModule(opts.entry)
-                        ).default;
-
-                        update(newServerOptions);
-                    } catch {
-                        // Keep old handler running on error
-                    }
+                reloadTimer = setTimeout((): void => {
+                    reload(0);
                 }, 100);
             });
         },
