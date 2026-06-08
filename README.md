@@ -2,13 +2,17 @@
 
 A toolkit for building JavaScript server applications.
 
+- 🌍 Runtime agnostic
+- 🧩 Framework agnostic
+- 🔌 Vite & Rsbuild plugins
+- 🔗 HTTPS & middleware
+- 🔥 Live dev server
+- 📦 Flexible build targets
+
 ## Documentation
 
-For the usage with Vite, 
-please refer to the [Vite documentation](./docs/vite/README.md).
-
-For the usage with Rsbuild, 
-please refer to the [Rsbuild documentation](./docs/rsbuild/README.md).
+For more information,
+please refer to the [documentation](https://srvkit.github.io).
 
 ## Contributing
 
