@@ -34,6 +34,11 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
             api.modifyRsbuildConfig((config: RsbuildConfig): RsbuildConfig => {
                 let overrideConfig: RsbuildConfig = {
+                    resolve: {
+                        conditionNames: [
+                            opts.runtime,
+                        ],
+                    },
                     source: {
                         entry: {
                             index: VIRTUAL_ENTRY,
@@ -113,10 +118,6 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                     splitChunks: false,
                     runtimeChunk: false,
                 };
-
-                if (Array.isArray(config.resolve?.conditionNames)) {
-                    config.resolve.conditionNames.push(opts.runtime);
-                }
 
                 // bundle: external
 

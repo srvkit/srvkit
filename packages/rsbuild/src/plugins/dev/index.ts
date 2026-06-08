@@ -112,6 +112,11 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
             api.modifyRsbuildConfig((config: RsbuildConfig): RsbuildConfig => {
                 const overrideConfig: RsbuildConfig = {
+                    resolve: {
+                        conditionNames: [
+                            opts.runtime,
+                        ],
+                    },
                     source: {
                         entry: {
                             index: VIRTUAL_ENTRY,
@@ -186,10 +191,6 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         __dirname: false,
                         __filename: false,
                     };
-
-                    if (Array.isArray(config.resolve?.conditionNames)) {
-                        config.resolve.conditionNames.push(opts.runtime);
-                    }
 
                     // bundle: external
 
