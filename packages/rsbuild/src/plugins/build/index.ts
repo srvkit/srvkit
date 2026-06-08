@@ -128,7 +128,10 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                     ];
 
                     const depExternals: RegExp[] = depNames.map(
-                        (name: string): RegExp => new RegExp(`^${name}(\\/|$)`),
+                        (name: string): RegExp =>
+                            new RegExp(
+                                `^${name.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
+                            ),
                     );
 
                     config.externals = [

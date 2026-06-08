@@ -204,7 +204,9 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
                         const depExternals: RegExp[] = depNames.map(
                             (depName: string): RegExp =>
-                                new RegExp(`^${depName}(\\/|$)`),
+                                new RegExp(
+                                    `^${depName.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
+                                ),
                         );
 
                         config.externals = [
