@@ -23,6 +23,12 @@ const writeHttpResponse = async ({
     const reader: ReadableStreamDefaultReader<Uint8Array> =
         response.body.getReader();
 
+    const drain = (): Promise<void> => {
+        return new Promise<void>((resolve): void => {
+            httpResponse.once("drain", resolve);
+        });
+    };
+
     const stream = async (): Promise<void> => {
         try {
             while (true) {
@@ -30,7 +36,10 @@ const writeHttpResponse = async ({
 
                 if (done) break;
 
-                httpResponse.write(value);
+                // write and check if internal buffer is full
+                const isBufferFull: boolean = !httpResponse.write(value);
+
+                if (isBufferFull) await drain();
             }
 
             httpResponse.end();
