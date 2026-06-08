@@ -20,7 +20,7 @@ const writeHttpResponse = async ({
         return void 0;
     }
 
-    const reader: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>> =
+    const reader: ReadableStreamDefaultReader<Uint8Array> =
         response.body.getReader();
 
     const stream = async (): Promise<void> => {
