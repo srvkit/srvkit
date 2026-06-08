@@ -52,7 +52,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 baseConfig = {
                     ...baseConfig,
                     ssr: {
-                        ...baseConfig,
+                        ...baseConfig.ssr,
                         external: true,
                         noExternal: void 0,
                     },
@@ -63,7 +63,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 baseConfig = {
                     ...baseConfig,
                     ssr: {
-                        ...baseConfig,
+                        ...baseConfig.ssr,
                         external: void 0,
                         noExternal: true,
                     },
