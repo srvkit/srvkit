@@ -15,7 +15,6 @@ import type {
 import { builtinModules } from "node:module";
 
 import { createVirtualEntryCode, getPackageJson } from "@srvkit/common";
-import { toMerged } from "es-toolkit";
 
 import { VIRTUAL_ENTRY } from "#/constants/path";
 import { getSsrTarget } from "#/functions/ssr";
@@ -32,41 +31,38 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
         async setup(api: RsbuildPluginAPI): Promise<void> {
             const ssrTarget: Rspack.Target = getSsrTarget(opts.runtime);
 
-            api.modifyRsbuildConfig((config: RsbuildConfig): RsbuildConfig => {
-                let overrideConfig: RsbuildConfig = {
-                    resolve: {
-                        conditionNames: [
-                            opts.runtime,
-                        ],
-                    },
-                    source: {
-                        entry: {
-                            index: VIRTUAL_ENTRY,
-                        },
-                    },
-                    output: {
-                        target: "node",
-                        distPath: build.outputDir,
-                        copy: void 0,
-                    },
-                };
-
-                // Enforce the bundler to apply SWC configuration to third-party dependencies
-                if (build.bundle === "standalone") {
-                    overrideConfig = {
-                        ...overrideConfig,
+            api.modifyRsbuildConfig(
+                (
+                    config: RsbuildConfig,
+                    { mergeRsbuildConfig },
+                ): RsbuildConfig => {
+                    const overrideConfig: RsbuildConfig = {
                         source: {
+                            entry: {
+                                index: VIRTUAL_ENTRY,
+                            },
+                        },
+                        output: {
+                            target: "node",
+                            distPath: build.outputDir,
+                            copy: void 0,
+                        },
+                    };
+
+                    // Enforce the bundler to apply SWC configuration to third-party dependencies
+                    if (build.bundle === "standalone") {
+                        overrideConfig.source = {
                             ...overrideConfig.source,
                             include: [
                                 ...(overrideConfig.source?.include ?? []),
                                 /[\\/]node_modules[\\/]/,
                             ],
-                        },
-                    };
-                }
+                        };
+                    }
 
-                return toMerged(config, overrideConfig);
-            });
+                    return mergeRsbuildConfig(config, overrideConfig);
+                },
+            );
 
             api.modifyBundlerChain(
                 (
@@ -96,96 +92,105 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                 },
             );
 
-            api.modifyRspackConfig((config): Rspack.Configuration => {
-                const isModule: boolean = packageJson.type === "module";
+            api.modifyRspackConfig(
+                (config, { mergeConfig }): Rspack.Configuration => {
+                    const isModule: boolean = packageJson.type === "module";
 
-                const nodeExternals: (string | RegExp)[] = [
-                    ...builtinModules,
-                    /^node:/,
-                ];
-
-                config.target = ssrTarget;
-
-                config.node = {
-                    ...config.node,
-                    __dirname: false,
-                    __filename: false,
-                };
-
-                config.optimization = {
-                    ...config.optimization,
-                    minimize: build.minify,
-                    splitChunks: false,
-                    runtimeChunk: false,
-                };
-
-                // bundle: external
-
-                if (build.bundle === "external") {
-                    const depNames: string[] = [
-                        ...Object.keys(packageJson.dependencies ?? {}),
-                        ...Object.keys(packageJson.peerDependencies ?? {}),
-                        ...Object.keys(packageJson.optionalDependencies ?? {}),
+                    const nodeExternals: (string | RegExp)[] = [
+                        ...builtinModules,
+                        /^node:/,
                     ];
 
-                    const depExternals: RegExp[] = depNames.map(
-                        (name: string): RegExp =>
-                            new RegExp(
-                                `^${name.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
-                            ),
-                    );
-
-                    config.externals = [
-                        ...nodeExternals,
-                        ...depExternals,
-                    ];
-
-                    config.externalsType = isModule
-                        ? "module-import"
-                        : "commonjs";
-                }
-
-                // bundle: standalone
-
-                if (build.bundle === "standalone") {
-                    config.externals = nodeExternals;
-                }
-
-                // target: server
-
-                if (build.target === "server") {
-                    config.output = {
-                        ...config.output,
-                        filename: build.outputFile,
-                        library: void 0,
-                        ...(isModule
-                            ? {
-                                  module: true,
-                              }
-                            : {}),
-                    };
-                }
-
-                // target: handler
-
-                if (build.target === "handler") {
-                    config.output = {
-                        ...config.output,
-                        filename: build.outputFile,
-                        library: {
-                            type: isModule ? "module" : "commonjs2",
-                            export: "default",
+                    const overrideConfig: Rspack.Configuration = {
+                        resolve: {
+                            /** @see https://rspack.rs/config/resolve#extend-default-value */
+                            conditionNames: [
+                                opts.runtime,
+                                "...", // Default values
+                            ],
                         },
-                        ...(isModule
-                            ? {
-                                  module: true,
-                              }
-                            : {}),
+                        target: ssrTarget,
+                        node: {
+                            __dirname: false,
+                            __filename: false,
+                        },
+                        optimization: {
+                            minimize: build.minify,
+                            splitChunks: false,
+                            runtimeChunk: false,
+                        },
                     };
-                }
 
-                return config;
-            });
+                    // bundle: external
+
+                    if (build.bundle === "external") {
+                        const depNames: string[] = [
+                            ...Object.keys(packageJson.dependencies ?? {}),
+                            ...Object.keys(packageJson.peerDependencies ?? {}),
+                            ...Object.keys(
+                                packageJson.optionalDependencies ?? {},
+                            ),
+                        ];
+
+                        const depExternals: RegExp[] = depNames.map(
+                            (name: string): RegExp =>
+                                new RegExp(
+                                    `^${name.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
+                                ),
+                        );
+
+                        overrideConfig.externals = [
+                            ...nodeExternals,
+                            ...depExternals,
+                        ];
+
+                        overrideConfig.externalsType = isModule
+                            ? "module-import"
+                            : "commonjs";
+                    }
+
+                    // bundle: standalone
+
+                    if (build.bundle === "standalone") {
+                        overrideConfig.externals = nodeExternals;
+                    }
+
+                    // target: server
+
+                    if (build.target === "server") {
+                        overrideConfig.output = {
+                            ...overrideConfig.output,
+                            filename: build.outputFile,
+                            library: void 0,
+                            ...(isModule
+                                ? {
+                                      module: true,
+                                  }
+                                : {}),
+                        };
+                    }
+
+                    // target: handler
+
+                    if (build.target === "handler") {
+                        overrideConfig.output = {
+                            ...overrideConfig.output,
+                            filename: build.outputFile,
+                            library: {
+                                type: isModule ? "module" : "commonjs2",
+                                export: "default",
+                            },
+                            ...(isModule
+                                ? {
+                                      module: true,
+                                  }
+                                : {}),
+                        };
+                    }
+
+                    return mergeConfig(config, overrideConfig);
+                },
+            );
         },
     };
 };

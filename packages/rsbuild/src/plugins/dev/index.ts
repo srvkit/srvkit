@@ -28,7 +28,6 @@ import {
     toPosix,
     writeHttpResponse,
 } from "@srvkit/common";
-import { toMerged } from "es-toolkit";
 
 import { VIRTUAL_ENTRY } from "#/constants/path";
 import { getSsrTarget } from "#/functions/ssr";
@@ -110,43 +109,43 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
             const ssrTarget: Rspack.Target = getSsrTarget(opts.runtime);
 
-            api.modifyRsbuildConfig((config: RsbuildConfig): RsbuildConfig => {
-                const overrideConfig: RsbuildConfig = {
-                    resolve: {
-                        conditionNames: [
-                            opts.runtime,
-                        ],
-                    },
-                    source: {
-                        entry: {
-                            index: VIRTUAL_ENTRY,
+            api.modifyRsbuildConfig(
+                (
+                    config: RsbuildConfig,
+                    { mergeRsbuildConfig },
+                ): RsbuildConfig => {
+                    const overrideConfig: RsbuildConfig = {
+                        source: {
+                            entry: {
+                                index: VIRTUAL_ENTRY,
+                            },
                         },
-                    },
-                    output: {
-                        target: "node",
-                        distPath: build.outputDir,
-                        copy: void 0,
-                    },
-                    dev: {
-                        writeToDisk: true,
-                    },
-                    server: {
-                        host: dev.host,
-                        port: dev.port,
-                        ...(https.cert !== void 0 && https.key !== void 0
-                            ? {
-                                  https: {
-                                      cert: https.cert,
-                                      key: https.key,
-                                      passphrase: https.passphrase,
-                                  },
-                              }
-                            : {}),
-                    },
-                };
+                        output: {
+                            target: "node",
+                            distPath: build.outputDir,
+                            copy: void 0,
+                        },
+                        dev: {
+                            writeToDisk: true,
+                        },
+                        server: {
+                            host: dev.host,
+                            port: dev.port,
+                            ...(https.cert !== void 0 && https.key !== void 0
+                                ? {
+                                      https: {
+                                          cert: https.cert,
+                                          key: https.key,
+                                          passphrase: https.passphrase,
+                                      },
+                                  }
+                                : {}),
+                        },
+                    };
 
-                return toMerged(config, overrideConfig);
-            });
+                    return mergeRsbuildConfig(config, overrideConfig);
+                },
+            );
 
             api.modifyBundlerChain(
                 (
@@ -166,7 +165,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
             );
 
             api.modifyRspackConfig(
-                (config: Rspack.Configuration): Rspack.Configuration => {
+                (config, { mergeConfig }): Rspack.Configuration => {
                     const isModule: boolean = packageJson.type === "module";
 
                     const nodeExternals: (string | RegExp)[] = [
@@ -174,22 +173,27 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         /^node:/,
                     ];
 
-                    config.output = {
-                        ...config.output,
-                        filename: build.outputFile,
-                        ...(isModule
-                            ? {
-                                  module: true,
-                              }
-                            : {}),
-                    };
-
-                    config.target = ssrTarget;
-
-                    config.node = {
-                        ...config.node,
-                        __dirname: false,
-                        __filename: false,
+                    const overrideConfig: Rspack.Configuration = {
+                        resolve: {
+                            /** @see https://rspack.rs/config/resolve#extend-default-value */
+                            conditionNames: [
+                                opts.runtime,
+                                "...", // Default values
+                            ],
+                        },
+                        output: {
+                            filename: build.outputFile,
+                            ...(isModule
+                                ? {
+                                      module: true,
+                                  }
+                                : {}),
+                        },
+                        target: ssrTarget,
+                        node: {
+                            __dirname: false,
+                            __filename: false,
+                        },
                     };
 
                     // bundle: external
@@ -210,12 +214,12 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                                 ),
                         );
 
-                        config.externals = [
+                        overrideConfig.externals = [
                             ...nodeExternals,
                             ...depExternals,
                         ];
 
-                        config.externalsType = isModule
+                        overrideConfig.externalsType = isModule
                             ? "module-import"
                             : "commonjs";
                     }
@@ -223,10 +227,10 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                     // bundle: standalone
 
                     if (build.bundle === "standalone") {
-                        config.externals = nodeExternals;
+                        overrideConfig.externals = nodeExternals;
                     }
 
-                    return config;
+                    return mergeConfig(config, overrideConfig);
                 },
             );
 
