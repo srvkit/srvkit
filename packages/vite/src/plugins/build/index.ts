@@ -9,7 +9,7 @@ import type { Plugin, UserConfig } from "vite";
 import { builtinModules } from "node:module";
 
 import { createVirtualEntryCode, getPackageJson } from "@srvkit/common";
-import { toMerged } from "es-toolkit";
+import { mergeConfig } from "vite";
 
 import { getSsrTarget } from "#/functions/ssr";
 import { name } from "#/root/package.json";
@@ -70,7 +70,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 };
             }
 
-            result = toMerged(baseConfig, config);
+            result = mergeConfig(baseConfig, config);
 
             const overrideConfig: UserConfig = {
                 build: {
@@ -95,7 +95,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 },
             };
 
-            return toMerged(result, overrideConfig);
+            return mergeConfig(result, overrideConfig);
         },
         resolveId: (id: string): ResolveIdResult => {
             if (id !== VIRTUAL_ENTRY) return void 0;

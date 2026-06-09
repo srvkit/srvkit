@@ -17,7 +17,7 @@ import type {
 } from "vite";
 
 import { createLiveServer, toHeaders, writeHttpResponse } from "@srvkit/common";
-import { toMerged } from "es-toolkit";
+import { mergeConfig } from "vite";
 
 import { getSsrTarget } from "#/functions/ssr";
 import { name } from "#/root/package.json";
@@ -111,7 +111,7 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
                 },
             };
 
-            return toMerged(config, devConfig);
+            return mergeConfig(config, devConfig);
         },
         configureServer: async (vite: ViteDevServer): Promise<void> => {
             const serverOptions: ServerOptions = (
