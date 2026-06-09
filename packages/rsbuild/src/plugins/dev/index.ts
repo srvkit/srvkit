@@ -20,6 +20,8 @@ import type {
 
 import * as Fsp from "node:fs/promises";
 import { builtinModules } from "node:module";
+import * as Path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import {
     createLiveServer,
@@ -237,7 +239,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
             api.onAfterDevCompile(async ({ isFirstCompile }): Promise<void> => {
                 const distPath: string = api.context.distPath;
 
-                const outputUrl: string = `${toPosix(distPath).replace(/\/$/, "")}/index.js`;
+                const outputPath: string = Path.resolve(distPath, "index.js");
 
                 compileCount++;
 
@@ -245,7 +247,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
                 if (isFirstCompile) {
                     const serverOptions: ServerOptions = (
-                        await import(outputUrl)
+                        await import(pathToFileURL(outputPath).href)
                     ).default;
 
                     const { server, update } = createLiveServer({
@@ -275,15 +277,18 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                 // Live update
 
                 try {
-                    const importUrl: string = `${toPosix(distPath).replace(/\/$/, "")}/index-${compileCount}.js`;
+                    const importPath: string = Path.resolve(
+                        distPath,
+                        `index-${compileCount}.js`,
+                    );
 
-                    await Fsp.copyFile(outputUrl, importUrl);
+                    await Fsp.copyFile(outputPath, importPath);
 
                     const newServerOptions: ServerOptions = (
-                        await import(importUrl)
+                        await import(pathToFileURL(importPath).href)
                     ).default;
 
-                    await Fsp.unlink(importUrl);
+                    await Fsp.unlink(importPath);
 
                     liveUpdate?.(newServerOptions);
                 } catch {
@@ -291,7 +296,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
                     try {
                         await Fsp.unlink(
-                            `${toPosix(distPath).replace(/\/$/, "")}/index-${compileCount}.js`,
+                            Path.resolve(distPath, `index-${compileCount}.js`),
                         );
                     } catch {}
                 }
