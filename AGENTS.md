@@ -97,38 +97,10 @@ The project uses:
 
 Always prefer `just` commands.
 
-Never run raw `pnpm` unless explicitly required.
-
-## Commands
-
-Install dependencies:
+Check the available commands with the following command:
 
 ```sh
-just i
-```
-
-Format:
-
-```sh
-just fmt
-```
-
-Lint:
-
-```sh
-just lint
-```
-
-Build:
-
-```sh
-just build
-```
-
-Test:
-
-```sh
-just test
+just
 ```
 
 ## What NOT to Do
