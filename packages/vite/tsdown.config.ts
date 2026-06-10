@@ -15,6 +15,7 @@ export default defineConfig(
             "plugins/copy/index": "./src/plugins/copy/index.ts",
         },
         platform: "node",
+        unbundle: true,
     },
     [
         esmPreset(),
