@@ -1,14 +1,15 @@
 import type {
-    PackageJson,
     ResolvedBuildOptions,
     ResolvedOptions,
-} from "@srvkit/common";
+} from "@srvkit/common/@types/options/resolved";
+import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 import type { LoadResult, ResolveIdResult } from "rolldown";
 import type { Plugin, UserConfig } from "vite";
 
 import { builtinModules } from "node:module";
 
-import { createVirtualEntryCode, getPackageJson } from "@srvkit/common";
+import { createVirtualEntryCode } from "@srvkit/common/functions/build/virtual-entry";
+import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 import { mergeConfig } from "vite";
 
 import { getSsrTarget } from "#/functions/ssr";

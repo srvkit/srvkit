@@ -1,7 +1,8 @@
 import type { RsbuildPlugin } from "@rsbuild/core";
-import type { Options, ResolvedOptions } from "@srvkit/common";
+import type { Options } from "@srvkit/common/@types/options/default";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 
 import { buildPlugin } from "#/plugins/build";
 import { copyPlugin } from "#/plugins/copy";

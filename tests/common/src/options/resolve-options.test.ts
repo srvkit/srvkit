@@ -1,10 +1,11 @@
+import type {
+    ResolvedBuildServerOptions,
+    ResolvedOptions,
+} from "@srvkit/common/@types/options/resolved";
+
 import * as Path from "node:path";
 
-import {
-    type ResolvedBuildServerOptions,
-    type ResolvedOptions,
-    resolveOptions,
-} from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { describe, expect, it } from "vitest";
 
 const FIXTURE_DIR: string = Path.resolve(__dirname, "..", "__fixtures__");

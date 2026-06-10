@@ -1,6 +1,6 @@
 import * as Path from "node:path";
 
-import { toPosix } from "@srvkit/common";
+import { toPosix } from "@srvkit/common/functions/path/posix";
 import { describe, expect, it } from "vitest";
 
 describe("toPosix", (): void => {

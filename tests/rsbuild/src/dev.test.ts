@@ -3,7 +3,7 @@ import type {
     RsbuildInstance,
     StartDevServerResult,
 } from "@rsbuild/core";
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 
 import type { FetchLocalResult } from "#/helpers/http";
 
@@ -11,7 +11,7 @@ import * as Fs from "node:fs";
 import * as Path from "node:path";
 
 import { createRsbuild } from "@rsbuild/core";
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { devPlugin } from "@srvkit/rsbuild/plugins/dev";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
 

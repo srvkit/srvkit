@@ -1,5 +1,5 @@
 import type { Rspack } from "@rsbuild/core";
-import type { Runtime } from "@srvkit/common";
+import type { Runtime } from "@srvkit/common/@types/options/complete";
 
 const getSsrTarget = (runtime: Runtime): Rspack.Target => {
     switch (runtime) {

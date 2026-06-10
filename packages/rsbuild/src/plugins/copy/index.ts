@@ -3,7 +3,10 @@ import type {
     RsbuildPlugin,
     RsbuildPluginAPI,
 } from "@rsbuild/core";
-import type { ResolvedBuildOptions, ResolvedOptions } from "@srvkit/common";
+import type {
+    ResolvedBuildOptions,
+    ResolvedOptions,
+} from "@srvkit/common/@types/options/resolved";
 
 const copyPlugin = (opts: ResolvedOptions): RsbuildPlugin[] => {
     const build: ResolvedBuildOptions = opts.build;

@@ -1,4 +1,4 @@
-import { defineServer } from "@srvkit/common";
+import { defineServer } from "@srvkit/common/functions/server/define";
 import { describe, expect, it } from "vitest";
 
 describe("defineServer", (): void => {

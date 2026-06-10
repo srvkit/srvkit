@@ -1,8 +1,8 @@
-import type { PackageJson } from "@srvkit/common";
+import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 
 import * as Path from "node:path";
 
-import { getPackageJson } from "@srvkit/common";
+import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 import { describe, expect, it } from "vitest";
 
 const FIXTURE_DIR: string = Path.resolve(__dirname, "..", "__fixtures__");

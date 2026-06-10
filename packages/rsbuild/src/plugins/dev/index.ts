@@ -9,27 +9,24 @@ import type {
     RspackChain,
 } from "@rsbuild/core";
 import type {
-    PackageJson,
     ResolvedBuildOptions,
     ResolvedDevOptions,
     ResolvedHttpsOptions,
     ResolvedOptions,
-    Server,
-    ServerOptions,
-} from "@srvkit/common";
+} from "@srvkit/common/@types/options/resolved";
+import type { Server, ServerOptions } from "@srvkit/common/@types/server";
+import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 
 import * as Fsp from "node:fs/promises";
 import { builtinModules } from "node:module";
 import * as Path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import {
-    createLiveServer,
-    getPackageJson,
-    toHeaders,
-    toPosix,
-    writeHttpResponse,
-} from "@srvkit/common";
+import { toHeaders } from "@srvkit/common/functions/http/request/header";
+import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
+import { getPackageJson } from "@srvkit/common/functions/package/package-json";
+import { toPosix } from "@srvkit/common/functions/path/posix";
+import { createLiveServer } from "@srvkit/common/functions/server/live";
 
 import { VIRTUAL_ENTRY } from "#/constants/path";
 import { getSsrTarget } from "#/functions/ssr";

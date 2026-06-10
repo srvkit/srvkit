@@ -1,4 +1,4 @@
-import { toHeaders } from "@srvkit/common";
+import { toHeaders } from "@srvkit/common/functions/http/request/header";
 import { describe, expect, it } from "vitest";
 
 describe("toHeaders", (): void => {

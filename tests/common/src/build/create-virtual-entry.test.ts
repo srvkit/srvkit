@@ -1,11 +1,11 @@
 import type {
     ResolvedBuildServerOptions,
     ResolvedOptions,
-} from "@srvkit/common";
+} from "@srvkit/common/@types/options/resolved";
 
 import * as Path from "node:path";
 
-import { createVirtualEntryCode } from "@srvkit/common";
+import { createVirtualEntryCode } from "@srvkit/common/functions/build/virtual-entry";
 import { describe, expect, it } from "vitest";
 
 const FIXTURE_DIR: string = Path.resolve(__dirname, "__fixtures__");

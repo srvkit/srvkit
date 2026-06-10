@@ -1,4 +1,4 @@
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 import type { ViteDevServer } from "vite";
 
 import type { FetchLocalResult } from "#/helpers/http";
@@ -6,7 +6,7 @@ import type { FetchLocalResult } from "#/helpers/http";
 import * as Fs from "node:fs";
 import * as Path from "node:path";
 
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { devPlugin } from "@srvkit/vite/plugins/dev";
 import { createServer } from "vite";
 import { afterAll, afterEach, describe, expect, it } from "vitest";

@@ -1,8 +1,8 @@
 import type { RsbuildInstance } from "@rsbuild/core";
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 
 import { createRsbuild } from "@rsbuild/core";
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { buildPlugin as buildPluginRsbuild } from "@srvkit/rsbuild/plugins/build";
 import { buildPlugin as buildPluginVite } from "@srvkit/vite/plugins/build";
 import { build } from "vite";

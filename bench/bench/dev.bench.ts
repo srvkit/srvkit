@@ -1,9 +1,9 @@
 import type { RsbuildInstance, StartDevServerResult } from "@rsbuild/core";
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 import type { ViteDevServer } from "vite";
 
 import { createRsbuild } from "@rsbuild/core";
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { devPlugin as devPluginRsbuild } from "@srvkit/rsbuild/plugins/dev";
 import { devPlugin as devPluginVite } from "@srvkit/vite/plugins/dev";
 import { createServer } from "vite";

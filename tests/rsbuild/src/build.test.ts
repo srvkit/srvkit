@@ -1,12 +1,12 @@
 import type { RsbuildInstance } from "@rsbuild/core";
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 
 import * as Fs from "node:fs";
 import { builtinModules } from "node:module";
 import * as Path from "node:path";
 
 import { createRsbuild } from "@rsbuild/core";
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { buildPlugin } from "@srvkit/rsbuild/plugins/build";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 

@@ -23,16 +23,18 @@
         "email": "contact@alphe.us"
     },
     "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
+        "./@types/options/complete": {
+            "types": "./dist/@types/options/complete/index.d.ts",
+            "import": "./dist/@types/options/complete/index.mjs",
+            "require": "./dist/@types/options/complete/index.js"
+        },
+        "./*": {
+            "types": "./dist/*.d.ts",
+            "import": "./dist/*.mjs",
+            "require": "./dist/*.js"
         },
         "./package.json": "./package.json"
     },
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.ts",
     "files": [
         "dist"
     ],

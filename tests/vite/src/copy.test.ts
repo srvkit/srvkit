@@ -1,9 +1,9 @@
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 
 import * as Fs from "node:fs";
 import * as Path from "node:path";
 
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { buildPlugin } from "@srvkit/vite/plugins/build";
 import { copyPlugin } from "@srvkit/vite/plugins/copy";
 import { build } from "vite";

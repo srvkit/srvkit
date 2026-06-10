@@ -1,1 +1,1 @@
-export { serve } from "@srvkit/common";
+export { serve } from "@srvkit/common/runtime";

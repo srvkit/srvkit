@@ -7,14 +7,15 @@ import type {
     RspackChain,
 } from "@rsbuild/core";
 import type {
-    PackageJson,
     ResolvedBuildOptions,
     ResolvedOptions,
-} from "@srvkit/common";
+} from "@srvkit/common/@types/options/resolved";
+import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 
 import { builtinModules } from "node:module";
 
-import { createVirtualEntryCode, getPackageJson } from "@srvkit/common";
+import { createVirtualEntryCode } from "@srvkit/common/functions/build/virtual-entry";
+import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 
 import { VIRTUAL_ENTRY } from "#/constants/path";
 import { getSsrTarget } from "#/functions/ssr";

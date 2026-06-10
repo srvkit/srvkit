@@ -1,6 +1,6 @@
 import type HTTP from "node:http";
 
-import { writeHttpResponse } from "@srvkit/common";
+import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
 import { describe, expect, it, vi } from "vitest";
 
 const createMockResponse = (

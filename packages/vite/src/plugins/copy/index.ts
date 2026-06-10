@@ -1,10 +1,13 @@
-import type { ResolvedBuildOptions, ResolvedOptions } from "@srvkit/common";
+import type {
+    ResolvedBuildOptions,
+    ResolvedOptions,
+} from "@srvkit/common/@types/options/resolved";
 import type { CopyEvent, Options as Copyoptions } from "rolldown-plugin-copy";
 import type { Plugin } from "vite";
 
 import * as Path from "node:path";
 
-import { log } from "@srvkit/common";
+import { log } from "@srvkit/common/configs/log";
 import { copy } from "rolldown-plugin-copy";
 
 const copyPlugin = (opts: ResolvedOptions): Plugin[] => {

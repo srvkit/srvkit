@@ -1,10 +1,10 @@
-import type { ResolvedOptions } from "@srvkit/common";
+import type { ResolvedOptions } from "@srvkit/common/@types/options/resolved";
 
 import * as Fs from "node:fs";
 import { builtinModules } from "node:module";
 import * as Path from "node:path";
 
-import { resolveOptions } from "@srvkit/common";
+import { resolveOptions } from "@srvkit/common/functions/options/resolve";
 import { buildPlugin } from "@srvkit/vite/plugins/build";
 import { build } from "vite";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";

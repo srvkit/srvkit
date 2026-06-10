@@ -6,6 +6,6 @@ export type {
     ServerOptions,
     ServerPlugin,
     ServerRequest,
-} from "@srvkit/common";
+} from "@srvkit/common/@types/server";
 
-export { defineServer } from "@srvkit/common";
+export { defineServer } from "@srvkit/common/functions/server/define";

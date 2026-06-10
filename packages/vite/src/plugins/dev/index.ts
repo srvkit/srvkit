@@ -4,9 +4,8 @@ import type {
     ResolvedDevOptions,
     ResolvedHttpsOptions,
     ResolvedOptions,
-    Server,
-    ServerOptions,
-} from "@srvkit/common";
+} from "@srvkit/common/@types/options/resolved";
+import type { Server, ServerOptions } from "@srvkit/common/@types/server";
 import type {
     Connect,
     DevEnvironment,
@@ -16,7 +15,9 @@ import type {
     ViteDevServer,
 } from "vite";
 
-import { createLiveServer, toHeaders, writeHttpResponse } from "@srvkit/common";
+import { toHeaders } from "@srvkit/common/functions/http/request/header";
+import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
+import { createLiveServer } from "@srvkit/common/functions/server/live";
 import { mergeConfig } from "vite";
 
 import { getSsrTarget } from "#/functions/ssr";
