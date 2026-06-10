@@ -62,7 +62,7 @@ describe("rsbuild copy plugin", (): void => {
         const content: string = Fs.readFileSync(outputFile, "utf-8");
 
         expect(content).toBe("Hello from public!");
-    }, 60000);
+    }, 15000);
 
     it("does not copy when copyPublicDir is false", async (): Promise<void> => {
         const opts: ResolvedOptions = resolveOptions({
@@ -93,7 +93,7 @@ describe("rsbuild copy plugin", (): void => {
         );
 
         expect(Fs.existsSync(publicDir)).toBe(false);
-    }, 60000);
+    }, 15000);
 
     it("does not copy when target is handler", async (): Promise<void> => {
         const opts: ResolvedOptions = resolveOptions({
@@ -125,5 +125,5 @@ describe("rsbuild copy plugin", (): void => {
         );
 
         expect(Fs.existsSync(publicDir)).toBe(false);
-    }, 60000);
+    }, 15000);
 });

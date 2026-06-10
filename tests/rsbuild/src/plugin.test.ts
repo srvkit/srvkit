@@ -49,7 +49,7 @@ describe("rsbuild plugin", (): void => {
         const content: string = Fs.readFileSync(outputFile, "utf-8");
 
         expect(content.length).toBeGreaterThan(0);
-    }, 60000);
+    }, 15000);
 
     it("produces output file with export default for handler target", async (): Promise<void> => {
         const rsbuild: RsbuildInstance = await createRsbuild({
@@ -80,5 +80,5 @@ describe("rsbuild plugin", (): void => {
         const content: string = Fs.readFileSync(outputFile, "utf-8");
 
         expect(content.length).toBeGreaterThan(0);
-    }, 60000);
+    }, 15000);
 });

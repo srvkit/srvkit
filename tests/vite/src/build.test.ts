@@ -76,7 +76,7 @@ describe("vite build plugin", (): void => {
             const content: string = Fs.readFileSync(outputFile, "utf-8");
 
             expect(content.length).toBeGreaterThan(0);
-        }, 30000);
+        }, 15000);
 
         it("bundle: standalone — produces output with all deps inlined", async (): Promise<void> => {
             const opts: ResolvedOptions = resolveOptions({
@@ -108,7 +108,7 @@ describe("vite build plugin", (): void => {
             expect(content.length).toBeGreaterThan(0);
 
             assertNoThirdPartyRequires(content);
-        }, 30000);
+        }, 15000);
     });
 
     describe("target: handler", (): void => {
@@ -152,7 +152,7 @@ describe("vite build plugin", (): void => {
             expect(content.length).toBeGreaterThan(0);
 
             expect(hasExportDefault(content)).toBe(true);
-        }, 30000);
+        }, 15000);
 
         it("bundle: standalone — produces handler with export default and all deps inlined", async (): Promise<void> => {
             const opts: ResolvedOptions = resolveOptions({
@@ -186,6 +186,6 @@ describe("vite build plugin", (): void => {
             expect(hasExportDefault(content)).toBe(true);
 
             assertNoThirdPartyRequires(content);
-        }, 30000);
+        }, 15000);
     });
 });

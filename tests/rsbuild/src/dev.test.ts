@@ -79,14 +79,14 @@ describe("rsbuild dev plugin", (): void => {
                 }),
             (res: FetchLocalResult): boolean => res.status === 200,
             {
-                timeout: 10000,
-                interval: 500,
+                timeout: 5000,
+                interval: 50,
             },
         );
 
         expect(response.status).toBe(200);
         expect(response.body).toContain("Hello from dev!");
-    }, 60000);
+    }, 15000);
 
     it("starts dev server on custom port", async (): Promise<void> => {
         const tempDir: string = createFixture(BASE_DIR, "dev-port", {
@@ -130,14 +130,14 @@ describe("rsbuild dev plugin", (): void => {
                 }),
             (res: FetchLocalResult): boolean => res.status === 200,
             {
-                timeout: 10000,
-                interval: 500,
+                timeout: 5000,
+                interval: 50,
             },
         );
 
         expect(response.status).toBe(200);
         expect(response.body).toContain("Custom port!");
-    }, 60000);
+    }, 15000);
 
     it("reloads handler on file change", async (): Promise<void> => {
         const tempDir: string = createFixture(BASE_DIR, "dev-hmr", {
@@ -181,8 +181,8 @@ describe("rsbuild dev plugin", (): void => {
                 }),
             (res: FetchLocalResult): boolean => res.status === 200,
             {
-                timeout: 10000,
-                interval: 500,
+                timeout: 5000,
+                interval: 50,
             },
         );
 
@@ -208,14 +208,14 @@ describe("rsbuild dev plugin", (): void => {
             (res: FetchLocalResult): boolean =>
                 res.body.includes("Updated response!"),
             {
-                timeout: 15000,
-                interval: 500,
+                timeout: 10000,
+                interval: 50,
             },
         );
 
         expect(response2.status).toBe(200);
         expect(response2.body).toContain("Updated response!");
-    }, 60000);
+    }, 15000);
 
     afterAll((): void => {
         cleanupFixture(BASE_DIR, "dev-basic");

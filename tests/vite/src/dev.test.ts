@@ -67,7 +67,7 @@ describe("vite dev plugin", (): void => {
         expect(result.status).toBe(200);
 
         expect(result.body).toContain("Hello from dev!");
-    }, 60000);
+    }, 15000);
 
     it("starts dev server on custom port", async (): Promise<void> => {
         const tempDir: string = createFixture(BASE_DIR, "dev-port", {
@@ -105,7 +105,7 @@ describe("vite dev plugin", (): void => {
         expect(result.status).toBe(200);
 
         expect(result.body).toContain("Custom port!");
-    }, 60000);
+    }, 15000);
 
     it("reloads handler on file change", async (): Promise<void> => {
         const tempDir: string = createFixture(BASE_DIR, "dev-hmr", {
@@ -173,14 +173,14 @@ describe("vite dev plugin", (): void => {
                 }),
             (res): boolean => res.body.includes("Updated response!"),
             {
-                timeout: 15000,
-                interval: 300,
+                timeout: 10000,
+                interval: 50,
             },
         );
 
         expect(result2.status).toBe(200);
         expect(result2.body).toContain("Updated response!");
-    }, 60000);
+    }, 15000);
 
     afterAll((): void => {
         cleanupFixture(BASE_DIR, "dev-basic");
