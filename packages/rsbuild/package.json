@@ -70,8 +70,7 @@
         "dist"
     ],
     "dependencies": {
-        "@srvkit/common": "workspace:~",
-        "es-toolkit": "catalog:dep"
+        "@srvkit/common": "workspace:~"
     },
     "devDependencies": {
         "@rsbuild/core": "catalog:dev"

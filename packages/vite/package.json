@@ -72,7 +72,6 @@
     ],
     "dependencies": {
         "@srvkit/common": "workspace:~",
-        "es-toolkit": "catalog:dep",
         "rolldown-plugin-copy": "~0.2.0"
     },
     "devDependencies": {
