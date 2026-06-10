@@ -39,7 +39,15 @@ const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
 
         const protocol: string = `http${isHttps ? "s" : ""}`;
 
-        const host: string = process.env.HOST ?? "localhost";
+        const serverHost: string | boolean | undefined =
+            vite.config.server.host;
+
+        const host: string =
+            typeof serverHost === "boolean"
+                ? "0.0.0.0"
+                : typeof serverHost === "string"
+                  ? serverHost
+                  : "localhost";
 
         const port: number = vite.config.server.port;
 

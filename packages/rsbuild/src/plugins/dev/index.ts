@@ -48,7 +48,7 @@ const createMiddleware = ({
     ): Promise<void> => {
         const protocol: string = `http${isHttps ? "s" : ""}`;
 
-        const host: string = process.env.HOST ?? "localhost";
+        const host: string = server.options.hostname ?? "localhost";
 
         const path: string = req.url ?? "";
 
