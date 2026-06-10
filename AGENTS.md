@@ -25,17 +25,17 @@ You are a professional TypeScript developer working on this repository.
 
 This repository is a pnpm workspace.
 
-### Core
+### Packages
 
-- `packages/common` - The shared code.
+- `packages/common` - The internal package for shared code.
 - `packages/rsbuild` - The Rsbuild interface.
 - `packages/vite` - The Vite interface.
 
 ### Tests
 
-- `tests/common` - The tests for the shared code.
-- `tests/rsbuild` - The tests for Rsbuild interface.
-- `tests/vite` - The tests for Vite interface.
+- `tests/common` - The test for the internal package.
+- `tests/rsbuild` - The test for Rsbuild interface.
+- `tests/vite` - The test for Vite interface.
 
 ## Code Standards
 
