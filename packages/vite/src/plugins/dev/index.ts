@@ -42,6 +42,7 @@ const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
         const serverHost: string | boolean | undefined =
             vite.config.server.host;
 
+        // Vite uses `true` as shorthand for "listen on all interfaces" (0.0.0.0)
         const host: string =
             typeof serverHost === "boolean"
                 ? "0.0.0.0"
@@ -55,6 +56,7 @@ const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
 
         const url: URL = new URL(`${protocol}://${host}:${port}${path}`);
 
+        // GET and HEAD requests must not have a body per HTTP spec
         const body: Connect.IncomingMessage | undefined =
             req.method !== "GET" && req.method !== "HEAD" ? req : void 0;
 
@@ -63,6 +65,7 @@ const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
             headers: toHeaders(req.headers),
             // @ts-expect-error
             body,
+            // Required for streaming request bodies in Node's fetch implementation
             duplex: "half",
         });
 
@@ -128,11 +131,10 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
             ).default;
 
             const { server, update } = createLiveServer({
-                // base
+                // Prevent srvx from installing its own SIGTERM handler
                 gracefulShutdown: false,
-                // user
                 ...serverOptions,
-                // override
+                // Defer server start so middleware can be attached first
                 manual: true,
                 hostname: dev.host,
                 port: dev.port,
@@ -154,6 +156,8 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
 
             let reloadTimer: ReturnType<typeof setTimeout> | undefined = void 0;
 
+            // Retry up to 3 times with backoff because the module graph
+            // may not be fully invalidated on the first attempt
             const reload = async (attempt: number): Promise<void> => {
                 try {
                     const ssrEnv: DevEnvironment = vite.environments.ssr;
@@ -180,6 +184,7 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
                 }
             };
 
+            // Debounce rapid file changes to avoid redundant reloads
             vite.watcher.on("change", (): void => {
                 clearTimeout(reloadTimer);
 

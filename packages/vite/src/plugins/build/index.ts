@@ -31,6 +31,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
             const overrideConfig: UserConfig = {
                 ssr: {
                     target: getSsrTarget(opts.runtime),
+                    // Ensuring runtime-specific exports are selected first
                     resolve: {
                         conditions: [
                             opts.runtime,
@@ -43,7 +44,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 build: {
                     ssr: true,
                     outDir: build.outputDir,
-                    copyPublicDir: false,
+                    copyPublicDir: false, // Handled by copyPlugin instead
                     rolldownOptions: {
                         input: VIRTUAL_ENTRY,
                         output: {
@@ -66,6 +67,10 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 },
             };
 
+            // Remove user-provided ssr.external and ssr.noExternal to avoid
+            // conflicts with the bundle mode. If these were left, mergeConfig
+            // would merge user values with the current config, causing unintended
+            // bundling or externalization behavior.
             if (config.ssr) {
                 delete config.ssr.external;
                 delete config.ssr.noExternal;

@@ -17,6 +17,8 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
     code += `import options from "${toPosix(opts.entry)}";`;
     code += `import { serve } from "${opts.packageName}/runtime";`;
 
+    // Handler targets run on platforms that manage their own server lifecycle,
+    // add `manual: true` prevents serve() from auto-listening
     if (build.target === "handler") {
         code += `const server = serve({ ...options, manual: true });`;
         code += `export default server;`;

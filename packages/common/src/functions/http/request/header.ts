@@ -20,6 +20,8 @@ const toHeaders = (headers: HTTP.IncomingHttpHeaders): Headers => {
 
         const [key, value] = entry;
 
+        // Skip HTTP/2 pseudo-headers (:method, :path, :authority, etc.)
+        // which must not be forwarded to the Request/Response Headers object
         if (key.startsWith(":")) continue;
 
         if (value === void 0) continue;

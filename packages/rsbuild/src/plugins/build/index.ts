@@ -46,11 +46,13 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         output: {
                             target: "node",
                             distPath: build.outputDir,
-                            copy: void 0,
+                            copy: void 0, // Handled by copyPlugin instead
                         },
                     };
 
-                    // Enforce the bundler to apply SWC configuration to third-party dependencies
+                    // In standalone mode, force the bundler to process node_modules through SWC
+                    // so transpilation config (e.g. decorators, class properties) applies to deps too.
+                    // Without this, Rsbuild skips transforming node_modules by default.
                     if (build.bundle === "standalone") {
                         overrideConfig.source = {
                             ...overrideConfig.source,
@@ -111,6 +113,8 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             ],
                         },
                         target: ssrTarget,
+                        // Preserve real __dirname/__filename values instead of injecting
+                        // Rspack polyfills — server code should use the real Node values
                         node: {
                             __dirname: false,
                             __filename: false,
@@ -162,7 +166,7 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         overrideConfig.output = {
                             ...overrideConfig.output,
                             filename: build.outputFile,
-                            library: void 0,
+                            library: void 0, // Server target is self-starting
                             ...(isModule
                                 ? {
                                       module: true,

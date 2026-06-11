@@ -54,6 +54,7 @@ const createMiddleware = ({
 
         const url: URL = new URL(`${protocol}://${host}:${port}${path}`);
 
+        // GET and HEAD requests must not have a body per HTTP spec
         const body: HTTP.IncomingMessage | undefined =
             req.method !== "GET" && req.method !== "HEAD" ? req : void 0;
 
@@ -62,6 +63,7 @@ const createMiddleware = ({
             headers: toHeaders(req.headers),
             // @ts-expect-error
             body,
+            // Required for streaming request bodies in Node's fetch implementation
             duplex: "half",
         });
 
@@ -125,6 +127,8 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             copy: void 0,
                         },
                         dev: {
+                            // Live reload imports the compiled file from disk,
+                            // so it must be written out
                             writeToDisk: true,
                         },
                         server: {
@@ -189,6 +193,8 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                                 : {}),
                         },
                         target: ssrTarget,
+                        // Preserve real __dirname/__filename values instead of injecting
+                        // Rspack polyfills — server code should use the real Node values
                         node: {
                             __dirname: false,
                             __filename: false,
@@ -248,8 +254,10 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                     ).default;
 
                     const { server, update } = createLiveServer({
+                        // Prevent srvx from installing its own SIGTERM handler
                         gracefulShutdown: false,
                         ...serverOptions,
+                        // Defer server start so middleware can be attached first
                         manual: true,
                         hostname: dev.host,
                         port: dev.port,
@@ -274,6 +282,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                 // Live update
 
                 try {
+                    // Node caches imports by URL — using a unique path forces re-import each time
                     const importPath: string = Path.resolve(
                         distPath,
                         `index-${compileCount}.js`,
@@ -285,6 +294,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         await import(pathToFileURL(importPath).href)
                     ).default;
 
+                    // Remove the temp copy after import to avoid accumulating stale files
                     await Fsp.unlink(importPath);
 
                     liveUpdate?.(newServerOptions);
@@ -295,7 +305,9 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         await Fsp.unlink(
                             Path.resolve(distPath, `index-${compileCount}.js`),
                         );
-                    } catch {}
+                    } catch {
+                        // Unlink may fail if the import itself threw — file may not exist
+                    }
                 }
             });
 
@@ -308,6 +320,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         res: HTTP.ServerResponse,
                         next: () => void,
                     ): Promise<void> => {
+                        // Middleware may not be ready before the first compile completes
                         if (middleware === void 0) {
                             next();
 
