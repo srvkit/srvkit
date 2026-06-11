@@ -83,6 +83,9 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                             entryFileNames: build.outputFile,
                             format:
                                 packageJson.type === "module" ? "esm" : "cjs",
+                            ...(build.bundle === "standalone" && {
+                                codeSplitting: false,
+                            }),
                         },
                         external: [
                             ...builtinModules,
