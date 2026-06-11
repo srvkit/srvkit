@@ -4,7 +4,7 @@ import type {
 } from "@srvkit/common/@types/options/resolved";
 import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 import type { LoadResult, ResolveIdResult } from "rolldown";
-import type { Plugin, ResolvedConfig, UserConfig } from "vite";
+import type { Plugin, UserConfig } from "vite";
 
 import { builtinModules } from "node:module";
 
@@ -29,15 +29,13 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
         apply: "build",
         config: (config: UserConfig): UserConfig => {
             const overrideConfig: UserConfig = {
-                resolve: {
-                    conditions: [
-                        opts.runtime,
-                    ],
-                },
                 ssr: {
                     target: getSsrTarget(opts.runtime),
                     resolve: {
                         conditions: [
+                            opts.runtime,
+                        ],
+                        externalConditions: [
                             opts.runtime,
                         ],
                     },
@@ -68,30 +66,28 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 },
             };
 
-            return mergeConfig(config, overrideConfig);
-        },
-        configResolved: (resolvedConfig: ResolvedConfig): void => {
-            const ssrEnvironment:
-                | ResolvedConfig["environments"]["ssr"]
-                | undefined = resolvedConfig.environments.ssr;
+            if (config.ssr) {
+                delete config.ssr.external;
+                delete config.ssr.noExternal;
+            }
 
             if (build.bundle === "external") {
-                resolvedConfig.ssr.external = true;
-                resolvedConfig.ssr.noExternal = [];
-                if (ssrEnvironment !== void 0) {
-                    ssrEnvironment.resolve.external = true;
-                    ssrEnvironment.resolve.noExternal = [];
-                }
+                overrideConfig.ssr = {
+                    ...overrideConfig.ssr,
+                    external: true,
+                    noExternal: [],
+                };
             }
 
             if (build.bundle === "standalone") {
-                resolvedConfig.ssr.external = [];
-                resolvedConfig.ssr.noExternal = true;
-                if (ssrEnvironment !== void 0) {
-                    ssrEnvironment.resolve.external = [];
-                    ssrEnvironment.resolve.noExternal = true;
-                }
+                overrideConfig.ssr = {
+                    ...overrideConfig.ssr,
+                    external: [],
+                    noExternal: true,
+                };
             }
+
+            return mergeConfig(config, overrideConfig);
         },
         resolveId: (id: string): ResolveIdResult => {
             if (id !== VIRTUAL_ENTRY) return void 0;
