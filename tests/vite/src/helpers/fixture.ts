@@ -6,6 +6,7 @@ type FixtureOptions = {
     entryContent?: string;
     publicFiles?: Record<string, string>;
     dependencies?: Record<string, string>;
+    localDependencies?: Record<string, Record<string, string>>;
 };
 
 const DEFAULT_ENTRY: string = [
@@ -25,6 +26,10 @@ const createFixture = (
     const entryContent: string = options?.entryContent ?? DEFAULT_ENTRY;
     const publicFiles: Record<string, string> = options?.publicFiles ?? {};
     const dependencies: Record<string, string> = options?.dependencies ?? {};
+    const localDependencies: Record<
+        string,
+        Record<string, string>
+    > = options?.localDependencies ?? {};
 
     const tempDir: string = Path.resolve(baseDir, "__temp__", name);
     const srcDir: string = Path.resolve(tempDir, "src");
@@ -57,6 +62,35 @@ const createFixture = (
 
         for (const [fileName, content] of Object.entries(publicFiles)) {
             Fs.writeFileSync(Path.resolve(publicDir, fileName), content);
+        }
+    }
+
+    if (Object.keys(localDependencies).length > 0) {
+        const nodeModulesDir: string = Path.resolve(tempDir, "node_modules");
+
+        Fs.mkdirSync(nodeModulesDir, {
+            recursive: true,
+        });
+
+        for (const [pkgName, files] of Object.entries(localDependencies)) {
+            const pkgDir: string = Path.resolve(nodeModulesDir, pkgName);
+
+            Fs.mkdirSync(pkgDir, {
+                recursive: true,
+            });
+
+            Fs.writeFileSync(
+                Path.resolve(pkgDir, "package.json"),
+                JSON.stringify({
+                    name: pkgName,
+                    type: "module",
+                    main: "index.js",
+                }),
+            );
+
+            for (const [fileName, fileContent] of Object.entries(files)) {
+                Fs.writeFileSync(Path.resolve(pkgDir, fileName), fileContent);
+            }
         }
     }
 

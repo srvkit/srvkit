@@ -4,7 +4,7 @@ import type {
 } from "@srvkit/common/@types/options/resolved";
 import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 import type { LoadResult, ResolveIdResult } from "rolldown";
-import type { Plugin, UserConfig } from "vite";
+import type { Plugin, ResolvedConfig, UserConfig } from "vite";
 
 import { builtinModules } from "node:module";
 
@@ -28,9 +28,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
         name: `${name}/build`,
         apply: "build",
         config: (config: UserConfig): UserConfig => {
-            let result: UserConfig = {};
-
-            let baseConfig: UserConfig = {
+            const overrideConfig: UserConfig = {
                 resolve: {
                     conditions: [
                         opts.runtime,
@@ -45,38 +43,9 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                     },
                 },
                 build: {
-                    copyPublicDir: false,
-                },
-            };
-
-            if (build.bundle === "external") {
-                baseConfig = {
-                    ...baseConfig,
-                    ssr: {
-                        ...baseConfig.ssr,
-                        external: true,
-                        noExternal: void 0,
-                    },
-                };
-            }
-
-            if (build.bundle === "standalone") {
-                baseConfig = {
-                    ...baseConfig,
-                    ssr: {
-                        ...baseConfig.ssr,
-                        external: void 0,
-                        noExternal: true,
-                    },
-                };
-            }
-
-            result = mergeConfig(baseConfig, config);
-
-            const overrideConfig: UserConfig = {
-                build: {
                     ssr: true,
                     outDir: build.outputDir,
+                    copyPublicDir: false,
                     rolldownOptions: {
                         input: VIRTUAL_ENTRY,
                         output: {
@@ -99,7 +68,30 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                 },
             };
 
-            return mergeConfig(result, overrideConfig);
+            return mergeConfig(config, overrideConfig);
+        },
+        configResolved: (resolvedConfig: ResolvedConfig): void => {
+            const ssrEnvironment:
+                | ResolvedConfig["environments"]["ssr"]
+                | undefined = resolvedConfig.environments.ssr;
+
+            if (build.bundle === "external") {
+                resolvedConfig.ssr.external = true;
+                resolvedConfig.ssr.noExternal = [];
+                if (ssrEnvironment !== void 0) {
+                    ssrEnvironment.resolve.external = true;
+                    ssrEnvironment.resolve.noExternal = [];
+                }
+            }
+
+            if (build.bundle === "standalone") {
+                resolvedConfig.ssr.external = [];
+                resolvedConfig.ssr.noExternal = true;
+                if (ssrEnvironment !== void 0) {
+                    ssrEnvironment.resolve.external = [];
+                    ssrEnvironment.resolve.noExternal = true;
+                }
+            }
         },
         resolveId: (id: string): ResolveIdResult => {
             if (id !== VIRTUAL_ENTRY) return void 0;
