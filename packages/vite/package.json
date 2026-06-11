@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/vitejs/vite-plugin-registry/refs/heads/main/data/schema/extended-package-json.schema.json",
     "name": "@srvkit/vite",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A toolkit for building JavaScript server applications",
     "keywords": [
         "srvkit",
