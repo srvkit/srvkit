@@ -28,6 +28,11 @@
             "import": "./dist/@types/options/complete/index.mjs",
             "require": "./dist/@types/options/complete/index.js"
         },
+        "./@types/options/complete/https": {
+            "types": "./dist/@types/options/complete/https/index.d.ts",
+            "import": "./dist/@types/options/complete/https/index.mjs",
+            "require": "./dist/@types/options/complete/https/index.js"
+        },
         "./*": {
             "types": "./dist/*.d.ts",
             "import": "./dist/*.mjs",
