@@ -1,6 +1,6 @@
 # @srvkit/rsbuild
 
-A toolkit for building JavaScript server applications.
+A toolkit for building APIs.
 
 ## Documentation
 

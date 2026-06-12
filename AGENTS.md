@@ -1,6 +1,6 @@
 ## Identity
 
-This is a toolkit for building JavaScript server applications.
+This is a toolkit for building APIs.
 
 It built on top of srvx.
 

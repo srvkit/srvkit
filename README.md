@@ -1,6 +1,6 @@
 # srvkit
 
-A toolkit for building JavaScript server applications.
+A toolkit for building APIs.
 
 - 🌍 Runtime agnostic
 - 🧩 Framework agnostic

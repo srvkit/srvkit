@@ -1,7 +1,7 @@
 {
     "name": "@srvkit/common",
     "version": "0.1.1",
-    "description": "A toolkit for building JavaScript server applications",
+    "description": "A toolkit for building APIs",
     "keywords": [
         "srvkit",
         "srvx",
