@@ -1,4 +1,4 @@
-import type { CompleteHttpsOptions } from "#/@types/options/complete/dev";
+import type { CompleteHttpsOptions } from "#/@types/options/complete/https";
 
 /**
  * Build target.

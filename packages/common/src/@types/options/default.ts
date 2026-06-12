@@ -5,10 +5,8 @@ import type {
     CompleteBuildHandlerOptions,
     CompleteBuildServerOptions,
 } from "#/@types/options/complete/build";
-import type {
-    CompleteDevOptions,
-    CompleteHttpsOptions,
-} from "#/@types/options/complete/dev";
+import type { CompleteDevOptions } from "#/@types/options/complete/dev";
+import type { CompleteHttpsOptions } from "#/@types/options/complete/https";
 
 /**
  * HTTPS server options.
