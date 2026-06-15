@@ -117,7 +117,7 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
             let liveUpdate: ((options: ServerOptions) => void) | undefined;
 
-            let port: number;
+            let port: number = resolvedPort;
 
             let compileCount: number = 0;
 
