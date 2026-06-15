@@ -45,10 +45,12 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
         const passphrase: ResolvableString | undefined = build.https.passphrase;
 
         code += `tls: {`;
-        if (cert !== void 0) code += `cert: ${toPosix(injectString(cert))},`;
-        if (key !== void 0) code += `key: ${toPosix(injectString(key))},`;
+        if (cert !== void 0)
+            code += `cert: ${injectString(typeof cert === "string" ? toPosix(cert) : cert)},`;
+        if (key !== void 0)
+            code += `key: ${injectString(typeof key === "string" ? toPosix(key) : key)},`;
         if (passphrase !== void 0)
-            code += `passphrase: ${toPosix(injectString(passphrase))},`;
+            code += `passphrase: ${injectString(passphrase)},`;
         code += `},`;
     }
 
