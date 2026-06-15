@@ -13,7 +13,12 @@ export type {
     HttpsOptions,
     Options,
 } from "@srvkit/common/@types/options/default";
-export type { EnvFunctions } from "@srvkit/common/plugin";
+export type {
+    EnvBoolean,
+    EnvFunctions,
+    EnvNumber,
+    EnvString,
+} from "@srvkit/common/plugin";
 
 export { env } from "@srvkit/common/plugin";
 
