@@ -4,8 +4,8 @@ import type {
     ResolvedOptions,
 } from "#/@types/options/resolved";
 
+import { OPTIONS_BUILD_SERVER_BASE } from "#/consts/options";
 import { injectNumber, injectString } from "#/functions/env/inject";
-import { BUILD_SERVER_FALLBACKS } from "#/functions/options/resolve";
 import { toPosix } from "#/functions/path/posix";
 
 type VirtualEntryOptions = ResolvedOptions & {
@@ -36,11 +36,11 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
     code += `serve({`;
     code += `...options,`;
 
-    if (build.host !== BUILD_SERVER_FALLBACKS.host) {
-        code += `hostname: ${injectString(opts.runtime, build.host, BUILD_SERVER_FALLBACKS.host)},`;
+    if (build.host !== OPTIONS_BUILD_SERVER_BASE.host) {
+        code += `hostname: ${injectString(opts.runtime, build.host, OPTIONS_BUILD_SERVER_BASE.host)},`;
     }
-    if (build.port !== BUILD_SERVER_FALLBACKS.port) {
-        code += `port: ${injectNumber(opts.runtime, build.port, BUILD_SERVER_FALLBACKS.port)},`;
+    if (build.port !== OPTIONS_BUILD_SERVER_BASE.port) {
+        code += `port: ${injectNumber(opts.runtime, build.port, OPTIONS_BUILD_SERVER_BASE.port)},`;
     }
 
     if (build.https) {

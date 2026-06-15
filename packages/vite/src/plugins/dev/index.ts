@@ -15,13 +15,13 @@ import type {
     ViteDevServer,
 } from "vite";
 
+import { OPTIONS_DEV } from "@srvkit/common/consts/options";
 import {
     resolveNumber,
     resolveString,
 } from "@srvkit/common/functions/env/resolve";
 import { toHeaders } from "@srvkit/common/functions/http/request/header";
 import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
-import { DEV_FALLBACKS } from "@srvkit/common/functions/options/resolve";
 import { createLiveServer } from "@srvkit/common/functions/server/live";
 import { mergeConfig } from "vite";
 
@@ -89,8 +89,8 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
     const dev: ResolvedDevOptions = opts.dev;
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
 
-    const resolvedHost: string = resolveString(dev.host, DEV_FALLBACKS.host);
-    const resolvedPort: number = resolveNumber(dev.port, DEV_FALLBACKS.port);
+    const resolvedHost: string = resolveString(dev.host, OPTIONS_DEV.host);
+    const resolvedPort: number = resolveNumber(dev.port, OPTIONS_DEV.port);
     const resolvedCert: string | undefined = resolveString(https.cert);
     const resolvedKey: string | undefined = resolveString(https.key);
     const resolvedPassphrase: string | undefined = resolveString(

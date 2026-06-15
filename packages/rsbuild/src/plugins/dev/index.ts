@@ -22,13 +22,13 @@ import { builtinModules } from "node:module";
 import * as Path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { OPTIONS_DEV } from "@srvkit/common/consts/options";
 import {
     resolveNumber,
     resolveString,
 } from "@srvkit/common/functions/env/resolve";
 import { toHeaders } from "@srvkit/common/functions/http/request/header";
 import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
-import { DEV_FALLBACKS } from "@srvkit/common/functions/options/resolve";
 import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 import { toPosix } from "@srvkit/common/functions/path/posix";
 import { createLiveServer } from "@srvkit/common/functions/server/live";
@@ -97,8 +97,8 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
     const build: ResolvedBuildOptions = opts.build;
 
-    const resolvedHost: string = resolveString(dev.host, DEV_FALLBACKS.host);
-    const resolvedPort: number = resolveNumber(dev.port, DEV_FALLBACKS.port);
+    const resolvedHost: string = resolveString(dev.host, OPTIONS_DEV.host);
+    const resolvedPort: number = resolveNumber(dev.port, OPTIONS_DEV.port);
     const resolvedCert: string | undefined = resolveString(https.cert);
     const resolvedKey: string | undefined = resolveString(https.key);
     const resolvedPassphrase: string | undefined = resolveString(
