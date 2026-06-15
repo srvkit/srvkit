@@ -22,6 +22,11 @@ import { builtinModules } from "node:module";
 import * as Path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { OPTIONS_DEV } from "@srvkit/common/consts/options";
+import {
+    resolveNumber,
+    resolveString,
+} from "@srvkit/common/functions/env/resolve";
 import { toHeaders } from "@srvkit/common/functions/http/request/header";
 import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
 import { getPackageJson } from "@srvkit/common/functions/package/package-json";
@@ -92,7 +97,15 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
     const build: ResolvedBuildOptions = opts.build;
 
-    const isHttps: boolean = https.cert !== void 0 && https.key !== void 0;
+    const resolvedHost: string = resolveString(dev.host, OPTIONS_DEV.host);
+    const resolvedPort: number = resolveNumber(dev.port, OPTIONS_DEV.port);
+    const resolvedCert: string | undefined = resolveString(https.cert);
+    const resolvedKey: string | undefined = resolveString(https.key);
+    const resolvedPassphrase: string | undefined = resolveString(
+        https.passphrase,
+    );
+
+    const isHttps: boolean = resolvedCert !== void 0 && resolvedKey !== void 0;
 
     const packageJson: PackageJson = getPackageJson(opts.cwd);
 
@@ -104,11 +117,35 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
             let liveUpdate: ((options: ServerOptions) => void) | undefined;
 
-            let port: number;
+            let port: number = resolvedPort;
 
             let compileCount: number = 0;
 
+            const isModule: boolean = packageJson.type === "module";
+
             const ssrTarget: Rspack.Target = getSsrTarget(opts.runtime);
+
+            const externals: (string | RegExp)[] = [
+                ...builtinModules,
+                /^cloudflare:/,
+            ];
+
+            if (build.bundle === "external") {
+                const depNames: string[] = [
+                    ...Object.keys(packageJson.dependencies ?? {}),
+                    ...Object.keys(packageJson.peerDependencies ?? {}),
+                    ...Object.keys(packageJson.optionalDependencies ?? {}),
+                ];
+
+                const depExternals: RegExp[] = depNames.map(
+                    (depName: string): RegExp =>
+                        new RegExp(
+                            `^${depName.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
+                        ),
+                );
+
+                externals.push(...depExternals);
+            }
 
             api.modifyRsbuildConfig(
                 (
@@ -132,14 +169,15 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             writeToDisk: true,
                         },
                         server: {
-                            host: dev.host,
-                            port: dev.port,
-                            ...(https.cert !== void 0 && https.key !== void 0
+                            host: resolvedHost,
+                            port: resolvedPort,
+                            ...(resolvedCert !== void 0 &&
+                            resolvedKey !== void 0
                                 ? {
                                       https: {
-                                          cert: https.cert,
-                                          key: https.key,
-                                          passphrase: https.passphrase,
+                                          cert: resolvedCert,
+                                          key: resolvedKey,
+                                          passphrase: resolvedPassphrase,
                                       },
                                   }
                                 : {}),
@@ -164,18 +202,22 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                                     createDevVirtualEntryCode(opts),
                             },
                         ]);
+
+                    // When `target` is `webworker`, all modules will be bundled.
+                    // Therefore, this plugin is used to make them external again.
+                    if (opts.runtime === "workerd") {
+                        chain
+                            .plugin("workerd-externals")
+                            .use(rspack.ExternalsPlugin, [
+                                isModule ? "module-import" : "commonjs",
+                                externals,
+                            ]);
+                    }
                 },
             );
 
             api.modifyRspackConfig(
                 (config, { mergeConfig }): Rspack.Configuration => {
-                    const isModule: boolean = packageJson.type === "module";
-
-                    const nodeExternals: (string | RegExp)[] = [
-                        ...builtinModules,
-                        /^node:/,
-                    ];
-
                     const overrideConfig: Rspack.Configuration = {
                         resolve: {
                             /** @see https://rspack.rs/config/resolve#extend-default-value */
@@ -193,6 +235,8 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                                 : {}),
                         },
                         target: ssrTarget,
+                        externals,
+                        externalsType: isModule ? "module-import" : "commonjs",
                         // Preserve real __dirname/__filename values instead of injecting
                         // Rspack polyfills — server code should use the real Node values
                         node: {
@@ -200,40 +244,6 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             __filename: false,
                         },
                     };
-
-                    // bundle: external
-
-                    if (build.bundle === "external") {
-                        const depNames: string[] = [
-                            ...Object.keys(packageJson.dependencies ?? {}),
-                            ...Object.keys(packageJson.peerDependencies ?? {}),
-                            ...Object.keys(
-                                packageJson.optionalDependencies ?? {},
-                            ),
-                        ];
-
-                        const depExternals: RegExp[] = depNames.map(
-                            (depName: string): RegExp =>
-                                new RegExp(
-                                    `^${depName.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
-                                ),
-                        );
-
-                        overrideConfig.externals = [
-                            ...nodeExternals,
-                            ...depExternals,
-                        ];
-
-                        overrideConfig.externalsType = isModule
-                            ? "module-import"
-                            : "commonjs";
-                    }
-
-                    // bundle: standalone
-
-                    if (build.bundle === "standalone") {
-                        overrideConfig.externals = nodeExternals;
-                    }
 
                     return mergeConfig(config, overrideConfig);
                 },
@@ -259,12 +269,12 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         ...serverOptions,
                         // Defer server start so middleware can be attached first
                         manual: true,
-                        hostname: dev.host,
-                        port: dev.port,
+                        hostname: resolvedHost,
+                        port: resolvedPort,
                         tls: {
-                            cert: https.cert,
-                            key: https.key,
-                            passphrase: https.passphrase,
+                            cert: resolvedCert,
+                            key: resolvedKey,
+                            passphrase: resolvedPassphrase,
                         },
                     });
 

@@ -1,46 +1,18 @@
 import type { Omit } from "ts-vista";
 
 import type { Options } from "#/@types/options/default";
-import type {
-    ResolvedBuildHandlerOptions,
-    ResolvedBuildServerOptions,
-    ResolvedOptions,
-} from "#/@types/options/resolved";
+import type { ResolvedOptions } from "#/@types/options/resolved";
 
 import * as Fs from "node:fs";
 import * as Path from "node:path";
 
 import { toMerged } from "es-toolkit";
 
-const OPTIONS_BUILD_SERVER: ResolvedBuildServerOptions = {
-    target: "server",
-    host: "localhost",
-    port: 3000,
-    bundle: "external",
-    outputDir: "./dist",
-    outputFile: "index.js",
-    minify: false,
-    publicDir: "./public",
-    copyPublicDir: false,
-};
-
-const OPTIONS_BUILD_HANDLER: ResolvedBuildHandlerOptions = {
-    target: "handler",
-    bundle: "external",
-    outputDir: "./dist",
-    outputFile: "index.js",
-    minify: false,
-};
-
-const OPTIONS_DEFAULT: Omit<ResolvedOptions, "entry" | "build"> = {
-    cwd: process.cwd(),
-    runtime: "node",
-    dev: {
-        host: "localhost",
-        port: 3001,
-    },
-    verbose: false,
-};
+import {
+    OPTIONS_BUILD_HANDLER,
+    OPTIONS_BUILD_SERVER,
+    OPTIONS_DEFAULT,
+} from "#/consts/options";
 
 const getDefaultOptions = (
     isHandler: boolean,
