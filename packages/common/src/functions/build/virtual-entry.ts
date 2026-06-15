@@ -17,6 +17,10 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
 
     let code: string = "";
 
+    // Inject the env import for Cloudflare Workers
+    if (opts.runtime === "workerd")
+        code += `import { env } from "cloudflare:workers";`;
+
     code += `import options from "${toPosix(opts.entry)}";`;
     code += `import { serve } from "${opts.packageName}/runtime";`;
 
@@ -33,10 +37,10 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
     code += `...options,`;
 
     if (build.host !== BUILD_SERVER_FALLBACKS.host) {
-        code += `hostname: ${injectString(build.host, BUILD_SERVER_FALLBACKS.host)},`;
+        code += `hostname: ${injectString(opts.runtime, build.host, BUILD_SERVER_FALLBACKS.host)},`;
     }
     if (build.port !== BUILD_SERVER_FALLBACKS.port) {
-        code += `port: ${injectNumber(build.port, BUILD_SERVER_FALLBACKS.port)},`;
+        code += `port: ${injectNumber(opts.runtime, build.port, BUILD_SERVER_FALLBACKS.port)},`;
     }
 
     if (build.https) {
@@ -46,11 +50,11 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
 
         code += `tls: {`;
         if (cert !== void 0)
-            code += `cert: ${injectString(typeof cert === "string" ? toPosix(cert) : cert)},`;
+            code += `cert: ${injectString(opts.runtime, typeof cert === "string" ? toPosix(cert) : cert)},`;
         if (key !== void 0)
-            code += `key: ${injectString(typeof key === "string" ? toPosix(key) : key)},`;
+            code += `key: ${injectString(opts.runtime, typeof key === "string" ? toPosix(key) : key)},`;
         if (passphrase !== void 0)
-            code += `passphrase: ${injectString(passphrase)},`;
+            code += `passphrase: ${injectString(opts.runtime, passphrase)},`;
         code += `},`;
     }
 

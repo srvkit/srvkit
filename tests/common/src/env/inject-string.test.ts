@@ -10,13 +10,13 @@ const helloWorld = "Hello, World!" as const;
 
 describe("injectString", (): void => {
     it("returns JSON-stringified value for plain string", (): void => {
-        const result: string = injectString(hello);
+        const result: string = injectString("node", hello);
 
         expect(result).toBe(`"${hello}"`);
     });
 
     it("returns JSON-stringified value for plain string with special characters", (): void => {
-        const result: string = injectString(helloWorld);
+        const result: string = injectString("node", helloWorld);
 
         expect(result).toBe(`"${helloWorld}"`);
     });
@@ -24,7 +24,7 @@ describe("injectString", (): void => {
     it("calls inject on EnvString without fallback", (): void => {
         const envStr: EnvString = env.string("HOST");
 
-        const result: string = injectString(envStr);
+        const result: string = injectString("node", envStr);
 
         expect(result).toBe("process.env.HOST");
     });
@@ -32,7 +32,7 @@ describe("injectString", (): void => {
     it("calls inject on EnvString with fallback arg", (): void => {
         const envStr: EnvString = env.string("HOST");
 
-        const result: string = injectString(envStr, "localhost");
+        const result: string = injectString("node", envStr, "localhost");
 
         expect(result).toBe('(process.env.HOST ?? "localhost")');
     });
@@ -40,7 +40,7 @@ describe("injectString", (): void => {
     it("uses existing fallback on EnvString", (): void => {
         const envStr: EnvString<string> = env.string("HOST", "localhost");
 
-        const result: string = injectString(envStr);
+        const result: string = injectString("node", envStr);
 
         expect(result).toBe('(process.env.HOST ?? "localhost")');
     });

@@ -121,7 +121,31 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
 
             let compileCount: number = 0;
 
+            const isModule: boolean = packageJson.type === "module";
+
             const ssrTarget: Rspack.Target = getSsrTarget(opts.runtime);
+
+            const externals: (string | RegExp)[] = [
+                ...builtinModules,
+                /^cloudflare:/,
+            ];
+
+            if (build.bundle === "external") {
+                const depNames: string[] = [
+                    ...Object.keys(packageJson.dependencies ?? {}),
+                    ...Object.keys(packageJson.peerDependencies ?? {}),
+                    ...Object.keys(packageJson.optionalDependencies ?? {}),
+                ];
+
+                const depExternals: RegExp[] = depNames.map(
+                    (depName: string): RegExp =>
+                        new RegExp(
+                            `^${depName.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
+                        ),
+                );
+
+                externals.push(...depExternals);
+            }
 
             api.modifyRsbuildConfig(
                 (
@@ -178,18 +202,22 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                                     createDevVirtualEntryCode(opts),
                             },
                         ]);
+
+                    // When `target` is `webworker`, all modules will be bundled.
+                    // Therefore, this plugin is used to make them external again.
+                    if (opts.runtime === "workerd") {
+                        chain
+                            .plugin("workerd-externals")
+                            .use(rspack.ExternalsPlugin, [
+                                isModule ? "module-import" : "commonjs",
+                                externals,
+                            ]);
+                    }
                 },
             );
 
             api.modifyRspackConfig(
                 (config, { mergeConfig }): Rspack.Configuration => {
-                    const isModule: boolean = packageJson.type === "module";
-
-                    const nodeExternals: (string | RegExp)[] = [
-                        ...builtinModules,
-                        /^node:/,
-                    ];
-
                     const overrideConfig: Rspack.Configuration = {
                         resolve: {
                             /** @see https://rspack.rs/config/resolve#extend-default-value */
@@ -207,6 +235,8 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                                 : {}),
                         },
                         target: ssrTarget,
+                        externals,
+                        externalsType: isModule ? "module-import" : "commonjs",
                         // Preserve real __dirname/__filename values instead of injecting
                         // Rspack polyfills — server code should use the real Node values
                         node: {
@@ -214,40 +244,6 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             __filename: false,
                         },
                     };
-
-                    // bundle: external
-
-                    if (build.bundle === "external") {
-                        const depNames: string[] = [
-                            ...Object.keys(packageJson.dependencies ?? {}),
-                            ...Object.keys(packageJson.peerDependencies ?? {}),
-                            ...Object.keys(
-                                packageJson.optionalDependencies ?? {},
-                            ),
-                        ];
-
-                        const depExternals: RegExp[] = depNames.map(
-                            (depName: string): RegExp =>
-                                new RegExp(
-                                    `^${depName.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)}([\\/]|$)`,
-                                ),
-                        );
-
-                        overrideConfig.externals = [
-                            ...nodeExternals,
-                            ...depExternals,
-                        ];
-
-                        overrideConfig.externalsType = isModule
-                            ? "module-import"
-                            : "commonjs";
-                    }
-
-                    // bundle: standalone
-
-                    if (build.bundle === "standalone") {
-                        overrideConfig.externals = nodeExternals;
-                    }
 
                     return mergeConfig(config, overrideConfig);
                 },

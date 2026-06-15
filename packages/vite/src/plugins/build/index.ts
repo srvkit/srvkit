@@ -57,7 +57,7 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                         },
                         external: [
                             ...builtinModules,
-                            /^node:/,
+                            /^cloudflare:/,
                         ],
                         experimental: {
                             attachDebugInfo: "none",
