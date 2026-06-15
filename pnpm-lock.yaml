@@ -114,8 +114,8 @@ importers:
         specifier: ^3.4.0
         version: 3.4.2
       envkist:
-        specifier: ~0.1.0
-        version: 0.1.0
+        specifier: ~0.2.0
+        version: 0.2.0
       es-toolkit:
         specifier: catalog:dep
         version: 1.47.0
@@ -730,8 +730,8 @@ packages:
     resolution: {integrity: sha512-YGRs8knHhKHVShLkFET/rWAU8kmHbOV5LwN938RHI0pljAJ1Gf6SzXsSmRaEzcXTtOOmVqJ5+WtQPL5uigY50Q==}
     engines: {node: '>=14'}
 
-  envkist@0.1.0:
-    resolution: {integrity: sha512-risY6ssQxU/IZaZj6WCKYTSYkzee+kbSkPFUmHWDiwxuNkM8rajjbNKx0gxOmRqIs5lw51ZxcaPF6mC5UXi3fg==}
+  envkist@0.2.0:
+    resolution: {integrity: sha512-egTq/7wNA7O0W/AvEpLyB0CvLHC3ZQK5ePDTFvpd+uehhG2RubeVxUOrbZK50/d096wjzYMxF9iXF4vC//4QUg==}
 
   es-module-lexer@2.1.0:
     resolution: {integrity: sha512-n27zTYMjYu1aj4MjCWzSP7G9r75utsaoc8m61weK+W8JMBGGQybd43GstCXZ3WNmSFtGT9wi59qQTW6mhTR5LQ==}
@@ -1511,7 +1511,7 @@ snapshots:
 
   empathic@2.0.1: {}
 
-  envkist@0.1.0: {}
+  envkist@0.2.0: {}
 
   es-module-lexer@2.1.0: {}
 
