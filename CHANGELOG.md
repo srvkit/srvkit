@@ -1,3 +1,24 @@
+## Next
+
+### Common
+
+- add `envkist` dependency for environment variable resolution
+- add `ResolvableString` and `ResolvableNumber` types for env-aware options
+- add `resolveString` / `resolveNumber` for dev-time env value resolution
+- add `injectString` / `injectNumber` for runtime-aware env code injection
+- export `env`, `is`, and env type from plugin entry
+
+### Rsbuild
+
+- support `env.string()` / `env.number()` for host, port, and TLS options
+- add `ExternalsPlugin` for `workerd` runtime target
+- export `env`, `is`, and env types from plugin entry
+
+### Vite
+
+- support `env.string()` / `env.number()` for host, port, and TLS options
+- export `env`, `is`, and env types from plugin entry
+
 ## 0.1.1 (2026-06-11)
 
 ### Vite
