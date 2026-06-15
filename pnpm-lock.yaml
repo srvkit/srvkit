@@ -33,8 +33,8 @@ importers:
   .:
     devDependencies:
       '@apst/biome':
-        specifier: ~0.3.1
-        version: 0.3.1(@biomejs/biome@2.5.0)
+        specifier: ~0.3.2
+        version: 0.3.2(@biomejs/biome@2.5.0)
       '@apst/tsconfig':
         specifier: ~0.3.0
         version: 0.3.0(typescript@6.0.3)
@@ -113,6 +113,9 @@ importers:
       consola:
         specifier: ^3.4.0
         version: 3.4.2
+      envkist:
+        specifier: ~0.1.0
+        version: 0.1.0
       es-toolkit:
         specifier: catalog:dep
         version: 1.47.0
@@ -202,8 +205,8 @@ importers:
 
 packages:
 
-  '@apst/biome@0.3.1':
-    resolution: {integrity: sha512-shvIbGtfIBvaeJ5Mn4O4qnZybc3XYthi3ViQfq3TIhscJDYnlZ+RlHGPZigf5rS7lALuwe0jZKvQS+xIGX93+w==}
+  '@apst/biome@0.3.2':
+    resolution: {integrity: sha512-wNH6CySr77KvKVPZo2Ru6VnbGHrdx0T43m53veb2ybOW36W+dTYS6mqpSawjv7/OEXVpXxl2hmoqfBXT3DpUhw==}
     peerDependencies:
       '@biomejs/biome': ^2.0.0
     peerDependenciesMeta:
@@ -727,6 +730,9 @@ packages:
     resolution: {integrity: sha512-YGRs8knHhKHVShLkFET/rWAU8kmHbOV5LwN938RHI0pljAJ1Gf6SzXsSmRaEzcXTtOOmVqJ5+WtQPL5uigY50Q==}
     engines: {node: '>=14'}
 
+  envkist@0.1.0:
+    resolution: {integrity: sha512-risY6ssQxU/IZaZj6WCKYTSYkzee+kbSkPFUmHWDiwxuNkM8rajjbNKx0gxOmRqIs5lw51ZxcaPF6mC5UXi3fg==}
+
   es-module-lexer@2.1.0:
     resolution: {integrity: sha512-n27zTYMjYu1aj4MjCWzSP7G9r75utsaoc8m61weK+W8JMBGGQybd43GstCXZ3WNmSFtGT9wi59qQTW6mhTR5LQ==}
 
@@ -1128,7 +1134,7 @@ packages:
 
 snapshots:
 
-  '@apst/biome@0.3.1(@biomejs/biome@2.5.0)':
+  '@apst/biome@0.3.2(@biomejs/biome@2.5.0)':
     optionalDependencies:
       '@biomejs/biome': 2.5.0
 
@@ -1504,6 +1510,8 @@ snapshots:
   dts-resolver@3.0.0: {}
 
   empathic@2.0.1: {}
+
+  envkist@0.1.0: {}
 
   es-module-lexer@2.1.0: {}
 

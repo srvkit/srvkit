@@ -1,3 +1,4 @@
+import type { ResolvableNumber, ResolvableString } from "#/@types/env";
 import type { CompleteHttpsOptions } from "#/@types/options/complete/https";
 
 /**
@@ -9,13 +10,13 @@ type CompleteDevOptions = {
      *
      * By default, it is `localhost`.
      */
-    host: string;
+    host: ResolvableString;
     /**
      * The port number for the development server.
      *
      * By default, it is `3001`.
      */
-    port: number;
+    port: ResolvableNumber;
     /**
      * HTTPS server options.
      */

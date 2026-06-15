@@ -1,8 +1,11 @@
+import type { ResolvableString } from "#/@types/env";
 import type {
     ResolvedBuildOptions,
     ResolvedOptions,
 } from "#/@types/options/resolved";
 
+import { injectNumber, injectString } from "#/functions/env/inject";
+import { BUILD_SERVER_FALLBACKS } from "#/functions/options/resolve";
 import { toPosix } from "#/functions/path/posix";
 
 type VirtualEntryOptions = ResolvedOptions & {
@@ -29,15 +32,23 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
     code += `serve({`;
     code += `...options,`;
 
-    if (build.host !== "localhost") code += `hostname: "${build.host}",`;
-    if (build.port !== 3000) code += `port: ${build.port},`;
+    if (build.host !== BUILD_SERVER_FALLBACKS.host) {
+        code += `hostname: ${injectString(build.host, BUILD_SERVER_FALLBACKS.host)},`;
+    }
+    if (build.port !== BUILD_SERVER_FALLBACKS.port) {
+        code += `port: ${injectNumber(build.port, BUILD_SERVER_FALLBACKS.port)},`;
+    }
 
     if (build.https) {
+        const cert: ResolvableString | undefined = build.https.cert;
+        const key: ResolvableString | undefined = build.https.key;
+        const passphrase: ResolvableString | undefined = build.https.passphrase;
+
         code += `tls: {`;
-        if (build.https.cert) code += `cert: "${toPosix(build.https.cert)}",`;
-        if (build.https.key) code += `key: "${toPosix(build.https.key)}",`;
-        if (build.https.passphrase)
-            code += `passphrase: "${toPosix(build.https.passphrase)}",`;
+        if (cert !== void 0) code += `cert: ${toPosix(injectString(cert))},`;
+        if (key !== void 0) code += `key: ${toPosix(injectString(key))},`;
+        if (passphrase !== void 0)
+            code += `passphrase: ${toPosix(injectString(passphrase))},`;
         code += `},`;
     }
 

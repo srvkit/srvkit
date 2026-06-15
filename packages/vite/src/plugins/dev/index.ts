@@ -15,8 +15,13 @@ import type {
     ViteDevServer,
 } from "vite";
 
+import {
+    resolveNumber,
+    resolveString,
+} from "@srvkit/common/functions/env/resolve";
 import { toHeaders } from "@srvkit/common/functions/http/request/header";
 import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
+import { DEV_FALLBACKS } from "@srvkit/common/functions/options/resolve";
 import { createLiveServer } from "@srvkit/common/functions/server/live";
 import { mergeConfig } from "vite";
 
@@ -84,6 +89,14 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
     const dev: ResolvedDevOptions = opts.dev;
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
 
+    const resolvedHost: string = resolveString(dev.host, DEV_FALLBACKS.host);
+    const resolvedPort: number = resolveNumber(dev.port, DEV_FALLBACKS.port);
+    const resolvedCert: string | undefined = resolveString(https.cert);
+    const resolvedKey: string | undefined = resolveString(https.key);
+    const resolvedPassphrase: string | undefined = resolveString(
+        https.passphrase,
+    );
+
     return {
         name: `${name}/dev`,
         apply: "serve",
@@ -109,14 +122,14 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
                     },
                 },
                 server: {
-                    host: dev.host,
-                    port: dev.port,
-                    ...(https.cert !== void 0 && https.key !== void 0
+                    host: resolvedHost,
+                    port: resolvedPort,
+                    ...(resolvedCert !== void 0 && resolvedKey !== void 0
                         ? {
                               https: {
-                                  cert: https.cert,
-                                  key: https.key,
-                                  passphrase: https.passphrase,
+                                  cert: resolvedCert,
+                                  key: resolvedKey,
+                                  passphrase: resolvedPassphrase,
                               },
                           }
                         : {}),
@@ -136,12 +149,12 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
                 ...serverOptions,
                 // Defer server start so middleware can be attached first
                 manual: true,
-                hostname: dev.host,
-                port: dev.port,
+                hostname: resolvedHost,
+                port: resolvedPort,
                 tls: {
-                    cert: https.cert,
-                    key: https.key,
-                    passphrase: https.passphrase,
+                    cert: resolvedCert,
+                    key: resolvedKey,
+                    passphrase: resolvedPassphrase,
                 },
             });
 

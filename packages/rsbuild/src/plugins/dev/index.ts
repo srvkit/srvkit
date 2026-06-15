@@ -22,8 +22,13 @@ import { builtinModules } from "node:module";
 import * as Path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import {
+    resolveNumber,
+    resolveString,
+} from "@srvkit/common/functions/env/resolve";
 import { toHeaders } from "@srvkit/common/functions/http/request/header";
 import { writeHttpResponse } from "@srvkit/common/functions/http/response/write";
+import { DEV_FALLBACKS } from "@srvkit/common/functions/options/resolve";
 import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 import { toPosix } from "@srvkit/common/functions/path/posix";
 import { createLiveServer } from "@srvkit/common/functions/server/live";
@@ -92,7 +97,15 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
     const build: ResolvedBuildOptions = opts.build;
 
-    const isHttps: boolean = https.cert !== void 0 && https.key !== void 0;
+    const resolvedHost: string = resolveString(dev.host, DEV_FALLBACKS.host);
+    const resolvedPort: number = resolveNumber(dev.port, DEV_FALLBACKS.port);
+    const resolvedCert: string | undefined = resolveString(https.cert);
+    const resolvedKey: string | undefined = resolveString(https.key);
+    const resolvedPassphrase: string | undefined = resolveString(
+        https.passphrase,
+    );
+
+    const isHttps: boolean = resolvedCert !== void 0 && resolvedKey !== void 0;
 
     const packageJson: PackageJson = getPackageJson(opts.cwd);
 
@@ -132,14 +145,15 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             writeToDisk: true,
                         },
                         server: {
-                            host: dev.host,
-                            port: dev.port,
-                            ...(https.cert !== void 0 && https.key !== void 0
+                            host: resolvedHost,
+                            port: resolvedPort,
+                            ...(resolvedCert !== void 0 &&
+                            resolvedKey !== void 0
                                 ? {
                                       https: {
-                                          cert: https.cert,
-                                          key: https.key,
-                                          passphrase: https.passphrase,
+                                          cert: resolvedCert,
+                                          key: resolvedKey,
+                                          passphrase: resolvedPassphrase,
                                       },
                                   }
                                 : {}),
@@ -259,12 +273,12 @@ const devPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         ...serverOptions,
                         // Defer server start so middleware can be attached first
                         manual: true,
-                        hostname: dev.host,
-                        port: dev.port,
+                        hostname: resolvedHost,
+                        port: resolvedPort,
                         tls: {
-                            cert: https.cert,
-                            key: https.key,
-                            passphrase: https.passphrase,
+                            cert: resolvedCert,
+                            key: resolvedKey,
+                            passphrase: resolvedPassphrase,
                         },
                     });
 

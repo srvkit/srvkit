@@ -12,10 +12,19 @@ import * as Path from "node:path";
 
 import { toMerged } from "es-toolkit";
 
-const OPTIONS_BUILD_SERVER: ResolvedBuildServerOptions = {
-    target: "server",
+const DEV_FALLBACKS = {
+    host: "localhost",
+    port: 3001,
+} as const;
+
+const BUILD_SERVER_FALLBACKS = {
     host: "localhost",
     port: 3000,
+} as const;
+
+const OPTIONS_BUILD_SERVER: ResolvedBuildServerOptions = {
+    ...BUILD_SERVER_FALLBACKS,
+    target: "server",
     bundle: "external",
     outputDir: "./dist",
     outputFile: "index.js",
@@ -35,10 +44,7 @@ const OPTIONS_BUILD_HANDLER: ResolvedBuildHandlerOptions = {
 const OPTIONS_DEFAULT: Omit<ResolvedOptions, "entry" | "build"> = {
     cwd: process.cwd(),
     runtime: "node",
-    dev: {
-        host: "localhost",
-        port: 3001,
-    },
+    dev: DEV_FALLBACKS,
     verbose: false,
 };
 
@@ -84,4 +90,4 @@ const resolveOptions = (options?: Options): ResolvedOptions => {
     };
 };
 
-export { resolveOptions };
+export { BUILD_SERVER_FALLBACKS, DEV_FALLBACKS, resolveOptions };
