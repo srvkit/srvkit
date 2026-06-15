@@ -18,8 +18,11 @@ export type {
     EnvFunctions,
     EnvNumber,
     EnvString,
+    EnvValue,
+    Infer,
+    IsFunctions,
 } from "@srvkit/common/plugin";
 
-export { env } from "@srvkit/common/plugin";
+export { env, is } from "@srvkit/common/plugin";
 
 export { plugin as pluginSrvkit } from "#/plugins";
