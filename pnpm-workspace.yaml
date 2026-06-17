@@ -20,7 +20,7 @@ catalogs:
         "@rsbuild/core": ^2.0.0
         vite: ^8.0.12
     test:
-        vitest: ^4.1.8
+        vitest: ^4.1.9
         vite-tsconfig-paths: ^6.1.1
     example:
         hono: ^4.12.25
