@@ -18,8 +18,8 @@ catalogs:
       version: 8.0.12
   example:
     hono:
-      specifier: ^4.12.25
-      version: 4.12.25
+      specifier: ^4.12.26
+      version: 4.12.26
   test:
     vite-tsconfig-paths:
       specifier: ^6.1.1
@@ -70,7 +70,7 @@ importers:
         version: link:../packages/vite
       hono:
         specifier: catalog:example
-        version: 4.12.25
+        version: 4.12.26
       vite:
         specifier: catalog:dev
         version: 8.0.12(@types/node@26.0.0)
@@ -89,7 +89,7 @@ importers:
         version: link:../../packages/rsbuild
       hono:
         specifier: catalog:example
-        version: 4.12.25
+        version: 4.12.26
     devDependencies:
       '@rsbuild/core':
         specifier: catalog:dev
@@ -102,7 +102,7 @@ importers:
         version: link:../../packages/vite
       hono:
         specifier: catalog:example
-        version: 4.12.25
+        version: 4.12.26
     devDependencies:
       vite:
         specifier: catalog:dev
@@ -785,8 +785,8 @@ packages:
   globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
-  hono@4.12.25:
-    resolution: {integrity: sha512-2NFaIyNVgJmBs/ecmtGzlmluTFs5cHEWGTdu0t1HBwYzoGXOL5nUQBRMXsXWla5i4KkG//QMzVP88m1+I3fdAQ==}
+  hono@4.12.26:
+    resolution: {integrity: sha512-uyZtpnYxM9CmQ7QsQknM4zN8EftNqhON1qYeIKM0Se67CCEe2c44xyGURwB0axX2fBDu1dqHrHAc1hmNT8ITkw==}
     engines: {node: '>=16.9.0'}
 
   hookable@6.1.1:
@@ -1581,7 +1581,7 @@ snapshots:
 
   globrex@0.1.2: {}
 
-  hono@4.12.25: {}
+  hono@4.12.26: {}
 
   hookable@6.1.1: {}
 
