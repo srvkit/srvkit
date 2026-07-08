@@ -33,6 +33,14 @@
             "import": "./dist/@types/options/complete/https/index.mjs",
             "require": "./dist/@types/options/complete/https/index.js"
         },
+        "./functions/env/define": {
+            "types": "./dist/functions/env/define/node.d.ts",
+            "deno": "./dist/functions/env/define/deno.mjs",
+            "bun": "./dist/functions/env/define/bun.mjs",
+            "workerd": "./dist/functions/env/define/cloudflare.mjs",
+            "import": "./dist/functions/env/define/node.mjs",
+            "require": "./dist/functions/env/define/node.js"
+        },
         "./*": {
             "types": "./dist/*.d.ts",
             "import": "./dist/*.mjs",

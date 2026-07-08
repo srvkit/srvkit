@@ -12,6 +12,7 @@ export default defineConfig(
             runtime: "./src/runtime.ts",
             "plugins/dev/index": "./src/plugins/dev/index.ts",
             "plugins/build/index": "./src/plugins/build/index.ts",
+            "plugins/build/loader": "./src/plugins/build/loader.ts",
             "plugins/copy/index": "./src/plugins/copy/index.ts",
         },
         platform: "node",
