@@ -16,7 +16,8 @@ const ENTRY_CONTENT: string = [
     "        return new Response(",
     "            JSON.stringify({",
     "                node: process.env.NODE_ENV,",
-    '                deno: Deno.env.get("NODE_ENV"),',
+    '                denoDouble: Deno.env.get("NODE_ENV"),',
+    "                denoSingle: Deno.env.get('NODE_ENV'),",
     "                denoBacktick: Deno.env.get(`NODE_ENV`),",
     "                bun: Bun.env.NODE_ENV,",
     "            }),",
@@ -58,6 +59,11 @@ const CASES: readonly Case[] = [
         name: "test",
         nodeEnv: "test",
         expectedLiteral: '"test"',
+    },
+    {
+        name: "special-char (double quote)",
+        nodeEnv: 'a"b',
+        expectedLiteral: '"a\\"b"',
     },
     {
         name: "empty",
