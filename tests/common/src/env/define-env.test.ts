@@ -134,6 +134,7 @@ const ENV_VALUES: readonly NodeEnvValue[] = [
     "development",
     "test",
     "",
+    "a\"b",
     void 0,
 ];
 
