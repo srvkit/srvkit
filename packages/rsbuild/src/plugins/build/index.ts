@@ -10,16 +10,23 @@ import type {
     ResolvedBuildOptions,
     ResolvedOptions,
 } from "@srvkit/common/@types/options/resolved";
+import type { DefinedEnv } from "@srvkit/common/functions/env/define";
 import type { PackageJson } from "@srvkit/common/functions/package/package-json";
 
+import type { LoaderOptions } from "#/plugins/build/loader";
+
 import { builtinModules } from "node:module";
+import * as Path from "node:path";
 
 import { createVirtualEntryCode } from "@srvkit/common/functions/build/virtual-entry";
+import { defineEnv } from "@srvkit/common/functions/env/define";
 import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 
 import { VIRTUAL_ENTRY } from "#/constants/path";
 import { getSsrTarget } from "#/functions/ssr";
 import { name } from "#/root/package.json";
+
+const LOADER_PATH: string = Path.resolve(__dirname, "loader.mjs");
 
 const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
     const build: ResolvedBuildOptions = opts.build;
@@ -56,6 +63,10 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                 externals.push(...depExternals);
             }
 
+            const definedEnv: DefinedEnv = defineEnv({
+                fallback: "production",
+            });
+
             api.modifyRsbuildConfig(
                 (
                     config: RsbuildConfig,
@@ -66,6 +77,7 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             entry: {
                                 index: VIRTUAL_ENTRY,
                             },
+                            define: definedEnv,
                         },
                         output: {
                             target: "node",
@@ -96,14 +108,36 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                     chain: RspackChain,
                     { rspack }: ModifyBundlerChainUtils,
                 ): void => {
-                    // Avoid externalizing chunks
-                    chain
-                        .plugin("limit-chunk")
-                        .use(rspack.optimize.LimitChunkCountPlugin, [
-                            {
-                                maxChunks: 1,
-                            },
-                        ]);
+                    // Rspack's DefinePlugin only accepts identifier chains (`a.b.c`),
+                    // so method call (`Deno.env.get("NODE_ENV")`) is silently ignored.
+                    // Therefore, a loader is introduced to replace them.
+                    chain.module
+                        .rule("replace-env")
+                        .test(/\.m?[jt]sx?$/)
+                        .enforce("pre")
+                        .use("replace-env-loader")
+                        .loader(LOADER_PATH)
+                        .options({
+                            replacements: [
+                                {
+                                    pattern:
+                                        /Deno\.env\.get\(\s*["'`]NODE_ENV["'`]\s*\)/g,
+                                    replacement:
+                                        definedEnv["process.env.NODE_ENV"],
+                                },
+                            ],
+                        } satisfies LoaderOptions);
+
+                    // When `target` is `webworker`, all modules will be bundled.
+                    // Therefore, this plugin is used to make them external again.
+                    if (opts.runtime === "workerd") {
+                        chain
+                            .plugin("workerd-externals")
+                            .use(rspack.ExternalsPlugin, [
+                                isModule ? "module-import" : "commonjs",
+                                externals,
+                            ]);
+                    }
 
                     // Add support for virtual modules
                     chain
@@ -117,16 +151,14 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                             },
                         ]);
 
-                    // When `target` is `webworker`, all modules will be bundled.
-                    // Therefore, this plugin is used to make them external again.
-                    if (opts.runtime === "workerd") {
-                        chain
-                            .plugin("workerd-externals")
-                            .use(rspack.ExternalsPlugin, [
-                                isModule ? "module-import" : "commonjs",
-                                externals,
-                            ]);
-                    }
+                    // Avoid externalizing chunks
+                    chain
+                        .plugin("limit-chunk")
+                        .use(rspack.optimize.LimitChunkCountPlugin, [
+                            {
+                                maxChunks: 1,
+                            },
+                        ]);
                 },
             );
 

@@ -1,3 +1,17 @@
+## Next
+
+### Common
+
+- export `defineEnv` for `NODE_ENV` replacement
+
+### Rsbuild
+
+- replace `NODE_ENV` based on the environment
+
+### Vite
+
+- replace `NODE_ENV` based on the environment
+
 ## 0.2.0 (2026-06-16)
 
 ### Common
