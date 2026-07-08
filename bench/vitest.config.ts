@@ -1,11 +1,10 @@
-import tsconfigPath from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+    resolve: {
+        tsconfigPaths: true,
+    },
     test: {
         logHeapUsage: true,
     },
-    plugins: [
-        tsconfigPath(),
-    ],
 });

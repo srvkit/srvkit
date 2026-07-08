@@ -5,8 +5,5 @@
         "@srvkit/common": "workspace:*",
         "@srvkit/rsbuild": "workspace:*",
         "vitest": "catalog:test"
-    },
-    "devDependencies": {
-        "vite-tsconfig-paths": "catalog:test"
     }
 }

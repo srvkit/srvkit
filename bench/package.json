@@ -9,8 +9,5 @@
         "hono": "catalog:example",
         "vite": "catalog:dev",
         "vitest": "catalog:test"
-    },
-    "devDependencies": {
-        "vite-tsconfig-paths": "catalog:test"
     }
 }
