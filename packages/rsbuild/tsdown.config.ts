@@ -3,18 +3,18 @@ import { cjsPreset, dtsPreset, esmPreset } from "@apst/tsdown/presets";
 
 export default defineConfig(
     {
-        entry: {
+        entry: [
             // public
-            index: "./src/index.ts",
-            node: "./src/node.ts",
-            plugin: "./src/plugin.ts",
+            "./src/index.ts",
+            "./src/node.ts",
+            "./src/plugin.ts",
             // internal
-            runtime: "./src/runtime.ts",
-            "plugins/dev/index": "./src/plugins/dev/index.ts",
-            "plugins/build/index": "./src/plugins/build/index.ts",
-            "plugins/build/loader": "./src/plugins/build/loader.ts",
-            "plugins/copy/index": "./src/plugins/copy/index.ts",
-        },
+            "./src/runtime.ts",
+            "./src/plugins/dev/index.ts",
+            "./src/plugins/build/index.ts",
+            "./src/plugins/build/loader.ts",
+            "./src/plugins/copy/index.ts",
+        ],
         platform: "node",
         unbundle: true,
     },
