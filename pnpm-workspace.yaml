@@ -22,7 +22,7 @@ catalogs:
     test:
         vitest: ^4.1.10
     example:
-        hono: ^4.12.29
+        hono: ^4.12.30
 
 minimumReleaseAge: 1440
 
