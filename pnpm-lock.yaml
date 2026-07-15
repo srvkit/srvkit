@@ -18,8 +18,8 @@ catalogs:
       version: 8.0.12
   example:
     hono:
-      specifier: ^4.12.29
-      version: 4.12.29
+      specifier: ^4.12.30
+      version: 4.12.30
   test:
     vitest:
       specifier: ^4.1.10
@@ -67,7 +67,7 @@ importers:
         version: link:../packages/vite
       hono:
         specifier: catalog:example
-        version: 4.12.29
+        version: 4.12.30
       vite:
         specifier: catalog:dev
         version: 8.0.12(@types/node@26.1.1)
@@ -82,7 +82,7 @@ importers:
         version: link:../../packages/rsbuild
       hono:
         specifier: catalog:example
-        version: 4.12.29
+        version: 4.12.30
     devDependencies:
       '@rsbuild/core':
         specifier: catalog:dev
@@ -95,7 +95,7 @@ importers:
         version: link:../../packages/vite
       hono:
         specifier: catalog:example
-        version: 4.12.29
+        version: 4.12.30
     devDependencies:
       vite:
         specifier: catalog:dev
@@ -841,8 +841,8 @@ packages:
     resolution: {integrity: sha512-/6gFNr0N04nob252sTQxyFLi3eKFRqIg1I87YcqAMT1i6SQrSF6KujUEQrtrjMV0H/eejTCltLdDSTEMzHbnsQ==}
     engines: {node: '>=20.20.0'}
 
-  hono@4.12.29:
-    resolution: {integrity: sha512-1hNiRjawYrLq/4m3DQQjPGFg0VZkk4RjQJDff/excI6Dm9BiL75qxGrd7/c6YOxPdq6AscP3LiXhQ6fKFC1Waw==}
+  hono@4.12.30:
+    resolution: {integrity: sha512-emn+JoJjrN9YTpRDS5it/UI2SO9BAE37T6I3d963RxcZ81G9A4pr2SZTEiiaiKbzx+NKRg5BZ89fCL7gCJCUog==}
     engines: {node: '>=16.9.0'}
 
   hookable@6.1.1:
@@ -1645,7 +1645,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  hono@4.12.29: {}
+  hono@4.12.30: {}
 
   hookable@6.1.1: {}
 
