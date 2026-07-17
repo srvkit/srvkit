@@ -26,6 +26,34 @@ type BuildTarget = "server" | "handler";
  */
 type BundleMode = "external" | "standalone";
 
+/**
+ * Public directory options.
+ */
+type CompleteBuildPublicOptions = {
+    /**
+     * Whether to copy the public directory to the output directory.
+     *
+     * When this is `true`, the public directory will be copied
+     * into the directory with same name inside the output directory.
+     *
+     * By default, it is `false`.
+     */
+    copy: boolean;
+    /**
+     * The source public directory path.
+     *
+     * By default, it is `./public`.
+     */
+    from: string;
+    /**
+     * The destination directory for the public directory
+     * inside the output directory.
+     *
+     * By default, it is the value from `from` option.
+     */
+    to: string;
+};
+
 type CompleteBuildBaseOptions<T extends BuildTarget> = {
     /**
      * Build target.
@@ -57,6 +85,10 @@ type CompleteBuildBaseOptions<T extends BuildTarget> = {
      * By default, it is `false`.
      */
     minify: boolean;
+    /**
+     * Public directory options.
+     */
+    public: CompleteBuildPublicOptions;
 };
 
 /**
@@ -79,21 +111,6 @@ type CompleteBuildServerOptions = CompleteBuildBaseOptions<"server"> & {
      * HTTPS server options.
      */
     https: CompleteHttpsOptions;
-    /**
-     * The public directory for the application.
-     *
-     * By default, it is `./public`.
-     */
-    publicDir: string;
-    /**
-     * Whether to copy the public directory to the output directory.
-     *
-     * When this is `true`, the public directory will be copied
-     * into the directory with same name inside the output directory.
-     *
-     * By default, it is `false`.
-     */
-    copyPublicDir: boolean;
 };
 
 /**
@@ -114,5 +131,6 @@ export type {
     CompleteBuildBaseOptions,
     CompleteBuildHandlerOptions,
     CompleteBuildOptions,
+    CompleteBuildPublicOptions,
     CompleteBuildServerOptions,
 };

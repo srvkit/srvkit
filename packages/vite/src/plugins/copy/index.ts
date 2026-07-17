@@ -1,5 +1,6 @@
 import type {
     ResolvedBuildOptions,
+    ResolvedBuildPublicOptions,
     ResolvedOptions,
 } from "@srvkit/common/@types/options/resolved";
 import type { CopyEvent, Options as Copyoptions } from "rolldown-plugin-copy";
@@ -12,17 +13,19 @@ import { copy } from "rolldown-plugin-copy";
 
 const copyPlugin = (opts: ResolvedOptions): Plugin[] => {
     const build: ResolvedBuildOptions = opts.build;
+    const publicDir: ResolvedBuildPublicOptions = build.public;
 
-    if (build.target !== "server" || !build.copyPublicDir) {
-        return [];
-    }
+    if (!publicDir.copy) return [];
 
     const copyOptions: Copyoptions = {
         cwd: opts.cwd,
         targets: [
             {
-                src: Path.posix.join(build.publicDir, "**", "*"),
-                dest: Path.posix.join(build.outputDir, build.publicDir),
+                src: Path.posix.join(publicDir.from, "**", "*"),
+                dest: Path.posix.join(
+                    build.outputDir,
+                    publicDir.to ?? publicDir.from,
+                ),
             },
         ],
     };

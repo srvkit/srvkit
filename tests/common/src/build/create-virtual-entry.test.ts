@@ -26,8 +26,10 @@ const BASE_OPTIONS: ResolvedOptions = {
         outputDir: "./dist",
         outputFile: "index.js",
         minify: false,
-        publicDir: "./public",
-        copyPublicDir: false,
+        public: {
+            from: "./public",
+            copy: false,
+        },
     },
     verbose: false,
 };
@@ -110,6 +112,10 @@ describe("createVirtualEntryCode", (): void => {
                 outputDir: "./dist",
                 outputFile: "index.js",
                 minify: false,
+                public: {
+                    from: "./public",
+                    copy: false,
+                },
             },
             packageName: "@srvkit/rsbuild",
         });

@@ -30,6 +30,9 @@ describe("resolveOptions", (): void => {
         expect(build.outputDir).toBe("./dist");
         expect(build.outputFile).toBe("index.js");
         expect(build.minify).toBe(false);
+        expect(build.public.from).toBe("./public");
+        expect(build.public.copy).toBe(false);
+        expect(build.public.to).toBeUndefined();
     });
 
     it("applies handler defaults when build.target is handler", (): void => {
@@ -46,6 +49,8 @@ describe("resolveOptions", (): void => {
         expect(result.build.outputDir).toBe("./dist");
         expect(result.build.outputFile).toBe("index.js");
         expect(result.build.minify).toBe(false);
+        expect(result.build.public.from).toBe("./public");
+        expect(result.build.public.copy).toBe(false);
         expect("host" in result.build).toBe(false);
         expect("port" in result.build).toBe(false);
     });

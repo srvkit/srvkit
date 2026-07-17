@@ -5,15 +5,17 @@ import type {
 } from "@rsbuild/core";
 import type {
     ResolvedBuildOptions,
+    ResolvedBuildPublicOptions,
     ResolvedOptions,
 } from "@srvkit/common/@types/options/resolved";
 
+import * as Path from "node:path";
+
 const copyPlugin = (opts: ResolvedOptions): RsbuildPlugin[] => {
     const build: ResolvedBuildOptions = opts.build;
+    const publicDir: ResolvedBuildPublicOptions = build.public;
 
-    if (build.target !== "server" || !build.copyPublicDir) {
-        return [];
-    }
+    if (!publicDir.copy) return [];
 
     return [
         {
@@ -28,8 +30,12 @@ const copyPlugin = (opts: ResolvedOptions): RsbuildPlugin[] => {
                                 ...config.output,
                                 copy: [
                                     {
-                                        from: build.publicDir,
-                                        to: build.publicDir,
+                                        from: publicDir.from,
+                                        to: Path.resolve(
+                                            opts.cwd,
+                                            build.outputDir,
+                                            publicDir.to ?? publicDir.from,
+                                        ),
                                     },
                                 ],
                             },

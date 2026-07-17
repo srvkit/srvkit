@@ -14,6 +14,11 @@ const OPTIONS_BUILD_SERVER_BASE = {
     port: 3000,
 } as const;
 
+const OPTIONS_BUILD_PUBLIC = {
+    copy: false,
+    from: "./public",
+} as const;
+
 const OPTIONS_BUILD_SERVER: ResolvedBuildServerOptions = {
     ...OPTIONS_BUILD_SERVER_BASE,
     target: "server",
@@ -21,8 +26,7 @@ const OPTIONS_BUILD_SERVER: ResolvedBuildServerOptions = {
     outputDir: "./dist",
     outputFile: "index.js",
     minify: false,
-    publicDir: "./public",
-    copyPublicDir: false,
+    public: OPTIONS_BUILD_PUBLIC,
 };
 
 const OPTIONS_BUILD_HANDLER: ResolvedBuildHandlerOptions = {
@@ -31,6 +35,7 @@ const OPTIONS_BUILD_HANDLER: ResolvedBuildHandlerOptions = {
     outputDir: "./dist",
     outputFile: "index.js",
     minify: false,
+    public: OPTIONS_BUILD_PUBLIC,
 };
 
 const OPTIONS_DEFAULT: Omit<ResolvedOptions, "entry" | "build"> = {
@@ -42,6 +47,7 @@ const OPTIONS_DEFAULT: Omit<ResolvedOptions, "entry" | "build"> = {
 
 export {
     OPTIONS_BUILD_HANDLER,
+    OPTIONS_BUILD_PUBLIC,
     OPTIONS_BUILD_SERVER,
     OPTIONS_BUILD_SERVER_BASE,
     OPTIONS_DEFAULT,

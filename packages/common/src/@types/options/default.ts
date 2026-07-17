@@ -3,6 +3,7 @@ import type { Format, Omit, Partial } from "ts-vista";
 import type { CompleteOptions } from "#/@types/options/complete";
 import type {
     CompleteBuildHandlerOptions,
+    CompleteBuildPublicOptions,
     CompleteBuildServerOptions,
 } from "#/@types/options/complete/build";
 import type { CompleteDevOptions } from "#/@types/options/complete/dev";
@@ -12,6 +13,11 @@ import type { CompleteHttpsOptions } from "#/@types/options/complete/https";
  * HTTPS server options.
  */
 type HttpsOptions = Format<Partial<CompleteHttpsOptions>>;
+
+/**
+ * Public directory options.
+ */
+type BuildPublicOptions = Format<Partial<CompleteBuildPublicOptions>>;
 
 /**
  * Development server options.
@@ -29,11 +35,15 @@ type DevOptions = Format<
  * Build server options.
  */
 type BuildServerOptions = Format<
-    Partial<Omit<CompleteBuildServerOptions, "https">> & {
+    Partial<Omit<CompleteBuildServerOptions, "https" | "public">> & {
         /**
          * HTTPS server options.
          */
         https?: HttpsOptions;
+        /**
+         * Public directory options.
+         */
+        public?: BuildPublicOptions;
     }
 >;
 
@@ -42,7 +52,12 @@ type BuildServerOptions = Format<
  */
 type BuildHandlerOptions = Format<
     Pick<CompleteBuildHandlerOptions, "target"> &
-        Partial<Omit<CompleteBuildHandlerOptions, "target">>
+        Partial<Omit<CompleteBuildHandlerOptions, "target" | "public">> & {
+            /**
+             * Public directory options.
+             */
+            public?: BuildPublicOptions;
+        }
 >;
 
 /**
@@ -69,6 +84,7 @@ type Options = Format<
 export type {
     BuildHandlerOptions,
     BuildOptions,
+    BuildPublicOptions,
     BuildServerOptions,
     DevOptions,
     HttpsOptions,

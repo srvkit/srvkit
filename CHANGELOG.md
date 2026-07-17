@@ -1,3 +1,27 @@
+## Next
+
+### Common
+
+- add `CompleteBuildPublicOptions` types
+- add `ResolvedBuildPublicOptions` types
+- add `BuildPublicOptions` types
+
+### Rsbuild
+
+- add `public.copy` for both `server` and `handler` build targets
+- add `public.from` to customize the source directory
+- add `public.to` to customize the destination directory inside output directory
+- remove `copyPublicDir` option (use `public.copy` instead)
+- remove `publicDir` option (use `public.from` instead)
+
+### Vite
+
+- add `public.copy` for both `server` and `handler` build targets
+- add `public.from` to customize the source directory
+- add `public.to` to customize the destination directory inside output directory
+- remove `copyPublicDir` option (use `public.copy` instead)
+- remove `publicDir` option (use `public.from` instead)
+
 ## 0.2.1 (2026-07-08)
 
 ### Common
