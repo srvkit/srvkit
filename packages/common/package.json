@@ -41,6 +41,11 @@
             "import": "./dist/functions/env/define/node.mjs",
             "require": "./dist/functions/env/define/node.js"
         },
+        "./dev-runtime": {
+            "types": "./dist/runtime-dev.d.ts",
+            "import": "./dist/runtime-dev.mjs",
+            "require": "./dist/runtime-dev.js"
+        },
         "./*": {
             "types": "./dist/*.d.ts",
             "import": "./dist/*.mjs",

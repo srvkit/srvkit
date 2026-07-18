@@ -2,9 +2,10 @@
 
 ### Common
 
-- add `CompleteBuildPublicOptions` types
-- add `ResolvedBuildPublicOptions` types
 - add `BuildPublicOptions` types
+- add `ResolvedBuildPublicOptions` types
+- add `CompleteBuildPublicOptions` types
+- add internal `dev-runtime` entry point for live server with HMR
 
 ### Rsbuild
 
@@ -16,9 +17,11 @@
 
 ### Vite
 
+- improve the support for Cloudflare integration
 - add `public.copy` for both `server` and `handler` build targets
 - add `public.from` to customize the source directory
 - add `public.to` to customize the destination directory inside output directory
+- add internal `dev-runtime` entry point for live server with HMR
 - remove `copyPublicDir` option (use `public.copy` instead)
 - remove `publicDir` option (use `public.from` instead)
 

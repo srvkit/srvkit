@@ -47,6 +47,11 @@
             "import": "./dist/runtime.mjs",
             "require": "./dist/runtime.js"
         },
+        "./dev-runtime": {
+            "types": "./dist/runtime-dev.d.ts",
+            "import": "./dist/runtime-dev.mjs",
+            "require": "./dist/runtime-dev.js"
+        },
         "./plugins/dev": {
             "types": "./dist/plugins/dev/index.d.ts",
             "import": "./dist/plugins/dev/index.mjs",

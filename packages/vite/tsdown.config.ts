@@ -10,6 +10,7 @@ export default defineConfig(
             "./src/plugin.ts",
             // internal
             "./src/runtime.ts",
+            "./src/runtime-dev.ts",
             "./src/plugins/dev/index.ts",
             "./src/plugins/build/index.ts",
             "./src/plugins/copy/index.ts",

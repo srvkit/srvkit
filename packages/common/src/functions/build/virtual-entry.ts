@@ -8,11 +8,24 @@ import { OPTIONS_BUILD_SERVER_BASE } from "#/consts/options";
 import { injectNumber, injectString } from "#/functions/env/inject";
 import { toPosix } from "#/functions/path/posix";
 
-type VirtualEntryOptions = ResolvedOptions & {
+type VirtualEntryOptions = {
+    /**
+     * Whether in dev mode.
+     */
+    dev?: boolean;
+    /**
+     * Whether in Cloudflare environment.
+     */
+    isCloudflare?: boolean;
+    /**
+     * User package name.
+     */
     packageName: string;
+    resolvedOptions: ResolvedOptions;
 };
 
-const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
+const createVirtualEntryCode = (options: VirtualEntryOptions): string => {
+    const opts: ResolvedOptions = options.resolvedOptions;
     const build: ResolvedBuildOptions = opts.build;
 
     let code: string = "";
@@ -22,16 +35,32 @@ const createVirtualEntryCode = (opts: VirtualEntryOptions): string => {
         code += `import { env } from "cloudflare:workers";`;
 
     code += `import options from "${toPosix(opts.entry)}";`;
-    code += `import { serve } from "${opts.packageName}/runtime";`;
 
     // Handler targets run on platforms that manage their own server lifecycle,
-    // add `manual: true` prevents serve() from auto-listening
+    // add `manual: true` prevents serve() from auto-listening. Also,
+    // `host`/`port`/`https` will not be handled in handler mode.
     if (build.target === "handler") {
-        code += `const server = serve({ ...options, manual: true });`;
-        code += `export default server;`;
+        // In dev mode on workerd, use the live server with HMR support.
+        // Triggered by the Cloudflare Vite plugin but applies to any workerd dev target.
+        if (options.isCloudflare && options.dev) {
+            code += `import { createLiveServer } from "${options.packageName}/dev-runtime";`;
+            code += `const { server, update } = createLiveServer({ ...options, gracefulShutdown: false, manual: true });`;
+            code += `export default server;`;
+            code += `if (import.meta.hot) {`;
+            code += `    import.meta.hot.accept((mod) => {`;
+            code += `        if (mod?.default) update(mod.default);`;
+            code += `    });`;
+            code += `}`;
+        } else {
+            code += `import { serve } from "${options.packageName}/runtime";`;
+            code += `const server = serve({ ...options, manual: true });`;
+            code += `export default server;`;
+        }
 
         return code;
     }
+
+    code += `import { serve } from "${options.packageName}/runtime";`;
 
     code += `serve({`;
     code += `...options,`;

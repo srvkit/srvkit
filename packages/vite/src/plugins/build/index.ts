@@ -12,22 +12,54 @@ import { createVirtualEntryCode } from "@srvkit/common/functions/build/virtual-e
 import { getPackageJson } from "@srvkit/common/functions/package/package-json";
 import { mergeConfig } from "vite";
 
+import {
+    CLOUDFLARE_USER_ENTRY,
+    VIRTUAL_ENTRY,
+    VIRTUAL_ENTRY_RESOLVED,
+} from "#/consts/name";
+import { hasCloudflarePlugin } from "#/functions/cloudflare";
 import { getSsrTarget } from "#/functions/ssr";
 import { name } from "#/root/package.json";
 
-const VIRTUAL_ENTRY = "virtual:srvkit" as const;
-
-const VIRTUAL_ENTRY_RESOLVED = `\0${VIRTUAL_ENTRY}` as const;
-
-const buildPlugin = (opts: ResolvedOptions): Plugin => {
+const buildPlugin = (opts: ResolvedOptions): Plugin[] => {
     const build: ResolvedBuildOptions = opts.build;
 
     const packageJson: PackageJson = getPackageJson(opts.cwd);
 
-    return {
+    let isCloudflare: boolean = false;
+
+    const prePlugin: Plugin = {
+        name: `${name}/build-pre`,
+        // Ensure the redirection of `virtual:cloudflare/user-entry`.
+        enforce: "pre",
+        apply: "build",
+        resolveId: (id: string): ResolveIdResult => {
+            if (id === VIRTUAL_ENTRY) return VIRTUAL_ENTRY_RESOLVED;
+
+            // Cloudflare environment
+            if (isCloudflare && id === CLOUDFLARE_USER_ENTRY) {
+                return VIRTUAL_ENTRY_RESOLVED;
+            }
+
+            return void 0;
+        },
+        load: async (id: string): Promise<LoadResult> => {
+            if (id !== VIRTUAL_ENTRY_RESOLVED) return void 0;
+
+            return createVirtualEntryCode({
+                isCloudflare,
+                packageName: name,
+                resolvedOptions: opts,
+            });
+        },
+    };
+
+    const basePlugin: Plugin = {
         name: `${name}/build`,
         apply: "build",
         config: (config: UserConfig): UserConfig => {
+            isCloudflare = hasCloudflarePlugin(config);
+
             const overrideConfig: UserConfig = {
                 ssr: {
                     target: getSsrTarget(opts.runtime),
@@ -46,7 +78,12 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
                     outDir: build.outputDir,
                     copyPublicDir: false, // Handled by copyPlugin instead
                     rolldownOptions: {
-                        input: VIRTUAL_ENTRY,
+                        // Avoid client build pollution on Cloudflare environment
+                        ...(isCloudflare
+                            ? {}
+                            : {
+                                  input: VIRTUAL_ENTRY,
+                              }),
                         output: {
                             entryFileNames: build.outputFile,
                             format:
@@ -94,18 +131,12 @@ const buildPlugin = (opts: ResolvedOptions): Plugin => {
 
             return mergeConfig(config, overrideConfig);
         },
-        resolveId: (id: string): ResolveIdResult => {
-            if (id !== VIRTUAL_ENTRY) return void 0;
-            return VIRTUAL_ENTRY_RESOLVED;
-        },
-        load: async (id: string): Promise<LoadResult> => {
-            if (id !== VIRTUAL_ENTRY_RESOLVED) return void 0;
-            return createVirtualEntryCode({
-                ...opts,
-                packageName: name,
-            });
-        },
     };
+
+    return [
+        prePlugin,
+        basePlugin,
+    ];
 };
 
 export { buildPlugin };

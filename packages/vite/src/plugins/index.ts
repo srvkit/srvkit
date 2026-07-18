@@ -27,15 +27,9 @@ const plugin = (options?: Options): Plugin[] => {
                 sourcemap: true,
             },
         ),
-        devPlugin({
-            ...opts,
-        }),
-        buildPlugin({
-            ...opts,
-        }),
-        ...copyPlugin({
-            ...opts,
-        }),
+        ...devPlugin(opts),
+        ...buildPlugin(opts),
+        ...copyPlugin(opts),
     ];
 };
 

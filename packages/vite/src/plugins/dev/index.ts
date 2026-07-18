@@ -16,6 +16,7 @@ import type {
 } from "vite";
 
 import { OPTIONS_DEV } from "@srvkit/common/consts/options";
+import { createVirtualEntryCode } from "@srvkit/common/functions/build/virtual-entry";
 import {
     resolveNumber,
     resolveString,
@@ -25,6 +26,12 @@ import { writeHttpResponse } from "@srvkit/common/functions/http/response/write"
 import { createLiveServer } from "@srvkit/common/functions/server/live";
 import { mergeConfig } from "vite";
 
+import {
+    CLOUDFLARE_USER_ENTRY,
+    VIRTUAL_ENTRY,
+    VIRTUAL_ENTRY_RESOLVED,
+} from "#/consts/name";
+import { hasCloudflarePlugin } from "#/functions/cloudflare";
 import { getSsrTarget } from "#/functions/ssr";
 import { name } from "#/root/package.json";
 
@@ -85,7 +92,7 @@ const createMiddleware = ({ vite, server }: CreateMiddlewareOptions) => {
 
 type Middleware = ReturnType<typeof createMiddleware>;
 
-const devPlugin = (opts: ResolvedOptions): Plugin => {
+const devPlugin = (opts: ResolvedOptions): Plugin[] => {
     const dev: ResolvedDevOptions = opts.dev;
     const https: ResolvedHttpsOptions = opts.dev.https ?? {};
 
@@ -97,10 +104,46 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
         https.passphrase,
     );
 
-    return {
+    /**
+     * Detect if Cloudflare Vite plugin is present, then disable srvkit's
+     * middleware to avoid double-handling requests, and redirect Cloudflare's
+     * virtual user entry to srvkit's one.
+     */
+    let isCloudflare: boolean = false;
+
+    const prePlugin: Plugin = {
+        name: `${name}/dev-pre`,
+        // Ensure the redirection of `virtual:cloudflare/user-entry`.
+        enforce: "pre",
+        apply: "serve",
+        resolveId(id: string) {
+            if (id === VIRTUAL_ENTRY) return VIRTUAL_ENTRY_RESOLVED;
+
+            // Cloudflare environment
+            if (isCloudflare && id === CLOUDFLARE_USER_ENTRY) {
+                return VIRTUAL_ENTRY_RESOLVED;
+            }
+
+            return void 0;
+        },
+        async load(id: string) {
+            if (id !== VIRTUAL_ENTRY_RESOLVED) return void 0;
+
+            return createVirtualEntryCode({
+                dev: true,
+                isCloudflare,
+                packageName: name,
+                resolvedOptions: opts,
+            });
+        },
+    };
+
+    const basePlugin: Plugin = {
         name: `${name}/dev`,
         apply: "serve",
         config(config: UserConfig): UserConfig {
+            isCloudflare = hasCloudflarePlugin(config);
+
             const devConfig: UserConfig = {
                 resolve: {
                     conditions: [
@@ -117,8 +160,13 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
                 },
                 build: {
                     ssr: true,
-                    rollupOptions: {
-                        input: opts.entry,
+                    rolldownOptions: {
+                        // Avoid client build pollution on Cloudflare environment
+                        ...(isCloudflare
+                            ? {}
+                            : {
+                                  input: VIRTUAL_ENTRY,
+                              }),
                     },
                 },
                 server: {
@@ -139,6 +187,9 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
             return mergeConfig(config, devConfig);
         },
         configureServer: async (vite: ViteDevServer): Promise<void> => {
+            // Cloudflare plugin handles HTTP routing and module loading itself
+            if (isCloudflare) return void 0;
+
             const serverOptions: ServerOptions = (
                 await vite.ssrLoadModule(opts.entry)
             ).default;
@@ -207,6 +258,11 @@ const devPlugin = (opts: ResolvedOptions): Plugin => {
             });
         },
     };
+
+    return [
+        prePlugin,
+        basePlugin,
+    ];
 };
 
 export { devPlugin };

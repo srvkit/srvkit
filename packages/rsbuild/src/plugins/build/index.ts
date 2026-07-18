@@ -145,8 +145,8 @@ const buildPlugin = (opts: ResolvedOptions): RsbuildPlugin => {
                         .use(rspack.experiments.VirtualModulesPlugin, [
                             {
                                 [VIRTUAL_ENTRY]: createVirtualEntryCode({
-                                    ...opts,
                                     packageName: name,
+                                    resolvedOptions: opts,
                                 }),
                             },
                         ]);

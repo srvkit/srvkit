@@ -37,8 +37,8 @@ const BASE_OPTIONS: ResolvedOptions = {
 describe("createVirtualEntryCode", (): void => {
     it("generates server code with default host and port", (): void => {
         const code: string = createVirtualEntryCode({
-            ...BASE_OPTIONS,
             packageName: "@srvkit/vite",
+            resolvedOptions: BASE_OPTIONS,
         });
 
         expect(code).toContain('import options from "');
@@ -57,9 +57,11 @@ describe("createVirtualEntryCode", (): void => {
         };
 
         const code: string = createVirtualEntryCode({
-            ...BASE_OPTIONS,
-            build,
             packageName: "@srvkit/vite",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                build,
+            },
         });
 
         expect(code).toContain('hostname: "0.0.0.0",');
@@ -72,9 +74,11 @@ describe("createVirtualEntryCode", (): void => {
         };
 
         const code: string = createVirtualEntryCode({
-            ...BASE_OPTIONS,
-            build,
             packageName: "@srvkit/vite",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                build,
+            },
         });
 
         expect(code).toContain("port: 8080,");
@@ -91,9 +95,11 @@ describe("createVirtualEntryCode", (): void => {
         };
 
         const code: string = createVirtualEntryCode({
-            ...BASE_OPTIONS,
-            build,
             packageName: "@srvkit/vite",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                build,
+            },
         });
 
         expect(code).toContain("tls: {");
@@ -105,19 +111,21 @@ describe("createVirtualEntryCode", (): void => {
 
     it("generates handler code with manual and export default", (): void => {
         const code: string = createVirtualEntryCode({
-            ...BASE_OPTIONS,
-            build: {
-                target: "handler",
-                bundle: "external",
-                outputDir: "./dist",
-                outputFile: "index.js",
-                minify: false,
-                public: {
-                    from: "./public",
-                    copy: false,
+            packageName: "@srvkit/rsbuild",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                build: {
+                    target: "handler",
+                    bundle: "external",
+                    outputDir: "./dist",
+                    outputFile: "index.js",
+                    minify: false,
+                    public: {
+                        from: "./public",
+                        copy: false,
+                    },
                 },
             },
-            packageName: "@srvkit/rsbuild",
         });
 
         expect(code).toContain(
@@ -126,5 +134,105 @@ describe("createVirtualEntryCode", (): void => {
         expect(code).toContain("export default server;");
         expect(code).not.toContain("hostname:");
         expect(code).not.toContain("port:");
+    });
+
+    it("generates dev handler with createLiveServer and HMR", (): void => {
+        const code: string = createVirtualEntryCode({
+            dev: true,
+            isCloudflare: true,
+            packageName: "@srvkit/vite",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                build: {
+                    target: "handler",
+                    bundle: "external",
+                    outputDir: "./dist",
+                    outputFile: "index.js",
+                    minify: false,
+                    public: {
+                        from: "./public",
+                        copy: false,
+                    },
+                },
+            },
+        });
+
+        expect(code).toContain(
+            'import { createLiveServer } from "@srvkit/vite/dev-runtime";',
+        );
+        expect(code).toContain(
+            "createLiveServer({ ...options, gracefulShutdown: false, manual: true })",
+        );
+        expect(code).toContain("export default server;");
+        expect(code).toContain("if (import.meta.hot) {");
+        expect(code).toContain("import.meta.hot.accept((mod) => {");
+        expect(code).toContain("if (mod?.default) update(mod.default);");
+        expect(code).not.toContain("const server = serve(");
+    });
+
+    it("generates handler code without HMR when dev is false", (): void => {
+        const code: string = createVirtualEntryCode({
+            dev: false,
+            packageName: "@srvkit/vite",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                build: {
+                    target: "handler",
+                    bundle: "external",
+                    outputDir: "./dist",
+                    outputFile: "index.js",
+                    minify: false,
+                    public: {
+                        from: "./public",
+                        copy: false,
+                    },
+                },
+            },
+        });
+
+        expect(code).toContain(
+            "const server = serve({ ...options, manual: true });",
+        );
+        expect(code).toContain("export default server;");
+        expect(code).not.toContain("createLiveServer");
+        expect(code).not.toContain("import.meta.hot");
+    });
+
+    it("does not generate dev code for server target", (): void => {
+        const code: string = createVirtualEntryCode({
+            dev: true,
+            packageName: "@srvkit/vite",
+            resolvedOptions: BASE_OPTIONS,
+        });
+
+        expect(code).toContain('import { serve } from "@srvkit/vite/runtime";');
+        expect(code).not.toContain("createLiveServer");
+        expect(code).not.toContain("import.meta.hot");
+    });
+
+    it("includes cloudflare env import in handler dev code", (): void => {
+        const code: string = createVirtualEntryCode({
+            dev: true,
+            isCloudflare: true,
+            packageName: "@srvkit/vite",
+            resolvedOptions: {
+                ...BASE_OPTIONS,
+                runtime: "workerd",
+                build: {
+                    target: "handler",
+                    bundle: "external",
+                    outputDir: "./dist",
+                    outputFile: "index.js",
+                    minify: false,
+                    public: {
+                        from: "./public",
+                        copy: false,
+                    },
+                },
+            },
+        });
+
+        expect(code).toContain('import { env } from "cloudflare:workers";');
+        expect(code).toContain("createLiveServer");
     });
 });
