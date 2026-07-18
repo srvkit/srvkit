@@ -2,13 +2,16 @@ packages:
     - ./packages/*
     - ./tests/*
     - ./bench
-    - ./examples/*
+    - ./examples/vite/*
+    - ./examples/rsbuild/*
 
 autoInstallPeers: false
 strictPeerDependencies: false
 
 allowBuilds:
     esbuild: true
+    sharp: false
+    workerd: true
 
 catalogs:
     dep:

@@ -23,9 +23,6 @@ test_rsbuild := "tests/rsbuild"
 
 bench := "bench"
 
-ex_vite := "examples/vite"
-ex_rsbuild := "examples/rsbuild"
-
 # Default action
 _:
     just --list -u
@@ -91,14 +88,6 @@ check:
 bench:
     cd ./{{bench}} && {{vitest}} bench --run
 
-# Run Vite example
-ex-vite:
-    cd ./{{ex_vite}} && pnpm run build
-
-# Run Rsbuild example
-ex-rsbuild:
-    cd ./{{ex_rsbuild}} && pnpm run build
-
 # Publish package with dev tag as dry-run
 publish-dev-try:
     cd ./{{common}} && {{publish_dev}} --dry-run
@@ -125,8 +114,9 @@ publish:
 
 # Clean builds (Linux)
 clean-linux:
-    rm -rf ./{{ex_rsbuild}}/dist
-    rm -rf ./{{ex_vite}}/dist
+    rm -rf ./examples/rsbuild/*/dist
+    rm -rf ./examples/vite/cloudflare/.wrangler
+    rm -rf ./examples/vite/*/dist
 
     rm -rf ./{{bench}}/dist
 
@@ -143,8 +133,9 @@ clean-macos:
 
 # Clean builds (Windows)
 clean-windows:
-    if (Test-Path "./{{ex_rsbuild}}/dist") { Remove-Item -Recurse -Force "./{{ex_rsbuild}}/dist" }
-    if (Test-Path "./{{ex_vite}}/dist") { Remove-Item -Recurse -Force "./{{ex_vite}}/dist" }
+    if (Test-Path "./examples/rsbuild/*/dist") { Remove-Item -Recurse -Force "./examples/rsbuild/*/dist" }
+    if (Test-Path "./examples/vite/cloudflare/.wrangler") { Remove-Item -Recurse -Force "./examples/vite/cloudflare/.wrangler" }
+    if (Test-Path "./examples/vite/*/dist") { Remove-Item -Recurse -Force "./examples/vite/*/dist" }
 
     if (Test-Path "./{{bench}}/dist") { Remove-Item -Recurse -Force "./{{bench}}/dist" }
 
@@ -163,8 +154,8 @@ clean:
 clean-all-linux:
     just clean
 
-    rm -rf ./{{ex_rsbuild}}/node_modules
-    rm -rf ./{{ex_vite}}/node_modules
+    rm -rf ./examples/rsbuild/*/node_modules
+    rm -rf ./examples/vite/*/node_modules
 
     rm -rf ./{{bench}}/node_modules
 
@@ -186,8 +177,8 @@ clean-all-macos:
 clean-all-windows:
     just clean
 
-    if (Test-Path "./{{ex_rsbuild}}/node_modules") { Remove-Item -Recurse -Force "./{{ex_rsbuild}}/node_modules" }
-    if (Test-Path "./{{ex_vite}}/node_modules") { Remove-Item -Recurse -Force "./{{ex_vite}}/node_modules" }
+    if (Test-Path "./examples/rsbuild/*/node_modules") { Remove-Item -Recurse -Force "./examples/rsbuild/*/node_modules" }
+    if (Test-Path "./examples/vite/*/node_modules") { Remove-Item -Recurse -Force "./examples/vite/*/node_modules" }
 
     if (Test-Path "./{{bench}}/node_modules") { Remove-Item -Recurse -Force "./{{bench}}/node_modules" }
 
