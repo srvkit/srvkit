@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "rsbuild dev",
+        "build": "rsbuild build",
+        "start": "node ./dist/index.js"
+    },
+    "dependencies": {
+        "@srvkit/rsbuild": "workspace:*",
+        "express": "catalog:example"
+    },
+    "devDependencies": {
+        "@rsbuild/core": "catalog:dev",
+        "@types/express": "catalog:example"
+    }
+}
