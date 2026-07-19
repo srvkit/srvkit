@@ -5,6 +5,7 @@
 - add `BuildPublicOptions` types
 - add `ResolvedBuildPublicOptions` types
 - add `CompleteBuildPublicOptions` types
+- add internal `presets` entry point for options presets
 - add internal `dev-runtime` entry point for live server with HMR
 
 ### Rsbuild
@@ -18,6 +19,7 @@
 ### Vite
 
 - improve the support for Cloudflare integration
+- add Cloudflare Workers preset via `/presets` entry point
 - add `public.copy` for both `server` and `handler` build targets
 - add `public.from` to customize the source directory
 - add `public.to` to customize the destination directory inside output directory

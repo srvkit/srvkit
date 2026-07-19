@@ -42,6 +42,11 @@
             "import": "./dist/plugin.mjs",
             "require": "./dist/plugin.js"
         },
+        "./presets": {
+            "types": "./dist/presets.d.ts",
+            "import": "./dist/presets.mjs",
+            "require": "./dist/presets.js"
+        },
         "./runtime": {
             "types": "./dist/runtime.d.ts",
             "import": "./dist/runtime.mjs",

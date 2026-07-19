@@ -8,6 +8,7 @@ export default defineConfig(
             "./src/index.ts",
             "./src/node.ts",
             "./src/plugin.ts",
+            "./src/presets.ts",
             // internal
             "./src/runtime.ts",
             "./src/runtime-dev.ts",
