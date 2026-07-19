@@ -7,6 +7,7 @@ type FixtureOptions = {
     publicFiles?: Record<string, string>;
     dependencies?: Record<string, string>;
     localDependencies?: Record<string, Record<string, string>>;
+    extraFiles?: Record<string, string>;
 };
 
 const DEFAULT_ENTRY: string = [
@@ -30,6 +31,7 @@ const createFixture = (
         string,
         Record<string, string>
     > = options?.localDependencies ?? {};
+    const extraFiles: Record<string, string> = options?.extraFiles ?? {};
 
     const tempDir: string = Path.resolve(baseDir, "__temp__", name);
     const srcDir: string = Path.resolve(tempDir, "src");
@@ -92,6 +94,17 @@ const createFixture = (
                 Fs.writeFileSync(Path.resolve(pkgDir, fileName), fileContent);
             }
         }
+    }
+
+    for (const [filePath, fileContent] of Object.entries(extraFiles)) {
+        const resolvedPath: string = Path.resolve(tempDir, filePath);
+        const parentDir: string = Path.dirname(resolvedPath);
+
+        Fs.mkdirSync(parentDir, {
+            recursive: true,
+        });
+
+        Fs.writeFileSync(resolvedPath, fileContent);
     }
 
     return tempDir;

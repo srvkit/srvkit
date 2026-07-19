@@ -5,5 +5,8 @@
         "@srvkit/vite": "workspace:*",
         "vite": "catalog:dev",
         "vitest": "catalog:test"
+    },
+    "devDependencies": {
+        "@cloudflare/vite-plugin": "catalog:test"
     }
 }

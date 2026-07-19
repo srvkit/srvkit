@@ -27,6 +27,9 @@ catalogs:
       specifier: ^4.12.30
       version: 4.12.30
   test:
+    '@cloudflare/vite-plugin':
+      specifier: ^1.45.0
+      version: 1.45.1
     vitest:
       specifier: ^4.1.10
       version: 4.1.10
@@ -133,7 +136,7 @@ importers:
         version: 4.12.30
     devDependencies:
       '@cloudflare/vite-plugin':
-        specifier: ^1.45.0
+        specifier: catalog:test
         version: 1.45.1(vite@8.0.12(@types/node@26.1.1)(esbuild@0.28.1))(wrangler@4.112.0)
       vite:
         specifier: catalog:dev
@@ -266,6 +269,10 @@ importers:
       vitest:
         specifier: catalog:test
         version: 4.1.10(@types/node@26.1.1)(vite@8.0.12(@types/node@26.1.1)(esbuild@0.28.1))
+    devDependencies:
+      '@cloudflare/vite-plugin':
+        specifier: catalog:test
+        version: 1.45.1(vite@8.0.12(@types/node@26.1.1)(esbuild@0.28.1))(wrangler@4.112.0)
 
 packages:
 

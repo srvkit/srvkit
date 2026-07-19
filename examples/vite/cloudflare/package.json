@@ -11,7 +11,7 @@
         "hono": "catalog:example"
     },
     "devDependencies": {
-        "@cloudflare/vite-plugin": "^1.45.0",
+        "@cloudflare/vite-plugin": "catalog:test",
         "vite": "catalog:dev",
         "wrangler": "^4.111.0"
     }
