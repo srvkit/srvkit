@@ -28,7 +28,7 @@ catalogs:
     example:
         "@types/express": ^5.0.6
         express: ^5.2.1
-        hono: ^4.12.30
+        hono: ^4.12.31
 
 minimumReleaseAge: 1440
 
