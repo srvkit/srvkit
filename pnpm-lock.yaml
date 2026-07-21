@@ -199,8 +199,8 @@ importers:
         specifier: catalog:dep
         version: 1.47.0
       srvx:
-        specifier: ~0.11.0
-        version: 0.11.16
+        specifier: ~0.12.0
+        version: 0.12.0
       ts-vista:
         specifier: ~0.2.3
         version: 0.2.3
@@ -1910,8 +1910,8 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
-  srvx@0.11.16:
-    resolution: {integrity: sha512-bp07zRuycfTY43IjAvvTFnmnJi8ikW0VFiHwOhhYcVW/L4xQ1XY4PAd4Nuum1rsA17C39zL7x+CDhrn5AL32Rw==}
+  srvx@0.12.0:
+    resolution: {integrity: sha512-c1GYFl3U8Aa/9rX9GTgvJ4tQMgmbX9YX26+km5iYu+d6/fuwpMFJ6d+Z/DtLDiXpDioKcbGTj5jD7+mn94Timw==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -3467,7 +3467,7 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  srvx@0.11.16: {}
+  srvx@0.12.0: {}
 
   stackback@0.0.2: {}
 

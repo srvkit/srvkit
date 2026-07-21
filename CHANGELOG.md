@@ -7,6 +7,7 @@
 - add `CompleteBuildPublicOptions` types
 - add internal `presets` entry point for options presets
 - add internal `dev-runtime` entry point for live server with HMR
+- upgrade `srvx` to `0.12.0`
 
 ### Rsbuild
 

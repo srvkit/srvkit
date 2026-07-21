@@ -60,7 +60,7 @@
         "consola": "^3.4.0",
         "envkist": "~0.2.0",
         "es-toolkit": "catalog:dep",
-        "srvx": "~0.11.0",
+        "srvx": "~0.12.0",
         "ts-vista": "~0.2.3"
     }
 }

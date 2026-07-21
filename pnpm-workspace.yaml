@@ -34,4 +34,7 @@ minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude:
     - "@apst/*"
-    - "envkist"
+    - envkist
+    - rolldown-plugin-copy
+    - srvx
+    - ts-vista
