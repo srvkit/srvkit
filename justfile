@@ -88,6 +88,16 @@ check:
 bench:
     cd ./{{bench}} && {{vitest}} bench --run
 
+# Bump package versions
+ver VERSION:
+    pnpm version \
+        --no-git-tag-version \
+        --no-commit-hooks \
+        --no-git-checks \
+        --allow-same-version \
+        --recursive \
+        {{VERSION}}
+
 # Publish package with dev tag as dry-run
 publish-dev-try:
     cd ./{{common}} && {{publish_dev}} --dry-run
