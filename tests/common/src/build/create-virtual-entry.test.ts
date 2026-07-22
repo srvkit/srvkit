@@ -164,9 +164,12 @@ describe("createVirtualEntryCode", (): void => {
             "createLiveServer({ ...options, gracefulShutdown: false, manual: true })",
         );
         expect(code).toContain("export default server;");
+        expect(code).toContain("export { options as __SRVKIT_OPTIONS__ };");
         expect(code).toContain("if (import.meta.hot) {");
         expect(code).toContain("import.meta.hot.accept((mod) => {");
-        expect(code).toContain("if (mod?.default) update(mod.default);");
+        expect(code).toContain(
+            "if (mod?.__SRVKIT_OPTIONS__) update(mod.__SRVKIT_OPTIONS__);",
+        );
         expect(code).not.toContain("const server = serve(");
     });
 

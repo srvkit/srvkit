@@ -46,9 +46,10 @@ const createVirtualEntryCode = (options: VirtualEntryOptions): string => {
             code += `import { createLiveServer } from "${options.packageName}/dev-runtime";`;
             code += `const { server, update } = createLiveServer({ ...options, gracefulShutdown: false, manual: true });`;
             code += `export default server;`;
+            code += `export { options as __SRVKIT_OPTIONS__ };`;
             code += `if (import.meta.hot) {`;
             code += `    import.meta.hot.accept((mod) => {`;
-            code += `        if (mod?.default) update(mod.default);`;
+            code += `        if (mod?.__SRVKIT_OPTIONS__) update(mod.__SRVKIT_OPTIONS__);`;
             code += `    });`;
             code += `}`;
         } else {
