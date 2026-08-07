@@ -13,6 +13,6 @@
     "devDependencies": {
         "@cloudflare/vite-plugin": "catalog:test",
         "vite": "catalog:dev",
-        "wrangler": "^4.118.0"
+        "wrangler": "^4.119.0"
     }
 }
