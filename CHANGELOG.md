@@ -1,3 +1,9 @@
+## Next
+
+### Common
+
+- update `srvx` supported version range to `^1.0.0`
+
 ## 0.3.0 (2026-07-22)
 
 ### Common

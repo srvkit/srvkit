@@ -82,7 +82,7 @@ importers:
         version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
       vitest:
         specifier: catalog:test
-        version: 4.1.11(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
+        version: 4.1.11(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1))
 
   examples/rsbuild/common:
     dependencies:
@@ -137,7 +137,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.54.3(vite@8.0.12(@types/node@26.4.1))(wrangler@4.128.0)
+        version: 1.54.3(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))(wrangler@4.128.0)
       vite:
         specifier: catalog:dev
         version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
@@ -199,8 +199,8 @@ importers:
         specifier: catalog:dep
         version: 1.47.1
       srvx:
-        specifier: ~0.12.0
-        version: 0.12.8
+        specifier: ^1.0.0
+        version: 1.0.3
       ts-vista:
         specifier: ~0.2.3
         version: 0.2.3
@@ -272,7 +272,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.54.3(vite@8.0.12(@types/node@26.4.1))(wrangler@4.128.0)
+        version: 1.54.3(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))(wrangler@4.128.0)
 
 packages:
 
@@ -1928,8 +1928,8 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
-  srvx@0.12.8:
-    resolution: {integrity: sha512-7k9HoDhluTlD7UJ+F+OopZoPZXB2J8f/5nW2VMLaB8KsSlZlRQxyyoX0hWEQCxB+F+3ZvB5QX3LqB6xSBRfxQQ==}
+  srvx@1.0.3:
+    resolution: {integrity: sha512-aOuk+yNJA61yA6eJJvQJxpJLIxz090hKMqDGzd35tGsvwaodi1RPuYSFUp5EINaJp7snjVwLkO2RXVMPZBYnnA==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -2237,7 +2237,7 @@ snapshots:
     optionalDependencies:
       workerd: 1.20260831.1
 
-  '@cloudflare/vite-plugin@1.54.3(vite@8.0.12(@types/node@26.4.1))(wrangler@4.128.0)':
+  '@cloudflare/vite-plugin@1.54.3(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))(wrangler@4.128.0)':
     dependencies:
       '@cloudflare/unenv-preset': 2.16.1(unenv@2.0.0-rc.24)(workerd@1.20260831.1)
       miniflare: 5.20260831.0-alpha
@@ -2862,14 +2862,6 @@ snapshots:
       '@vitest/utils': 4.1.11
       chai: 6.2.2
       tinyrainbow: 3.1.1
-
-  '@vitest/mocker@4.1.11(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))':
-    dependencies:
-      '@vitest/spy': 4.1.11
-      estree-walker: 3.0.3
-      magic-string: 0.30.21
-    optionalDependencies:
-      vite: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
 
   '@vitest/mocker@4.1.11(vite@8.0.12(@types/node@26.4.1))':
     dependencies:
@@ -3531,7 +3523,7 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  srvx@0.12.8: {}
+  srvx@1.0.3: {}
 
   stackback@0.0.2: {}
 
@@ -3644,33 +3636,6 @@ snapshots:
       '@types/node': 26.4.1
       esbuild: 0.28.1
       fsevents: 2.3.3
-
-  vitest@4.1.11(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1)):
-    dependencies:
-      '@vitest/expect': 4.1.11
-      '@vitest/mocker': 4.1.11(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
-      '@vitest/pretty-format': 4.1.11
-      '@vitest/runner': 4.1.11
-      '@vitest/snapshot': 4.1.11
-      '@vitest/spy': 4.1.11
-      '@vitest/utils': 4.1.11
-      es-module-lexer: 2.3.2
-      expect-type: 1.4.0
-      magic-string: 0.30.21
-      obug: 2.1.4
-      pathe: 2.0.3
-      picomatch: 4.0.5
-      std-env: 4.2.0
-      tinybench: 2.9.0
-      tinyexec: 1.2.4
-      tinyglobby: 0.2.17
-      tinyrainbow: 3.1.1
-      vite: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
-      why-is-node-running: 2.3.0
-    optionalDependencies:
-      '@types/node': 26.4.1
-    transitivePeerDependencies:
-      - msw
 
   vitest@4.1.11(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)):
     dependencies:
