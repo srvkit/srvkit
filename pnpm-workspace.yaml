@@ -1,9 +1,9 @@
 packages:
-    - ./packages/*
-    - ./tests/*
-    - ./bench
-    - ./examples/vite/*
-    - ./examples/rsbuild/*
+    - packages/*
+    - tests/*
+    - bench
+    - examples/vite/*
+    - examples/rsbuild/*
 
 autoInstallPeers: false
 strictPeerDependencies: false
