@@ -42,8 +42,7 @@ ls-lint:
     cd ./{{rsbuild}}/src && ls-lint -config ../../../.ls-lint.yaml
 
 # Lint code with ls-lint
-lslint:
-    just ls-lint
+lslint: ls-lint
 
 # Lint code with typos-cli
 typos:
@@ -56,10 +55,7 @@ tsc:
     cd ./{{rsbuild}} && {{tsc}} --noEmit
 
 # Lint code
-lint:
-    just lslint
-    just typos
-    just tsc
+lint: lslint typos tsc
 
 # Lint code with Biome
 lint-biome:
@@ -78,11 +74,7 @@ test:
     cd ./{{test_rsbuild}} && {{vitest}} run
 
 # Check code
-check:
-    just build
-    just fmt
-    just lint
-    just test
+check: build fmt lint test
 
 # Run benchmark
 bench:
@@ -138,8 +130,7 @@ clean-linux:
     rm -rf ./{{common}}/dist
 
 # Clean builds (macOS)
-clean-macos:
-    just clean-linux
+clean-macos: clean-linux
 
 # Clean builds (Windows)
 clean-windows:
@@ -180,8 +171,7 @@ clean-all-linux:
     rm -rf ./node_modules
 
 # Clean everything (macOS)
-clean-all-macos:
-    just clean-all-linux
+clean-all-macos: clean-all-linux
 
 # Clean everything (Windows)
 clean-all-windows:
