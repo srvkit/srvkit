@@ -51,8 +51,8 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@types/node':
-        specifier: ^26.4.1
-        version: 26.4.1
+        specifier: ^26.5.0
+        version: 26.5.0
       tsdown:
         specifier: ~0.22.14
         version: 0.22.14(typescript@7.0.2)
@@ -79,10 +79,10 @@ importers:
         version: 4.13.7
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
       vitest:
         specifier: catalog:test
-        version: 5.0.0(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
+        version: 5.0.0(@types/node@26.5.0)(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))
 
   examples/rsbuild/common:
     dependencies:
@@ -137,10 +137,10 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.54.4(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))(wrangler@4.129.0)
+        version: 1.54.4(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))(wrangler@4.129.0)
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
       wrangler:
         specifier: ^4.129.0
         version: 4.129.0
@@ -156,7 +156,7 @@ importers:
     devDependencies:
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
 
   examples/vite/express:
     dependencies:
@@ -172,7 +172,7 @@ importers:
         version: 5.0.6
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
 
   examples/vite/vercel:
     dependencies:
@@ -185,7 +185,7 @@ importers:
     devDependencies:
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
 
   packages/common:
     dependencies:
@@ -222,14 +222,14 @@ importers:
         version: link:../common
       rolldown-plugin-copy:
         specifier: ~0.2.0
-        version: 0.2.0(@types/node@26.4.1)(rolldown@1.0.0)
+        version: 0.2.0(@types/node@26.5.0)(rolldown@1.0.0)
     devDependencies:
       rolldown:
         specifier: 1.0.0
         version: 1.0.0
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
 
   tests/common:
     dependencies:
@@ -238,7 +238,7 @@ importers:
         version: link:../../packages/common
       vitest:
         specifier: catalog:test
-        version: 5.0.0(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
+        version: 5.0.0(@types/node@26.5.0)(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))
 
   tests/rsbuild:
     dependencies:
@@ -253,7 +253,7 @@ importers:
         version: link:../../packages/rsbuild
       vitest:
         specifier: catalog:test
-        version: 5.0.0(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
+        version: 5.0.0(@types/node@26.5.0)(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))
 
   tests/vite:
     dependencies:
@@ -265,14 +265,14 @@ importers:
         version: link:../../packages/vite
       vite:
         specifier: catalog:dev
-        version: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+        version: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
       vitest:
         specifier: catalog:test
-        version: 5.0.0(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
+        version: 5.0.0(@types/node@26.5.0)(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.54.4(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))(wrangler@4.129.0)
+        version: 1.54.4(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))(wrangler@4.129.0)
 
 packages:
 
@@ -1128,8 +1128,8 @@ packages:
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
 
-  '@types/node@26.4.1':
-    resolution: {integrity: sha512-k97ENvZWtvA6yqz5/FS6a7duDgOPEeOQOc2iKS/nY6mX6qJUKtLnWzQS+Xj6tXweyj6ZcTAK2Qecetnvi9nCLA==}
+  '@types/node@26.5.0':
+    resolution: {integrity: sha512-dVSGpriSoCgz8WnDNTuSSuSv1PC/ALXihO4ulRZt7Md8k9mlbdin3lGOcDE8SnWOgf513ByWlXd7BK4azmyg/A==}
 
   '@types/qs@6.15.1':
     resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
@@ -2009,8 +2009,8 @@ packages:
   unconfig-core@7.5.0:
     resolution: {integrity: sha512-Su3FauozOGP44ZmKdHy2oE6LPjk51M/TRRjHv2HNCWiDvfvCoxC2lno6jevMA91MYAdCdwP05QnWdWpSbncX/w==}
 
-  undici-types@8.3.0:
-    resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
+  undici-types@8.9.0:
+    resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
   undici@7.29.0:
     resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
@@ -2224,12 +2224,12 @@ snapshots:
     optionalDependencies:
       workerd: 1.20260903.1
 
-  '@cloudflare/vite-plugin@1.54.4(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))(wrangler@4.129.0)':
+  '@cloudflare/vite-plugin@1.54.4(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))(wrangler@4.129.0)':
     dependencies:
       '@cloudflare/unenv-preset': 2.16.1(unenv@2.0.0-rc.24)(workerd@1.20260903.1)
       miniflare: 5.20260903.0-alpha
       unenv: 2.0.0-rc.24
-      vite: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+      vite: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
       workerd: 1.20260903.1
       wrangler: 4.129.0
       ws: 8.21.0
@@ -2737,7 +2737,7 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
 
   '@types/chai@5.2.3':
     dependencies:
@@ -2746,7 +2746,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
 
   '@types/deep-eql@4.0.2': {}
 
@@ -2754,7 +2754,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.1.3':
     dependencies:
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
       '@types/qs': 6.15.1
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -2767,9 +2767,9 @@ snapshots:
 
   '@types/http-errors@2.0.5': {}
 
-  '@types/node@26.4.1':
+  '@types/node@26.5.0':
     dependencies:
-      undici-types: 8.3.0
+      undici-types: 8.9.0
 
   '@types/qs@6.15.1': {}
 
@@ -2777,12 +2777,12 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true
@@ -2844,14 +2844,14 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@vitest/mocker@5.0.0(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))':
+  '@vitest/mocker@5.0.0(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.0
       estree-walker: 3.0.3
       magic-string: 1.2.3
     optionalDependencies:
-      vite: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+      vite: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
 
   '@vitest/spy@5.0.0': {}
 
@@ -3312,14 +3312,14 @@ snapshots:
 
   resolve-pkg-maps@1.0.0: {}
 
-  rolldown-plugin-copy@0.2.0(@types/node@26.4.1)(rolldown@1.0.0):
+  rolldown-plugin-copy@0.2.0(@types/node@26.5.0)(rolldown@1.0.0):
     dependencies:
       consola: 3.4.2
       es-toolkit: 1.47.1
       tinyglobby: 0.2.17
       ts-vista: 0.2.3
     optionalDependencies:
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
       rolldown: 1.0.0
 
   rolldown-plugin-dts@0.27.14(rolldown@1.2.0)(typescript@7.0.2):
@@ -3571,7 +3571,7 @@ snapshots:
       '@quansync/fs': 1.0.0
       quansync: 1.0.0
 
-  undici-types@8.3.0: {}
+  undici-types@8.9.0: {}
 
   undici@7.29.0: {}
 
@@ -3585,7 +3585,7 @@ snapshots:
 
   verkit@0.3.0: {}
 
-  vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1):
+  vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.5
@@ -3593,14 +3593,14 @@ snapshots:
       rolldown: 1.0.0
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
       esbuild: 0.28.1
       fsevents: 2.3.3
 
-  vitest@5.0.0(@types/node@26.4.1)(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1)):
+  vitest@5.0.0(@types/node@26.5.0)(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.0(vite@8.0.12(@types/node@26.4.1)(esbuild@0.28.1))
+      '@vitest/mocker': 5.0.0(vite@8.0.12(@types/node@26.5.0)(esbuild@0.28.1))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -3611,10 +3611,10 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
-      vite: 8.0.12(@types/node@26.4.1)(esbuild@0.28.1)
+      vite: 8.0.12(@types/node@26.5.0)(esbuild@0.28.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 26.4.1
+      '@types/node': 26.5.0
     transitivePeerDependencies:
       - msw
 
