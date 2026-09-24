@@ -28,8 +28,8 @@ catalogs:
       version: 4.13.8
   test:
     '@cloudflare/vite-plugin':
-      specifier: ^1.57.1
-      version: 1.57.1
+      specifier: ^1.57.3
+      version: 1.57.3
     vitest:
       specifier: ^5.0.1
       version: 5.0.1
@@ -137,7 +137,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.57.1(@types/node@26.6.2)(vite@8.0.12(@types/node@26.6.2)(esbuild@0.28.1))(wrangler@4.136.3(@types/node@26.6.2))
+        version: 1.57.3(@types/node@26.6.2)(vite@8.0.12(@types/node@26.6.2)(esbuild@0.28.1))(wrangler@4.136.3(@types/node@26.6.2))
       vite:
         specifier: catalog:dev
         version: 8.0.12(@types/node@26.6.2)(esbuild@0.28.1)
@@ -272,7 +272,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.57.1(@types/node@26.6.2)(vite@8.0.12(@types/node@26.6.2)(esbuild@0.28.1))(wrangler@4.136.3(@types/node@26.6.2))
+        version: 1.57.3(@types/node@26.6.2)(vite@8.0.12(@types/node@26.6.2)(esbuild@0.28.1))(wrangler@4.136.3(@types/node@26.6.2))
 
 packages:
 
@@ -370,12 +370,12 @@ packages:
       workerd:
         optional: true
 
-  '@cloudflare/vite-plugin@1.57.1':
-    resolution: {integrity: sha512-AlyZwnEa/Y5nX8q+jtf5wbXe7rbFt8fkWBbjf0ofWPpHU5yZGoLjDZ7CPo1+7D+0hey6Q8uMOMgoPwYBRNHAWQ==}
+  '@cloudflare/vite-plugin@1.57.3':
+    resolution: {integrity: sha512-aXquK3c1RbLVmGbr5Z0tr4dq3aUrMkwaZjBuC5UdZwSTQRqa/aHR5M+SM/WqEZdE3Fs6FkBBscCjvHKR+LXZuA==}
     hasBin: true
     peerDependencies:
       vite: ^6.1.0 || ^7.0.0 || ^8.0.0
-      wrangler: ^4.136.1
+      wrangler: ^4.136.3
 
   '@cloudflare/workerd-darwin-64@1.20260921.1':
     resolution: {integrity: sha512-3iB2WnYOlZ29T+1zhCwbHFExCBp6E9bgmDUMryATYwrIGEQ1YbvR78m4ydm56XKN/d/yF3803ivMGfZMYDtiMg==}
@@ -2229,7 +2229,7 @@ snapshots:
     optionalDependencies:
       workerd: 1.20260921.1
 
-  '@cloudflare/vite-plugin@1.57.1(@types/node@26.6.2)(vite@8.0.12(@types/node@26.6.2)(esbuild@0.28.1))(wrangler@4.136.3(@types/node@26.6.2))':
+  '@cloudflare/vite-plugin@1.57.3(@types/node@26.6.2)(vite@8.0.12(@types/node@26.6.2)(esbuild@0.28.1))(wrangler@4.136.3(@types/node@26.6.2))':
     dependencies:
       '@cloudflare/unenv-preset': 2.16.2(unenv@2.0.0-rc.24)(workerd@1.20260921.1)
       miniflare: 5.20260921.0-alpha(@types/node@26.6.2)
