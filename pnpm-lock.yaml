@@ -28,8 +28,8 @@ catalogs:
       version: 4.13.13
   test:
     '@cloudflare/vite-plugin':
-      specifier: ^1.63.1
-      version: 1.63.1
+      specifier: ^1.63.2
+      version: 1.63.2
     vitest:
       specifier: ^5.0.4
       version: 5.0.4
@@ -137,7 +137,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.63.1(@types/node@26.6.5)(vite@8.0.12(@types/node@26.6.5)(esbuild@0.28.2))(wrangler@4.150.0(@types/node@26.6.5))
+        version: 1.63.2(@types/node@26.6.5)(vite@8.0.12(@types/node@26.6.5)(esbuild@0.28.2))(wrangler@4.150.0(@types/node@26.6.5))
       vite:
         specifier: catalog:dev
         version: 8.0.12(@types/node@26.6.5)(esbuild@0.28.2)
@@ -272,7 +272,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: catalog:test
-        version: 1.63.1(@types/node@26.6.5)(vite@8.0.12(@types/node@26.6.5)(esbuild@0.28.2))(wrangler@4.150.0(@types/node@26.6.5))
+        version: 1.63.2(@types/node@26.6.5)(vite@8.0.12(@types/node@26.6.5)(esbuild@0.28.2))(wrangler@4.150.0(@types/node@26.6.5))
 
 packages:
 
@@ -370,12 +370,12 @@ packages:
       workerd:
         optional: true
 
-  '@cloudflare/vite-plugin@1.63.1':
-    resolution: {integrity: sha512-6EtAoRqWryl43bYiCl7yvCBHi3R+L/fM11zu8zRyvBMe0Yk63NseyrhA19nO5Y1yrrk6dD+Su7NBZhDuUbjh0g==}
+  '@cloudflare/vite-plugin@1.63.2':
+    resolution: {integrity: sha512-62T+K8dnViTQ66h3DOsTroGS5Tq72MzewPvBa2iPzwstteFRZbHFwzac/erLBzJybp6u8sw+BF4UGxb+wTuIeQ==}
     hasBin: true
     peerDependencies:
       vite: ^6.1.0 || ^7.0.0 || ^8.0.0
-      wrangler: ^4.149.0
+      wrangler: ^4.150.0
 
   '@cloudflare/workerd-darwin-64@1.20261006.1':
     resolution: {integrity: sha512-lCX6avJO2It9AyDEYitjmOtJRVp/xmaW0TziyoLAnfxlzozyyRbSFfIIMMCiDx/sTP1++E4VLbV+7BHSD33f0Q==}
@@ -1761,10 +1761,6 @@ packages:
     resolution: {integrity: sha512-Lbgzdk0h4juoQ9fCKXW4by0UJqj+nOOrI9MJ1sSj4nI8aI2eo1qmvQEie4VD1glsS250n15LsWsYtCugiStS5A==}
     engines: {node: '>=18'}
 
-  miniflare@5.20261006.1-alpha:
-    resolution: {integrity: sha512-6ylv8tamkrspDI2R/cAYfv+YWmfGNdXe76Pi9TauEUWsFVXn3LNF9Yk8oduzf1a+TYsSRYTqlOE7+nGGRsMHdw==}
-    engines: {node: '>=22.0.0'}
-
   miniflare@5.20261006.2-beta:
     resolution: {integrity: sha512-agufWI3mXF8xGzry2/sOF8Im8AoYs04DWBCLDWDmd4QtMSGEo9IgrPmYOwsCmQA3K3MbLzsvr01GpWc8x3Duqw==}
     engines: {node: '>=22.0.0'}
@@ -2249,10 +2245,10 @@ snapshots:
     optionalDependencies:
       workerd: 1.20261006.1
 
-  '@cloudflare/vite-plugin@1.63.1(@types/node@26.6.5)(vite@8.0.12(@types/node@26.6.5)(esbuild@0.28.2))(wrangler@4.150.0(@types/node@26.6.5))':
+  '@cloudflare/vite-plugin@1.63.2(@types/node@26.6.5)(vite@8.0.12(@types/node@26.6.5)(esbuild@0.28.2))(wrangler@4.150.0(@types/node@26.6.5))':
     dependencies:
       '@cloudflare/unenv-preset': 2.16.2(unenv@2.0.0-rc.24)(workerd@1.20261006.1)
-      miniflare: 5.20261006.1-alpha(@types/node@26.6.5)
+      miniflare: 5.20261006.2-beta(@types/node@26.6.5)
       unenv: 2.0.0-rc.24
       vite: 8.0.12(@types/node@26.6.5)(esbuild@0.28.2)
       workerd: 1.20261006.1
@@ -3260,19 +3256,6 @@ snapshots:
   mime-types@3.0.2:
     dependencies:
       mime-db: 1.54.0
-
-  miniflare@5.20261006.1-alpha(@types/node@26.6.5):
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      sharp: 0.35.5(@types/node@26.6.5)
-      undici: 7.29.1
-      workerd: 1.20261006.1
-      ws: 8.21.0
-      youch: 4.1.0-beta.10
-    transitivePeerDependencies:
-      - '@types/node'
-      - bufferutil
-      - utf-8-validate
 
   miniflare@5.20261006.2-beta(@types/node@26.6.5):
     dependencies:
