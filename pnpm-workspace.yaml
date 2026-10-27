@@ -23,7 +23,7 @@ catalogs:
         "@rsbuild/core": ^2.0.0
         vite: ^8.0.12
     test:
-        "@cloudflare/vite-plugin": ^1.64.0
+        "@cloudflare/vite-plugin": ^1.65.0
         vitest: ^5.0.5
     example:
         "@types/express": ^5.0.6
